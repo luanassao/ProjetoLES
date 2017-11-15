@@ -25,22 +25,6 @@
 				<tr><TH COLSPAN="2">Comprar livros</TH></tr>
 				<tr style="${empty carrinho ? 'display:none' : ''}">
 					<td>
-						ID do carrinho
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtId" name="txtId" value="${empty carrinho ? '' : carrinho.getId()}" readonly="readonly"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Digite seu email
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtEmail" name="txtEmail" value="${empty cliente ? '' : cliente.getNome()}" />
-					</td>
-				</tr>
-				<tr>
-					<td>
 						Digite sua senha
 					</td>
 					<td>
