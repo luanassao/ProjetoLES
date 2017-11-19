@@ -358,4 +358,13 @@ public class Fachada implements IFachada{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public Resultado logar(EntidadeDominio entidade) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
