@@ -362,8 +362,17 @@ public class Fachada implements IFachada{
 
 	@Override
 	public Resultado logar(EntidadeDominio entidade) {
-		// TODO Auto-generated method stub
-		return null;
+		resultado = new Resultado();
+		String msg = executarRegras(entidade, "LOGAR");
+	
+		if(msg == null){
+			List<EntidadeDominio> entidades = new ArrayList<EntidadeDominio>();
+			entidades.add(entidade);
+			resultado.setEntidades(entidades);
+		}else{
+			resultado.setMsg(msg);
+		}
+		return resultado;
 	}
 	
 	

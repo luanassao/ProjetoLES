@@ -14,6 +14,7 @@ import finalDominio.EntidadeDominio;
 import finalWeb.command.ICommand;
 import finalWeb.command.impl.AlterarCommand;
 import finalWeb.command.impl.ConsultarCommand;
+import finalWeb.command.impl.LogarCommand;
 import finalWeb.command.impl.SalvarCommand;
 import finalWeb.command.impl.VisualizarCommand;
 import finalWeb.vh.IViewHelper;
@@ -44,6 +45,7 @@ public class Servlet extends HttpServlet {
     	commands.put("CONSULTAR", new ConsultarCommand());
     	commands.put("VISUALIZAR", new VisualizarCommand());
     	commands.put("ALTERAR", new AlterarCommand());
+    	commands.put("LOGAR", new LogarCommand());
     	
     	
     	/* Utilizando o ViewHelper para tratar especificações de qualquer tela e indexando 
@@ -60,6 +62,7 @@ public class Servlet extends HttpServlet {
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
     	vhs.put("/finalWeb/SalvarCarrinho", new CarrinhoViewHelper());
     	vhs.put("/finalWeb/SalvarProduto", new ProdutoViewHelper());
+    	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
     	
     }
     

@@ -132,6 +132,12 @@ public class ClienteViewHelper implements IViewHelper{
 			//d= request.getRequestDispatcher("FormCliente.jsp");  			
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("LOGAR")){
+			
+			request.getSession().setAttribute("resultado", null);
+			d= request.getRequestDispatcher("Index.jsp");  
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
 			
 			request.getSession().setAttribute("resultado", null);
