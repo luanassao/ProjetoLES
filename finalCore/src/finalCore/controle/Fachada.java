@@ -32,6 +32,7 @@ import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
+import finalDominio.Usuario;
 
 public class Fachada implements IFachada{
 	/** 
@@ -230,7 +231,7 @@ public class Fachada implements IFachada{
 		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
 		 * pelo nome da entidade
 		 */
-		rns.put(Produto.class.getName(), rnsProduto);
+		rns.put(Cliente.class.getName(), rnsLogin);
 	}
 	
 	

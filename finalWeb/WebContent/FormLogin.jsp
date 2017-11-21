@@ -11,7 +11,7 @@
 <title>Login</title>
 </head>
 <body>
-	<form action="Login" method="post" id="frmLogin">
+	<form action="Logar" method="post" id="frmLogin">
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Login</TH></tr>
 				<tr>

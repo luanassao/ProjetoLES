@@ -6,7 +6,6 @@ import java.util.List;
 
 import finalCore.IStrategy;
 import finalCore.dao.ClienteDAO;
-import finalDominio.Carrinho;
 import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 
@@ -14,8 +13,9 @@ public class ValidadorUsuario implements IStrategy{
 	@Override
 	public String processar(EntidadeDominio entidade) {
 		
-		if(entidade instanceof Carrinho){
-			Carrinho carrinho = (Carrinho)entidade;
+		if(entidade instanceof Cliente){
+			System.out.println("Validando usuario");
+			Cliente cliente = (Cliente)entidade;
 			ClienteDAO cliDAO = new ClienteDAO();
 			List<EntidadeDominio> clientes = new ArrayList<>();
 			
@@ -25,8 +25,8 @@ public class ValidadorUsuario implements IStrategy{
 				// TODO Auto-generated catch block
 			}
 			
-			String email = carrinho.getEmail();
-			String senha = carrinho.getSenha();
+			String email = cliente.getEmail();
+			String senha = cliente.getSenha();
 			Cliente cli;
 			
 			for(EntidadeDominio c : clientes)
@@ -37,7 +37,7 @@ public class ValidadorUsuario implements IStrategy{
 			}
 			
 		}else{
-			return "Deve ser registrado um Carrinho!";
+			return "Deve ser registrado um Cliente!";
 		}
 		
 		

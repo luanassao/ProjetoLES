@@ -1,7 +1,7 @@
 package finalDominio;
 
 public class Usuario extends EntidadeDominio{
-	private String email, senha;
+	private String email, senha, nome;
 
 	public String getEmail() {
 		return email;
@@ -17,5 +17,13 @@ public class Usuario extends EntidadeDominio{
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 }

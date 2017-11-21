@@ -128,13 +128,12 @@ public class ClienteViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.setAttribute("cliente", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormClienteEnd.jsp"); 
-			//d= request.getRequestDispatcher("FormCliente.jsp");  			
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("LOGAR")){
 			
-			request.getSession().setAttribute("resultado", null);
+			request.getSession().setAttribute("usuario", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("Index.jsp");  
 		}
 		

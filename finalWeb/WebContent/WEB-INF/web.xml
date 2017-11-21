@@ -47,4 +47,9 @@
     <url-pattern>/SalvarProduto</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+    <servlet-name>Servlet</servlet-name>
+    <url-pattern>/Logar</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
