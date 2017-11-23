@@ -15,10 +15,14 @@
 <body>
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
+		Cliente usuario = (Cliente) session.getAttribute("usuario");
 	%>
 	<%
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
+	}
+	else{
+		out.print("Bem vindo, " + usuario.getNome());
 	}
 	
 	%>

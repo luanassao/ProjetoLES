@@ -26,7 +26,6 @@ public class LivroViewHelper implements IViewHelper{
 
 		if(!operacao.equals("VISUALIZAR"))
 		{
-			String nome = request.getParameter("txtNome");
 			String autor = request.getParameter("txtAutor");
 			String categoria = request.getParameter("ddlCategoria");
 			String subcategoria = request.getParameter("ddlsCategoria");
@@ -38,16 +37,11 @@ public class LivroViewHelper implements IViewHelper{
 			String npaginas = request.getParameter("txtPaginas");
 			String sinopse = request.getParameter("txtSinopse");
 			String alterador = request.getParameter("txtResponsavel");
+			String precificacao = request.getParameter("ddlPrecificacao");
 
 			livro = new Livro();
 			
-			try {
-				char precificacao = request.getParameter("ddlPrecificacao").charAt(0);
-				livro.setPrecificacao(precificacao);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			int estoque = 0;
+			int estoque = 0, id = 0;
 			double preco = 0.0, valor = 0.0;
 			Double altura = 0.0, largura = 0.0, peso = 0.0, profundidade = 0.0;
 			try {
@@ -67,8 +61,8 @@ public class LivroViewHelper implements IViewHelper{
 			
 			
 			try {
-			int id = Integer.parseInt(request.getParameter("txtId"));
-			livro.setId(id);
+				id = Integer.parseInt(request.getParameter("txtId"));
+				livro.setId(id);
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -76,7 +70,7 @@ public class LivroViewHelper implements IViewHelper{
 			livro.setEstoque(estoque);
 			livro.setPreco(preco);
 			livro.setValor(valor);
-			livro.setNome(nome);
+			livro.setId(id);
 			livro.setAutor(autor);
 			livro.setCategoria(categoria);
 			livro.setSubcategoria(subcategoria);
@@ -92,6 +86,7 @@ public class LivroViewHelper implements IViewHelper{
 			livro.setLargura(largura);
 			livro.setPeso(peso);
 			livro.setProfundidade(profundidade);
+			livro.setPrecificacao(precificacao);
 			livro.setAlterador(alterador);
 		}
 		else{
@@ -141,7 +136,7 @@ public class LivroViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.setAttribute("livro", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormLivro.jsp");  			
+			d= request.getRequestDispatcher("FormLivro.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){

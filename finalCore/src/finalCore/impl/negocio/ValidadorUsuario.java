@@ -33,7 +33,10 @@ public class ValidadorUsuario implements IStrategy{
 			{
 				cli = (Cliente)c;
 				if(cli.getEmail().equals(email) && cli.getSenha().equals(senha))
+				{
+					cliente.setNome(cli.getNome());
 					return null;
+				}
 			}
 			
 		}else{

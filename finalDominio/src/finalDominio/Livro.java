@@ -1,15 +1,10 @@
 package finalDominio;
 
 public class Livro extends EntidadeDominio{
-	private String nome, autor, categoria, subcategoria, ano, titulo, editora, edicao, ISBN, npaginas, sinopse, alterador;
+	private String autor, categoria, subcategoria, ano, titulo, editora, edicao, ISBN, npaginas, sinopse, alterador, precificacao;
 	private Boolean status;
 	private double altura, largura, peso, profundidade, preco, valor;
 	private int estoque;
-	private char precificacao;
-
-	public String getNome() {
-		return nome;
-	}
 
 	public String getAutor() {
 		return autor;
@@ -107,10 +102,6 @@ public class Livro extends EntidadeDominio{
 		this.sinopse = sinopse;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public double getAltura() {
 		return altura;
 	}
@@ -167,11 +158,11 @@ public class Livro extends EntidadeDominio{
 		this.estoque = estoque;
 	}
 
-	public char getPrecificacao() {
+	public String getPrecificacao() {
 		return precificacao;
 	}
 
-	public void setPrecificacao(char precificacao) {
+	public void setPrecificacao(String precificacao) {
 		this.precificacao = precificacao;
 	}
 	

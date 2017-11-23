@@ -125,7 +125,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());	
-				sbRegistro.append(l.getId() == 0 ? ' ' : l.getNome());
+				sbRegistro.append(l.getId() == 0 ? ' ' : l.getId());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				

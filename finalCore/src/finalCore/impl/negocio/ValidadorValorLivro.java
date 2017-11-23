@@ -13,15 +13,15 @@ public class ValidadorValorLivro implements IStrategy{
 		
 		if(entidade instanceof Livro){
 			Livro livro = (Livro)entidade;
-			Map<Character, Double> valores;
-			valores = new HashMap<Character, Double>();
+			Map<String, Double> valores;
+			valores = new HashMap<String, Double>();
 			
-			valores.put('A', 30.0);
-			valores.put('B', 40.0);
-			valores.put('C', 50.0);
-			valores.put('D', 60.0);
+			valores.put("A", 30.0);
+			valores.put("B", 40.0);
+			valores.put("C", 50.0);
+			valores.put("D", 60.0);
 			
-			char precificacao = livro.getPrecificacao();
+			String precificacao = "" + livro.getPrecificacao().charAt(0);
 			double preco = livro.getPreco();
 			double valor = livro.getValor();
 			

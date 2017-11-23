@@ -26,33 +26,32 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO livros(nome, autor, categoria, subcategoria, ano, titulo, editora,");
+			sql.append("INSERT INTO livros(autor, categoria, subcategoria, ano, titulo, editora,");
 			sql.append("edicao, ISBN, npaginas, sinopse, status, altura, largura, peso, profundidade, alterador,");
 			sql.append("estoque, preco, precificacao, valor)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");		
+			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");		
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, livro.getNome());
-			pst.setString(2, livro.getAutor());
-			pst.setString(3, livro.getCategoria());
-			pst.setString(4, livro.getSubcategoria());
-			pst.setString(5, livro.getAno());
-			pst.setString(6, livro.getTitulo());
-			pst.setString(7, livro.getEditora());
-			pst.setString(8, livro.getEdicao());
-			pst.setString(9, livro.getISBN());
-			pst.setString(10, livro.getNpaginas());
-			pst.setString(11, livro.getSinopse());
-			pst.setBoolean(12, livro.getStatus());
-			pst.setDouble(13, livro.getAltura());
-			pst.setDouble(14, livro.getLargura());
-			pst.setDouble(15, livro.getPeso());
-			pst.setDouble(16, livro.getProfundidade());
-			pst.setString(17, livro.getAlterador());
-			pst.setInt(18, livro.getEstoque());
-			pst.setDouble(19, livro.getPreco());
-			pst.setString(20, String.valueOf(livro.getPrecificacao()));
-			pst.setDouble(21, livro.getValor());
+			pst.setString(1, livro.getAutor());
+			pst.setString(2, livro.getCategoria());
+			pst.setString(3, livro.getSubcategoria());
+			pst.setString(4, livro.getAno());
+			pst.setString(5, livro.getTitulo());
+			pst.setString(6, livro.getEditora());
+			pst.setString(7, livro.getEdicao());
+			pst.setString(8, livro.getISBN());
+			pst.setString(9, livro.getNpaginas());
+			pst.setString(10, livro.getSinopse());
+			pst.setBoolean(11, livro.getStatus());
+			pst.setDouble(12, livro.getAltura());
+			pst.setDouble(13, livro.getLargura());
+			pst.setDouble(14, livro.getPeso());
+			pst.setDouble(15, livro.getProfundidade());
+			pst.setString(16, livro.getAlterador());
+			pst.setInt(17, livro.getEstoque());
+			pst.setDouble(18, livro.getPreco());
+			pst.setString(19, String.valueOf(livro.getPrecificacao()));
+			pst.setDouble(20, livro.getValor());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {
@@ -81,28 +80,27 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE livros SET nome = ?, autor = ?, categoria = ?, subcategoria = ?, ano = ?, titulo = ?, editora = ?,");
+			sql.append("UPDATE livros SET autor = ?, categoria = ?, subcategoria = ?, ano = ?, titulo = ?, editora = ?,");
 			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, status = ?, altura = ?, largura = ?, peso = ?, profundidade = ?, alterador = ? WHERE ID_Livro = ?");		
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, livro.getNome());
-			pst.setString(2, livro.getAutor());
-			pst.setString(3, livro.getCategoria());
-			pst.setString(4, livro.getSubcategoria());
-			pst.setString(5, livro.getAno());
-			pst.setString(6, livro.getTitulo());
-			pst.setString(7, livro.getEditora());
-			pst.setString(8, livro.getEdicao());
-			pst.setString(9, livro.getISBN());
-			pst.setString(10, livro.getNpaginas());
-			pst.setString(11, livro.getSinopse());
-			pst.setBoolean(12, livro.getStatus());
-			pst.setDouble(13, livro.getAltura());
-			pst.setDouble(14, livro.getLargura());
-			pst.setDouble(15, livro.getPeso());
-			pst.setDouble(16, livro.getProfundidade());
-			pst.setString(17, livro.getAlterador());
-			pst.setString(18, livro.getNome());
+			pst.setString(1, livro.getAutor());
+			pst.setString(2, livro.getCategoria());
+			pst.setString(3, livro.getSubcategoria());
+			pst.setString(4, livro.getAno());
+			pst.setString(5, livro.getTitulo());
+			pst.setString(6, livro.getEditora());
+			pst.setString(7, livro.getEdicao());
+			pst.setString(8, livro.getISBN());
+			pst.setString(9, livro.getNpaginas());
+			pst.setString(10, livro.getSinopse());
+			pst.setBoolean(11, livro.getStatus());
+			pst.setDouble(12, livro.getAltura());
+			pst.setDouble(13, livro.getLargura());
+			pst.setDouble(14, livro.getPeso());
+			pst.setDouble(15, livro.getProfundidade());
+			pst.setString(16, livro.getAlterador());
+			pst.setInt(17, livro.getId());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {
@@ -169,7 +167,6 @@ public class LivroDAO extends AbstractJdbcDAO{
 			while(rs.next()){
 				Livro l = new Livro();
 				l.setId(rs.getInt("ID_Livro"));
-				l.setNome(rs.getString("ID_Livro"));
 				l.setAutor(rs.getString("autor"));
 				l.setCategoria(rs.getString("categoria"));
 				l.setSubcategoria(rs.getString("subcategoria"));
@@ -188,6 +185,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 				l.setAlterador(rs.getString("alterador"));
 				l.setPreco(rs.getDouble("preco"));
 				l.setValor(rs.getDouble("valor"));
+				l.setPrecificacao(rs.getString("precificacao"));
 				livros.add(l);
 			}
 			return livros;

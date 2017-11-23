@@ -33,7 +33,7 @@
 						ID do livro
 					</td>
 					<td>
-						<input type="text" class="form-control" id="txtNome" name="txtNome" value="${empty livro ? '' : livro.getId()}" readonly="readonly"/>
+						<input type="text" class="form-control" id="txtId" name="txtId" value="${empty livro ? '' : livro.getId()}" readonly="readonly"/>
 					</td>
 				</tr>
 				<tr>
