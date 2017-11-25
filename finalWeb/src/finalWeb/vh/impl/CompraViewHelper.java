@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
+import finalDominio.Carrinho;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
@@ -25,38 +26,11 @@ public class CompraViewHelper implements IViewHelper{
 		{
 			HttpSession session = request.getSession();
 			Livro livro = (Livro) session.getAttribute("livro");
-			
+			if(livro == null)
+				System.out.println("Livro nulo");
 			produto = new Produto();
 			
 			produto.setLivro(livro);
-			
-			try {
-				int id = Integer.parseInt(request.getParameter("txtId"));
-				produto.setID_Carrinho(id);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			try {
-				int idProduto = Integer.parseInt(request.getParameter("txtIdProduto"));
-				produto.setId(idProduto);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			try {
-				int idLivro = Integer.parseInt(request.getParameter("txtIdLivro"));
-				produto.setID_Livro(idLivro);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			try {
-				int quantidade = Integer.parseInt(request.getParameter("txtQuantidade"));
-				produto.setQuantidade(quantidade);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
 			
 		}
 		else{
@@ -107,6 +81,20 @@ public class CompraViewHelper implements IViewHelper{
 			
 			request.getSession().setAttribute("resultado", null);
 			d= request.getRequestDispatcher("FormConsultaProduto.jsp");  
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("COMPRAR")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			Livro livro = (Livro)request.getSession().getAttribute("livro");
+			if(carrinho == null)
+				carrinho = new Carrinho();
+			System.out.println("Titulo: " + livro.getTitulo());
+			Produto produto = new Produto();
+			produto.setLivro(livro);
+			carrinho.AdicionarLivro(produto);
+			
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");  
 		}
 		
 		if(resultado.getMsg() != null){

@@ -202,6 +202,27 @@ public class Fachada implements IFachada{
 		 * pelo nome da entidade
 		 */
 		rns.put(Cliente.class.getName(), rnsLogin);
+		
+		/* Criando uma lista para conter as regras de negócio de produto
+		 * quando a operação for salvar
+		 */
+		List<IStrategy> rnsAdicionaLivro = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
+		
+		
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
+		 * por operação  do livro
+		 */
+		Map<String, List<IStrategy>> rnsAdicionarLivro = new HashMap<String, List<IStrategy>>();
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsAdicionarLivro.put("ADICIONAR", rnsAdicionaLivro);
+		
+		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		 * pelo nome da entidade
+		 */
+		rns.put(Produto.class.getName(), rnsAdicionarLivro);
 	}
 	
 	
@@ -348,8 +369,17 @@ public class Fachada implements IFachada{
 
 	@Override
 	public Resultado adicionarAoCarrinho(EntidadeDominio entidade) {
+		resultado = new Resultado();
+		String msg = executarRegras(entidade, "ADICIONAR");
 		
-		return null;
+		if(msg == null){
+			List<EntidadeDominio> entidades = new ArrayList<EntidadeDominio>();
+			entidades.add(entidade);
+			resultado.setEntidades(entidades);
+		}else{
+			resultado.setMsg(msg);
+		}
+		return resultado;
 	}
 	
 	

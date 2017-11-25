@@ -115,7 +115,7 @@ public class LivroViewHelper implements IViewHelper{
 			HttpServletResponse response)  throws IOException, ServletException {
 		RequestDispatcher d=null;
 		request.getSession().setAttribute("resultado", null);
-		request.getSession().setAttribute("livro", null);
+		//request.getSession().setAttribute("livro", null);
 		
 		String operacao = request.getParameter("operacao");
 		
@@ -140,7 +140,7 @@ public class LivroViewHelper implements IViewHelper{
 		
 		if(resultado.getMsg() == null && (operacao.equals("VISUALIZAR") || operacao.equals("CHECAR"))){
 			
-			request.setAttribute("livro", resultado.getEntidades().get(0));
+			request.getSession().setAttribute("livro", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher(operacao.equals("VISUALIZAR") ? "FormLivro.jsp" : "FormChecarLivro.jsp");
 		}
 		

@@ -36,7 +36,7 @@
 				</tr>
 				<tr>
 					<td>
-						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaCliente.jsp">Consultar clientes</a>
+						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
 					</td>
 				</tr>
 			</table>

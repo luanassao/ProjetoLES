@@ -3,34 +3,23 @@ package finalDominio;
 import java.util.ArrayList;
 
 public class Carrinho extends EntidadeDominio{
-	private ArrayList<Livro> livros = new ArrayList<>();
-	private ArrayList<Integer> quantidades = new ArrayList<>();
+	private ArrayList<Produto> produtos = new ArrayList<>();
 	private Endereco enderecoEntrega;
 	private int ID_Cliente, idEndereco;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status;
-	private String email, senha;
 	
-	public void AdicionarLivro(Livro livro, int quantidade)
+	public void AdicionarLivro(Produto produto)
 	{
-		livros.add(livro);
-		quantidades.add(quantidade);
+		produtos.add(produto);
 	}
 
-	public ArrayList<Livro> getLivros() {
-		return livros;
+	public ArrayList<Produto> getProdutos() {
+		return produtos;
 	}
 
-	public void setLivros(ArrayList<Livro> livros) {
-		this.livros = livros;
-	}
-
-	public ArrayList<Integer> getQuantidades() {
-		return quantidades;
-	}
-
-	public void setQuantidades(ArrayList<Integer> quantidades) {
-		this.quantidades = quantidades;
+	public void setProdutos(ArrayList<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 	public Endereco getEnderecoEntrega() {
@@ -87,22 +76,6 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 	public int getIdEndereco() {

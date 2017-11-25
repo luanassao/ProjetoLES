@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import finalCore.aplicacao.Resultado;
 import finalDominio.EntidadeDominio;
 import finalWeb.command.ICommand;
+import finalWeb.command.impl.AddCarrinhoCommand;
 import finalWeb.command.impl.AlterarCommand;
 import finalWeb.command.impl.ConsultarCommand;
 import finalWeb.command.impl.LogarCommand;
@@ -48,6 +49,7 @@ public class Servlet extends HttpServlet {
     	commands.put("CHECAR", new VisualizarCommand());
     	commands.put("ALTERAR", new AlterarCommand());
     	commands.put("LOGAR", new LogarCommand());
+    	commands.put("COMPRAR", new AddCarrinhoCommand());
     	
     	
     	/* Utilizando o ViewHelper para tratar especificações de qualquer tela e indexando 

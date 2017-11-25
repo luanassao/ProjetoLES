@@ -13,7 +13,7 @@
 		<title>Cadastro de livros</title>
 	</head>
 	<body>
-		<form action="SalvarLivro" method="post" id="frmSalvarLivro">
+		<form action="SalvarProduto" method="post" id="frmSalvarLivro">
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de livros</TH></tr>
 				<tr style="display:none">

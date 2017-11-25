@@ -2,6 +2,7 @@ package finalDominio;
 
 public class Produto extends EntidadeDominio{
 	private int ID_Produto, ID_Carrinho, quantidade, ID_Livro;
+	private double preco;
 	private Livro livro;
 	
 	public int getID_Produto() {
@@ -33,5 +34,11 @@ public class Produto extends EntidadeDominio{
 	}
 	public void setLivro(Livro livro) {
 		this.livro = livro;
+	}
+	public double getPreco() {
+		return preco;
+	}
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 }

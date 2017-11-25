@@ -23,18 +23,16 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO carrinho(email_cliente, id_endereco, valor_frete, valor_livros, valor_total, forma_pagamento, status, data_criacao, senha_cliente)");
-			sql.append("VALUES (?,?,?,?,?,?,?,sysdate(),?)");
+			sql.append("INSERT INTO carrinho(id_endereco, valor_frete, valor_livros, valor_total, forma_pagamento, status, data_criacao, senha_cliente)");
+			sql.append("VALUES (?,?,?,?,?,?,?,sysdate())");
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, carrinho.getEmail());
-			pst.setInt(2, carrinho.getIdEndereco());
-			pst.setDouble(3, carrinho.getFrete());
-			pst.setDouble(4, carrinho.getValorLivros());
-			pst.setDouble(5, carrinho.getValorTotal());
-			pst.setString(6, carrinho.getFormaPagamento());
-			pst.setString(7, carrinho.getStatus());
-			pst.setString(8, carrinho.getSenha());
+			pst.setInt(1, carrinho.getIdEndereco());
+			pst.setDouble(2, carrinho.getFrete());
+			pst.setDouble(3, carrinho.getValorLivros());
+			pst.setDouble(4, carrinho.getValorTotal());
+			pst.setString(5, carrinho.getFormaPagamento());
+			pst.setString(6, carrinho.getStatus());
 			System.out.println(pst);
 			pst.executeUpdate();
 			connection.commit();
@@ -104,12 +102,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		Carrinho carrinho = (Carrinho) entidade;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM carrinho WHERE 1=1\n");
-		if(carrinho.getEmail() != null && carrinho.getEmail().length() > 0){
-			sb.append(" and email_cliente = '" + carrinho.getEmail() + "'");
-		}
-		if(carrinho.getSenha() != null && carrinho.getSenha().length() > 0){
-			sb.append(" and senha_cliente = '" + carrinho.getEmail() + "'");
-		}
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -118,14 +110,12 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			while(rs.next()){
 				Carrinho c = new Carrinho();
 				c.setId(rs.getInt("ID_Carrinho"));
-				c.setEmail(rs.getString("email_cliente"));
 				c.setIdEndereco(rs.getInt("id_endereco"));
 				c.setFormaPagamento(rs.getString("forma_pagamento"));
 				c.setStatus(rs.getString("status"));
 				c.setFrete(rs.getDouble("valor_frete"));
 				c.setValorLivros(rs.getDouble("valor_livros"));
 				c.setValorTotal(rs.getDouble("valor_total"));
-				c.setSenha(rs.getString("senha_cliente"));
 				carrinhos.add(c);
 			}
 			return carrinhos;

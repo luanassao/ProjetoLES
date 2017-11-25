@@ -22,8 +22,6 @@ public class CarrinhoViewHelper implements IViewHelper{
 
 		if(!operacao.equals("VISUALIZAR"))
 		{
-			String email = request.getParameter("txtEmail");
-			String senha = request.getParameter("txtSenha");
 			String status = request.getParameter("ddlStatus");
 			String formaPagamento = request.getParameter("ddlPagamento");
 			
@@ -43,8 +41,6 @@ public class CarrinhoViewHelper implements IViewHelper{
 				// TODO: handle exception
 			}
 			
-			carrinho.setEmail(email);
-			carrinho.setSenha(senha);
 			carrinho.setStatus(status);
 			carrinho.setFormaPagamento(formaPagamento);
 		}
