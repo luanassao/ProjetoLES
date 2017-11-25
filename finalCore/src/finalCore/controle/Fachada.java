@@ -15,14 +15,11 @@ import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
 import finalCore.dao.EnderecoDAO;
 import finalCore.dao.LivroDAO;
-import finalCore.dao.ProdutoDAO;
-import finalCore.impl.negocio.AdicionadorCustoCompra;
 import finalCore.impl.negocio.ValidadorCpf;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCartao;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCliente;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosEndereco;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosLivro;
-import finalCore.impl.negocio.ValidadorDonoCarrinho;
 import finalCore.impl.negocio.ValidadorUsuario;
 import finalCore.impl.negocio.ValidadorValorLivro;
 import finalDominio.Carrinho;
@@ -32,7 +29,6 @@ import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
-import finalDominio.Usuario;
 
 public class Fachada implements IFachada{
 	/** 
@@ -62,7 +58,6 @@ public class Fachada implements IFachada{
 		EnderecoDAO enderecoDAO = new EnderecoDAO();
 		CartaoDAO cartaoDAO = new CartaoDAO();
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-		ProdutoDAO produtoDAO = new ProdutoDAO();
 		
 		/* Adicionando cada dao no MAP indexando pelo nome da classe */
 		daos.put(Livro.class.getName(), livroDAO);
@@ -70,7 +65,6 @@ public class Fachada implements IFachada{
 		daos.put(Endereco.class.getName(), enderecoDAO);
 		daos.put(Cartao.class.getName(), cartaoDAO);
 		daos.put(Carrinho.class.getName(), carrinhoDAO);
-		daos.put(Produto.class.getName(), produtoDAO);
 		
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();
@@ -80,8 +74,6 @@ public class Fachada implements IFachada{
 		ValidadorDadosObrigatoriosEndereco vrDadosObrigatoriosEndereco = new ValidadorDadosObrigatoriosEndereco();
 		ValidadorDadosObrigatoriosCartao vrDadosObrigatoriosCartao = new ValidadorDadosObrigatoriosCartao();
 		ValidadorUsuario vrUsuario = new ValidadorUsuario();
-		ValidadorDonoCarrinho vrDonoCarrinho = new ValidadorDonoCarrinho();
-		AdicionadorCustoCompra adcCustoCompra = new AdicionadorCustoCompra();
 		
 		/* Criando uma lista para conter as regras de negócio de livro
 		 * quando a operação for salvar
@@ -189,28 +181,6 @@ public class Fachada implements IFachada{
 		 * pelo nome da entidade
 		 */
 		rns.put(Carrinho.class.getName(), rnsCarrinho);
-		
-		/* Criando uma lista para conter as regras de negócio de produto
-		 * quando a operação for salvar
-		 */
-		List<IStrategy> rnsSalvarProduto = new ArrayList<IStrategy>();
-		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
-		rnsSalvarProduto.add(vrDonoCarrinho);
-		rnsSalvarProduto.add(adcCustoCompra);
-		
-		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
-		 * por operação  do livro
-		 */
-		Map<String, List<IStrategy>> rnsProduto = new HashMap<String, List<IStrategy>>();
-		/*
-		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
-		 */
-		rnsProduto.put("SALVAR", rnsSalvarProduto);
-		rnsProduto.put("ALTERAR", rnsSalvarProduto);
-		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
-		 * pelo nome da entidade
-		 */
-		rns.put(Produto.class.getName(), rnsProduto);
 		
 		/* Criando uma lista para conter as regras de negócio de produto
 		 * quando a operação for salvar
@@ -365,7 +335,7 @@ public class Fachada implements IFachada{
 	public Resultado logar(EntidadeDominio entidade) {
 		resultado = new Resultado();
 		String msg = executarRegras(entidade, "LOGAR");
-	
+		
 		if(msg == null){
 			List<EntidadeDominio> entidades = new ArrayList<EntidadeDominio>();
 			entidades.add(entidade);
@@ -374,6 +344,12 @@ public class Fachada implements IFachada{
 			resultado.setMsg(msg);
 		}
 		return resultado;
+	}
+
+	@Override
+	public Resultado adicionarAoCarrinho(EntidadeDominio entidade) {
+		
+		return null;
 	}
 	
 	

@@ -186,6 +186,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 				l.setPreco(rs.getDouble("preco"));
 				l.setValor(rs.getDouble("valor"));
 				l.setPrecificacao(rs.getString("precificacao"));
+				l.setEstoque(rs.getInt("estoque"));
 				livros.add(l);
 			}
 			return livros;

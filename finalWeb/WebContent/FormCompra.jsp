@@ -20,6 +20,9 @@
 	%>
 
 	<form action="SalvarLivro" method="post">
+		<select style="display:none" id="rdStatus" name="rdStatus">
+			<option value="true">Ativos</option>
+		</select>
 		<table class="table" bordercolor="blue" BORDER="5" >
 		<TR>
 		      <TH COLSPAN="3"><BR>
@@ -33,14 +36,6 @@
 				<td>
 				AUTOR:<input type="text" id="txtAutor" name="txtAutor" />
 				</td>
-				<td>
-				Status 
-				<select id="rdStatus" name="rdStatus">
-					<option value="todos">Todos</option>
-					<option value="true">Ativos</option>
-					<option value="false">Inativos</option>
-				</select>
-				</td>
 			</tr>
 			<tr>
 				<td>
@@ -49,12 +44,9 @@
 				<td>
 				Editora <input type="text" id="txtEditora" name="txtEditora">
 				</td>
-				<td>
-				ISBN <input type="text" id="txtISBN" name="txtISBN">
-				</td>
 			</tr>
 		</table>
-		<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
+		<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="LISTAR" />
 	</form>
 
 	
@@ -81,7 +73,6 @@
       <TH>Autor</TH>
       <TH>Status</TH>
       <TH>Categoria</TH>
-      <TH>Subcategoria</TH>
       <TH>Ano</TH>
       <TH>Editora</TH>
       <TH>Edicao</TH>
@@ -92,7 +83,7 @@
       <TH>largura</TH>
       <TH>Peso</TH>
       <TH>Profundidade</TH>
-      <TH>Alterador</TH>
+      <TH>Comprar</TH>
    </TR>
    
    <%
@@ -114,116 +105,88 @@
 				sbRegistro.append("<TR ALIGN='CENTER'>");
 				
 				
-				sbLink.append("<a href=SalvarLivro?");
-					sbLink.append("txtId=");
-					sbLink.append(l.getId());						
-					sbLink.append("&");
-					sbLink.append("operacao=");
-					sbLink.append("VISUALIZAR");
-					
-				sbLink.append(">");
-				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());	
-				sbRegistro.append(l.getId() == 0 ? ' ' : l.getId());
-				sbRegistro.append("</a>");				
+				sbRegistro.append(l.getId() == 0 ? ' ' : l.getId());	
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getTitulo());
-				sbRegistro.append("</a>");				
+				sbRegistro.append(l.getTitulo());			
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getAutor());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getStatus() == true ? "Ativo" : "Inativo");
-				sbRegistro.append("</a>");				
+				sbRegistro.append(l.getAutor());		
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getCategoria());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getSubcategoria());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getAno());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getEditora());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getEdicao());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getISBN());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getNpaginas());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getSinopse());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getAltura());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getLargura());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getPeso());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getProfundidade());
-				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getAlterador());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
+				sbRegistro.append("<TD><a class='btn btn-primary' href=SalvarLivro?");
+				sbRegistro.append("txtId=");
+				sbRegistro.append(l.getId());						
+				sbRegistro.append("&");
+				sbRegistro.append("operacao=");
+				sbRegistro.append("CHECAR");
+				sbRegistro.append(">COMPRAR</a></TD>");
 				
 				sbRegistro.append("</TR>");
 				

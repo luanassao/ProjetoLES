@@ -10,10 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.EntidadeDominio;
+import finalDominio.Livro;
 import finalDominio.Produto;
 import finalWeb.vh.IViewHelper;
 
-public class ProdutoViewHelper implements IViewHelper{
+public class CompraViewHelper implements IViewHelper{
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
@@ -22,11 +23,12 @@ public class ProdutoViewHelper implements IViewHelper{
 
 		if(!operacao.equals("VISUALIZAR"))
 		{
-			String email = request.getParameter("txtEmail");
-			String senha = request.getParameter("txtSenha");
-			String titulo = request.getParameter("txtTitulo");
+			HttpSession session = request.getSession();
+			Livro livro = (Livro) session.getAttribute("livro");
 			
 			produto = new Produto();
+			
+			produto.setLivro(livro);
 			
 			try {
 				int id = Integer.parseInt(request.getParameter("txtId"));
@@ -56,9 +58,6 @@ public class ProdutoViewHelper implements IViewHelper{
 				// TODO: handle exception
 			}
 			
-			produto.setEmail(email);
-			produto.setSenha(senha);
-			produto.setTitulo(titulo);
 		}
 		else{
 			

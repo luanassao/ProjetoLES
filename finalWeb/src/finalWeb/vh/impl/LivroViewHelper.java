@@ -24,7 +24,7 @@ public class LivroViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Livro livro = null;
 
-		if(!operacao.equals("VISUALIZAR"))
+		if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
 			String autor = request.getParameter("txtAutor");
 			String categoria = request.getParameter("ddlCategoria");
@@ -128,15 +128,20 @@ public class LivroViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");  			
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("LISTAR")){
+			
+			d= request.getRequestDispatcher("FormCompra.jsp");
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
 			
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");  
 		}
 		
-		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
+		if(resultado.getMsg() == null && (operacao.equals("VISUALIZAR") || operacao.equals("CHECAR"))){
 			
 			request.setAttribute("livro", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormLivro.jsp");
+			d= request.getRequestDispatcher(operacao.equals("VISUALIZAR") ? "FormLivro.jsp" : "FormChecarLivro.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){

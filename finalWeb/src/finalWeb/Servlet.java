@@ -23,7 +23,7 @@ import finalWeb.vh.impl.CartaoViewHelper;
 import finalWeb.vh.impl.ClienteViewHelper;
 import finalWeb.vh.impl.EnderecoViewHelper;
 import finalWeb.vh.impl.LivroViewHelper;
-import finalWeb.vh.impl.ProdutoViewHelper;
+import finalWeb.vh.impl.CompraViewHelper;
 
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +43,9 @@ public class Servlet extends HttpServlet {
     	
     	commands.put("SALVAR", new SalvarCommand());
     	commands.put("CONSULTAR", new ConsultarCommand());
+    	commands.put("LISTAR", new ConsultarCommand());
     	commands.put("VISUALIZAR", new VisualizarCommand());
+    	commands.put("CHECAR", new VisualizarCommand());
     	commands.put("ALTERAR", new AlterarCommand());
     	commands.put("LOGAR", new LogarCommand());
     	
@@ -61,7 +63,7 @@ public class Servlet extends HttpServlet {
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
     	vhs.put("/finalWeb/SalvarCarrinho", new CarrinhoViewHelper());
-    	vhs.put("/finalWeb/SalvarProduto", new ProdutoViewHelper());
+    	vhs.put("/finalWeb/SalvarProduto", new CompraViewHelper());
     	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
     	
     }
