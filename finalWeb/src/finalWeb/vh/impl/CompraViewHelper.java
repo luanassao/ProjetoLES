@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
@@ -22,6 +23,15 @@ public class CompraViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Produto produto = null;
 
+		if(operacao.equals("SELECIONAR"))
+		{
+			HttpSession session = request.getSession();
+			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			int indice = Integer.parseInt(request.getParameter("txtIndice"));
+			carrinho.setEnderecoEntrega(cliente.getEnderecos().get(indice));
+			return carrinho;
+		}
 		if(!operacao.equals("VISUALIZAR"))
 		{
 			HttpSession session = request.getSession();
@@ -86,15 +96,25 @@ public class CompraViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("COMPRAR")){
 			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
 			Livro livro = (Livro)request.getSession().getAttribute("livro");
+			int i;
 			if(carrinho == null)
 				carrinho = new Carrinho();
-			System.out.println("Titulo: " + livro.getTitulo());
-			Produto produto = new Produto();
-			produto.setLivro(livro);
-			carrinho.AdicionarLivro(produto);
-			
+			for(i = 0; i < carrinho.getProdutos().size(); i++)
+			{
+				if(livro.getTitulo().equals(carrinho.getProdutos().get(i).getLivro().getTitulo()))
+				{
+					carrinho.getProdutos().get(i).setQuantidade(carrinho.getProdutos().get(i).getQuantidade()+1);
+					break;
+				}
+			}
+			if(i >= carrinho.getProdutos().size())
+			{
+				Produto produto = new Produto();
+				produto.setLivro(livro);
+				carrinho.AdicionarLivro(produto);
+			}
 			request.getSession().setAttribute("carrinho", carrinho);
-			d= request.getRequestDispatcher("FormCarrinho.jsp");  
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
 		if(resultado.getMsg() != null){

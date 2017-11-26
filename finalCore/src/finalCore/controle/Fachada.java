@@ -381,6 +381,13 @@ public class Fachada implements IFachada{
 		}
 		return resultado;
 	}
+
+
+	@Override
+	public Resultado selecionarEndereco(EntidadeDominio entidade) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

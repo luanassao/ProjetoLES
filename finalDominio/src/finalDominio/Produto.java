@@ -1,7 +1,7 @@
 package finalDominio;
 
 public class Produto extends EntidadeDominio{
-	private int ID_Produto, ID_Carrinho, quantidade, ID_Livro;
+	private int ID_Produto, ID_Carrinho, quantidade = 0, ID_Livro;
 	private double preco;
 	private Livro livro;
 	

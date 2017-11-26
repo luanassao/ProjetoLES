@@ -110,7 +110,7 @@
 </TABLE>
 
 <!-- Button trigger modal -->
-<button type="button" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Escolher endereço
 </button>
 
@@ -134,6 +134,7 @@
 		if(enderecos.size() > 0){
 			try
 			{
+			int i = 0;
 			for (Endereco e : enderecos) {
 				sbRegistro.setLength(0);
 				sbLink.setLength(0);
@@ -145,10 +146,13 @@
 				sbRegistro.append("<BR>");
 				sbRegistro.append(e.getCep());
 				sbRegistro.append("<BR>");
+				sbRegistro.append("<form action='Carrinho' method='post' id='frmSalvarLivro'>");
+				sbRegistro.append("<input type='hiden' name='txtIndice' value='" + i + "'>");
 				sbRegistro.append("<input class='btn btn-success' type='button' id='operacao' name='operacao' value='SELECIONAR'>");
+				sbRegistro.append("</form>");
 				
 				out.print(sbRegistro.toString());
-				
+				i++;
 			}
 			}catch(Exception e){
 				
@@ -165,7 +169,7 @@
   </div>
 </div>
 
-<input type="submit" class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
+<input type="submit" style="float:right" class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
 </body>
 </html>
