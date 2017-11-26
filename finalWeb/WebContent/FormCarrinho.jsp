@@ -31,9 +31,7 @@
 		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		Livro livro = (Livro) session.getAttribute("livro");
-		out.print("Bem vindo, " + usuario.getNome());
-		if(livro != null)
-			out.print("Livro na sessão: " + livro.getTitulo());
+		out.print(usuario.getNome());
 	%>
 	<%
 	
@@ -94,7 +92,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<input type='number' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "'");
+				sbRegistro.append("<input type='number' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "' readonly='readonly'");
 				sbRegistro.append(p.getPreco());
 				sbRegistro.append("</TD>");
 				
@@ -110,7 +108,64 @@
 	}
    %>
 </TABLE>
-<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
+
+<!-- Button trigger modal -->
+<button type="button" data-toggle="modal" data-target="#exampleModal">
+  Escolher endereço
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<%
+  		if (resultado != null) {
+		List<Endereco> enderecos = usuario.getEnderecos();
+		StringBuilder sbRegistro = new StringBuilder();
+		StringBuilder sbLink = new StringBuilder();
+		
+		if(enderecos.size() > 0){
+			try
+			{
+			for (Endereco e : enderecos) {
+				sbRegistro.setLength(0);
+				sbLink.setLength(0);
+				
+				sbRegistro.append(sbLink.toString());	
+				sbRegistro.append(e.getLogradouro() + ", " + e.getNumero());
+				sbRegistro.append("<BR>");
+				sbRegistro.append(e.getBairro() + ", " + e.getCidade() + ", " + e.getEstado());			
+				sbRegistro.append("<BR>");
+				sbRegistro.append(e.getCep());
+				sbRegistro.append("<BR>");
+				sbRegistro.append("<input class='btn btn-success' type='button' id='operacao' name='operacao' value='SELECIONAR'>");
+				
+				out.print(sbRegistro.toString());
+				
+			}
+			}catch(Exception e){
+				
+			}
+		}
+	}
+   %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="submit" class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
 </body>
 </html>

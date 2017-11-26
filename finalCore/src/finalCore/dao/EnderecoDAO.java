@@ -34,13 +34,13 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			pst.setString(5, endereco.getNumero());
 			pst.setString(6, endereco.getBairro());
 			pst.setString(7, endereco.getCep());
-			pst.setString(8, endereco.getEstado());
-			pst.setString(9, endereco.getCidade());
+			pst.setString(8, endereco.getCidade());
+			pst.setString(9, endereco.getEstado());
 			pst.setString(10, endereco.getPais());
 			pst.setString(11, endereco.getObservacao());
 			pst.setInt(12, endereco.getID_Cliente());
 			pst.setString(13, endereco.getAlterador());
-			pst.executeUpdate();			
+			pst.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
 			try {

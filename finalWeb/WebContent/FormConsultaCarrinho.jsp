@@ -120,12 +120,6 @@
 				sbRegistro.append(c.getId() == 0 ? ' ' : c.getId());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getEmail());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
 
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				

@@ -170,7 +170,7 @@
 						ID do cliente
 					</td>
 					<td>
-						<input type="text" class="form-control" id="txtId" name="txtId" value="${empty cliente ? '' : cliente.getId()}" readonly="readonly"/>
+						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty cliente ? '' : cliente.getId()}" readonly="readonly"/>
 					</td>
 				</tr>
 				<tr>

@@ -54,6 +54,7 @@ public class EnderecoViewHelper implements IViewHelper{
 			try {
 				int idc = Integer.parseInt(request.getParameter("txtIdCliente"));
 				endereco.setID_Cliente(idc);
+				System.out.println("ID do cliente: " + endereco.getID_Cliente());
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
