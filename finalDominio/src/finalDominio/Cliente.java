@@ -9,6 +9,7 @@ public class Cliente extends EntidadeDominio{
 	private Boolean status;
 	private Calendar dtnascimento;
 	List<Endereco> enderecos = new ArrayList<>();
+	List<Cartao> cartoes = new ArrayList<>();
 	private Cartao cartao;
 	
 	public String getNome() {
@@ -83,6 +84,12 @@ public class Cliente extends EntidadeDominio{
 	}
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
+	}
+	public List<Cartao> getCartoes() {
+		return cartoes;
+	}
+	public void setCartoes(List<Cartao> cartoes) {
+		this.cartoes = cartoes;
 	}
 	
 }

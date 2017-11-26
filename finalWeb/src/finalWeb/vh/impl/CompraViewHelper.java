@@ -23,6 +23,7 @@ public class CompraViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Produto produto = null;
 
+		
 		if(operacao.equals("SELECIONAR"))
 		{
 			HttpSession session = request.getSession();
@@ -63,7 +64,6 @@ public class CompraViewHelper implements IViewHelper{
 			throws IOException, ServletException {
 		RequestDispatcher d=null;
 		request.getSession().setAttribute("resultado", null);
-		request.getSession().setAttribute("produto", null);
 		
 		String operacao = request.getParameter("operacao");
 		
@@ -113,6 +113,14 @@ public class CompraViewHelper implements IViewHelper{
 				produto.setLivro(livro);
 				carrinho.AdicionarLivro(produto);
 			}
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("SELECIONAR")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			
+			request.getSession().setAttribute("enderecoEntrega", carrinho.getEnderecoEntrega());
 			request.getSession().setAttribute("carrinho", carrinho);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}

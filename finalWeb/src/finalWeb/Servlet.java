@@ -17,6 +17,7 @@ import finalWeb.command.impl.AlterarCommand;
 import finalWeb.command.impl.ConsultarCommand;
 import finalWeb.command.impl.LogarCommand;
 import finalWeb.command.impl.SalvarCommand;
+import finalWeb.command.impl.SelecionarEnderecoCommand;
 import finalWeb.command.impl.VisualizarCommand;
 import finalWeb.vh.IViewHelper;
 import finalWeb.vh.impl.CarrinhoViewHelper;
@@ -50,6 +51,7 @@ public class Servlet extends HttpServlet {
     	commands.put("ALTERAR", new AlterarCommand());
     	commands.put("LOGAR", new LogarCommand());
     	commands.put("COMPRAR", new AddCarrinhoCommand());
+    	commands.put("SELECIONAR", new SelecionarEnderecoCommand());
     	
     	
     	/* Utilizando o ViewHelper para tratar especificações de qualquer tela e indexando 

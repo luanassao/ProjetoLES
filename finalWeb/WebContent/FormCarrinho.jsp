@@ -31,7 +31,8 @@
 		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		Livro livro = (Livro) session.getAttribute("livro");
-		out.print(usuario.getNome());
+		if(usuario != null)
+			out.print(usuario.getNome());
 	%>
 	<%
 	
@@ -45,10 +46,11 @@
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
-      	<H3>Livros</H3>
+      	<H3><img src='https://image.freepik.com/icones-gratis/carrinho-de-compras-de-design-de-linhas-horizontais_318-50800.jpg' style='width: 50px; height: 50px;' alt='First slide'>Carrinho</H3>
       </TH>
    </TR>
    <TR>
+   	  <TH>#</TH>
       <TH>Titulo</TH>
       <TH>Preço unitário</TH>
       <TH>Quantidade</TH>
@@ -72,7 +74,7 @@
 				
 				sbRegistro.append("<TR ALIGN='CENTER'>");
 				
-				
+				sbRegistro.append("<TD><img src='http://livresaber.sead.ufscar.br:8080/jspui/bitstream/123456789/1354/2/icone%20livro.jpg' style='width: 50px; height: 50px;' alt='First slide'></TD>");
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());	
 				sbRegistro.append(p.getLivro().getTitulo());	
@@ -109,13 +111,42 @@
    %>
 </TABLE>
 
+<TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
+	<TR>
+		<TH>
+		Endereço de entrega
+		</TH>
+		<TH>
+		Frete
+		</TH>
+		<TH>
+		Total
+		</TH>
+	</TR>
+	<TR>
+		<TD>
+		${empty enderecoEntrega ? '' : enderecoEntrega.getLogradouro()} , ${empty enderecoEntrega ? '' : enderecoEntrega.getNumero()}
+		<BR>
+		${empty enderecoEntrega ? '' : enderecoEntrega.getBairro()} - ${empty enderecoEntrega ? '' : enderecoEntrega.getCidade()} -
+		${empty enderecoEntrega ? '' : enderecoEntrega.getEstado()}
+		</TD>
+		<TD>
+		${empty carrinho? '' : carrinho.getFrete()}
+		</TD>
+		<TD>
+		${empty carrinho? '' : carrinho.getValorTotal()}
+		</TD>
+	</TR>
+</TABLE>
+<BR>
+
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
   Escolher endereço
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="enderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -146,9 +177,9 @@
 				sbRegistro.append("<BR>");
 				sbRegistro.append(e.getCep());
 				sbRegistro.append("<BR>");
-				sbRegistro.append("<form action='Carrinho' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='hiden' name='txtIndice' value='" + i + "'>");
-				sbRegistro.append("<input class='btn btn-success' type='button' id='operacao' name='operacao' value='SELECIONAR'>");
+				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
+				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
+				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
 				sbRegistro.append("</form>");
 				
 				out.print(sbRegistro.toString());
@@ -160,6 +191,35 @@
 		}
 	}
    %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
+  Inserir cupom
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="SalvarProduto">
+      	<input type="text" id="txtCupom" name="txtCupom">
+      	<input type="submit" id="btnVerificar" name="btnVerificar" value="VERIFICAR">
+      </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

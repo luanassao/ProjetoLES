@@ -1,13 +1,8 @@
 package finalCore.impl.negocio;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import finalCore.IStrategy;
-import finalCore.dao.LivroDAO;
 import finalDominio.Carrinho;
 import finalDominio.EntidadeDominio;
-import finalDominio.Livro;
 import finalDominio.Produto;
 
 public class AdicionadorCustoFrete implements IStrategy{
@@ -16,12 +11,15 @@ public class AdicionadorCustoFrete implements IStrategy{
 	public String processar(EntidadeDominio entidade) {
 		if(entidade instanceof Carrinho){
 			Carrinho carrinho = (Carrinho)entidade;
-			double preco;
+			double preco = 0.0;
 			
 			for(Produto p : carrinho.getProdutos())
 			{
-				
+				preco += p.getLivro().getPeso();
 			}
+			preco += carrinho.getEnderecoEntrega().getId() % 2 == 0 ? 20 : 30;
+			
+			carrinho.setFrete(preco);
 		}else{
 			return "Deve ser registrado um Produto!";
 		}

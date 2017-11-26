@@ -15,6 +15,7 @@ import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
 import finalCore.dao.EnderecoDAO;
 import finalCore.dao.LivroDAO;
+import finalCore.impl.negocio.AdicionadorCustoFrete;
 import finalCore.impl.negocio.ValidadorCpf;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCartao;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCliente;
@@ -74,6 +75,7 @@ public class Fachada implements IFachada{
 		ValidadorDadosObrigatoriosEndereco vrDadosObrigatoriosEndereco = new ValidadorDadosObrigatoriosEndereco();
 		ValidadorDadosObrigatoriosCartao vrDadosObrigatoriosCartao = new ValidadorDadosObrigatoriosCartao();
 		ValidadorUsuario vrUsuario = new ValidadorUsuario();
+		AdicionadorCustoFrete adcCustoFrete = new AdicionadorCustoFrete();
 		
 		/* Criando uma lista para conter as regras de negócio de livro
 		 * quando a operação for salvar
@@ -223,6 +225,27 @@ public class Fachada implements IFachada{
 		 * pelo nome da entidade
 		 */
 		rns.put(Produto.class.getName(), rnsAdicionarLivro);
+		
+		/* Criando uma lista para conter as regras de negócio de produto
+		 * quando a operação for salvar
+		 */
+		List<IStrategy> rnsCalculaFrete = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
+		rnsCalculaFrete.add(adcCustoFrete);
+		
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
+		 * por operação  do livro
+		 */
+		Map<String, List<IStrategy>> rnsCustoFrete = new HashMap<String, List<IStrategy>>();
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsCustoFrete.put("SELECIONAR", rnsCalculaFrete);
+		
+		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		 * pelo nome da entidade
+		 */
+		rns.put(Carrinho.class.getName(), rnsCustoFrete);
 	}
 	
 	
@@ -385,8 +408,17 @@ public class Fachada implements IFachada{
 
 	@Override
 	public Resultado selecionarEndereco(EntidadeDominio entidade) {
-		// TODO Auto-generated method stub
-		return null;
+		resultado = new Resultado();
+		String msg = executarRegras(entidade, "SELECIONAR");
+		
+		if(msg == null){
+			List<EntidadeDominio> entidades = new ArrayList<EntidadeDominio>();
+			entidades.add(entidade);
+			resultado.setEntidades(entidades);
+		}else{
+			resultado.setMsg(msg);
+		}
+		return resultado;
 	}
 	
 	
