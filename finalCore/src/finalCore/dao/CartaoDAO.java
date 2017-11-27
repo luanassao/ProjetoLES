@@ -25,8 +25,8 @@ public class CartaoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO cartao(titular, numero, codigo, validade, id_cliente, alterador, preferencial)");
-			sql.append("VALUES (?,?,?,?,?,?,?)");
+			sql.append("INSERT INTO cartao(titular, numero, codigo, validade, id_cliente, alterador, preferencial, bandeira)");
+			sql.append("VALUES (?,?,?,?,?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, cartao.getTitular());
@@ -36,6 +36,7 @@ public class CartaoDAO extends AbstractJdbcDAO{
 			pst.setInt(5, cartao.getID_Cliente());
 			pst.setString(6, cartao.getAlterador());
 			pst.setBoolean(7, cartao.getPreferencial());
+			pst.setString(8, cartao.getBandeira());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {
@@ -121,6 +122,7 @@ public class CartaoDAO extends AbstractJdbcDAO{
 				c.setID_Cliente(rs.getInt("id_cliente"));
 				c.setAlterador(rs.getString("alterador"));
 				c.setPreferencial(rs.getBoolean("preferencial"));
+				c.setBandeira(rs.getString("bandeira"));
 				cartoes.add(c);
 			}
 			return cartoes;

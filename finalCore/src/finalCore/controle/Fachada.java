@@ -235,6 +235,28 @@ public class Fachada implements IFachada{
 		 */
 		rns.put(Carrinho.class.getName(), rnsCustoFrete);
 		
+		/* Criando uma lista para conter as regras de negócio de livro
+		 * quando a operação for salvar
+		 */
+		List<IStrategy> rnsSalvarCarrinho = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do livro*/
+		rnsSalvarCarrinho.add(attPrecoCarrinho);
+		
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
+		 * por operação  do livro
+		 */
+		Map<String, List<IStrategy>> rnsCarrinho = new HashMap<String, List<IStrategy>>();
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsCarrinho.put("SALVAR", rnsSalvarCarrinho);
+		
+		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		 * pelo nome da entidade
+		 */
+		rns.put(Carrinho.class.getName(), rnsCarrinho);
+		
+		
 		/* Criando uma lista para conter as regras de negócio de produto
 		 * quando a operação for salvar
 		 */
@@ -244,10 +266,6 @@ public class Fachada implements IFachada{
 		rnsValidarCarrinho.add(vrLivroEstoque);
 		rnsValidarCarrinho.add(attPrecoCarrinho);
 		
-		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
-		 * por operação  do livro
-		 */
-		Map<String, List<IStrategy>> rnsCarrinho = new HashMap<String, List<IStrategy>>();
 		/*
 		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
 		 */

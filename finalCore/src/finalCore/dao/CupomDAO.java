@@ -73,6 +73,7 @@ public class CupomDAO extends AbstractJdbcDAO {
 			
 			while (rs.next()) {
 				Cupom c = new Cupom();
+				c.setId(rs.getInt("ID_Cupom"));
 				c.setCodigo(rs.getString("Codigo"));
 				c.setValor(rs.getDouble("valor"));
 				

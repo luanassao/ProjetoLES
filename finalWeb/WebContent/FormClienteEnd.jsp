@@ -333,8 +333,8 @@
 						preferencial
 					</td>
 					<td>
-						Preferencial    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="true" checked>
-					    Comum    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="false" ${cartao.getPreferencial() == false ? 'checked' : ''}>
+						Preferencial    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="true" ${cartao.getPreferencial() == true ? 'checked' : ''}>
+					    Comum    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="false" checked>
 					</td>
 				</tr>
 				<tr>
@@ -343,6 +343,18 @@
 					</td>
 					<td>
 						<input type="text"class="form-control" id="txtValidade" name="txtValidade" value="${empty cartao ? '' : cartao.getValidadeFormatado()}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Bandeira
+					</td>
+					<td>
+						<select id="ddlBandeira" name="ddlBandeira">
+							<option ${endereco.getTipoLogradouro() == 'Visa' ? 'selected' : '' }>Visa</option>
+							<option ${endereco.getTipoLogradouro() == 'Caixa' ? 'selected' : '' }>Caixa</option>
+							<option ${endereco.getTipoLogradouro() == 'Itau' ? 'selected' : '' }>Itau</option>
+						</select>
 					</td>
 				</tr>
 				<tr>

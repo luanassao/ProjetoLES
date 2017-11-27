@@ -27,6 +27,7 @@ public class CartaoViewHelper  implements IViewHelper{
 			String numero = request.getParameter("txtNumeroCartao");
 			String codigo = request.getParameter("txtCodigo");
 			String responsavel = request.getParameter("txtResponsavel");
+			String bandeira = request.getParameter("ddlBandeira");
 			
 			Calendar validade = Calendar.getInstance();
 			System.out.println(request.getParameter("txtDtNasc"));
@@ -58,6 +59,7 @@ public class CartaoViewHelper  implements IViewHelper{
 				// TODO: handle exception
 			}
 			
+			cartao.setBandeira(bandeira);
 			cartao.setTitular(titular);
 			cartao.setNumero(numero);
 			cartao.setCodigo(codigo);

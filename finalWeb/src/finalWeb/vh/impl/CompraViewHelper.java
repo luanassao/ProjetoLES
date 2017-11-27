@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
+import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
@@ -26,10 +28,17 @@ public class CompraViewHelper implements IViewHelper{
 		if(operacao.equals("FINALIZAR")) {
 			HttpSession session = request.getSession();
 			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
+			Endereco endereco = (Endereco)session.getAttribute("enderecoEntrega");
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			Cartao cartao = (Cartao)session.getAttribute("cartao");
 			Cupom cupom = (Cupom)session.getAttribute("cupom");
 			if(cupom == null)
 				cupom = new Cupom();
+			carrinho.setID_Cliente(cliente.getId());
+			carrinho.setEmail(cliente.getEmail());
 			carrinho.setCupom(cupom);
+			carrinho.setCartao(cartao);
+			carrinho.setEnderecoEntrega(endereco);
 			return carrinho;
 		}
 		else if(operacao.equals("ATUALIZAR")) {
@@ -48,16 +57,18 @@ public class CompraViewHelper implements IViewHelper{
 			}
 			return carrinho;
 		}
-		else if(operacao.equals("VERIFICAR"))
-		{
-			Cupom cupom = new Cupom();
-			cupom.setCodigo(request.getParameter("txtCupom"));
-			return cupom;
-		}
 		else if(operacao.equals("VERIFICAR")) {
 			Cupom cupom = new Cupom();
 			cupom.setCodigo(request.getParameter("txtCupom"));
 			return cupom;
+		}
+		else if(operacao.equals("CONFIRMAR")) {
+			HttpSession session = request.getSession();
+			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			int indice = Integer.parseInt(request.getParameter("txtIndice"));
+			carrinho.setCartao(cliente.getCartoes().get(indice));
+			return carrinho.getCartao();
 		}
 		else if(operacao.equals("SELECIONAR"))
 		{
@@ -165,6 +176,12 @@ public class CompraViewHelper implements IViewHelper{
 			}catch (Exception e) {
 				request.getSession().setAttribute("cupom", new Cupom());
 			}
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("CONFIRMAR")){
+			
+			request.getSession().setAttribute("cartao", ((Carrinho)request.getSession().getAttribute("carrinho")).getCartao());
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		

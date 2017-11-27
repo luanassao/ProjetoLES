@@ -77,6 +77,7 @@
    <TR>
       <TH>Codigo</TH>
       <TH>Titular</TH>
+      <TH>Bandeira</TH>
       <TH>Numero</TH>
       <TH>Codigo</TH>
       <TH>ID do cliente</TH>
@@ -123,6 +124,12 @@
 				sbRegistro.append(c.getTitular());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getBandeira());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
 
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
@@ -144,7 +151,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getPreferencial());
+				sbRegistro.append(c.getPreferencial() == true ? "Preferencial" : "Comum");
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				

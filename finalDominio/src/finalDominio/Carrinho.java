@@ -8,7 +8,7 @@ public class Carrinho extends EntidadeDominio{
 	private Cartao cartao;
 	private int ID_Cliente, idEndereco;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
-	private String formaPagamento, status;
+	private String formaPagamento, status, email;
 	private Cupom cupom;
 	
 	public void AdicionarLivro(Produto produto)
@@ -102,5 +102,13 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setCartao(Cartao cartao) {
 		this.cartao = cartao;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
