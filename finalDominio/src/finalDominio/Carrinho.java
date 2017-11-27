@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Carrinho extends EntidadeDominio{
 	private ArrayList<Produto> produtos = new ArrayList<>();
 	private Endereco enderecoEntrega;
+	private Cartao cartao;
 	private int ID_Cliente, idEndereco;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status;
@@ -93,5 +94,13 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setCupom(Cupom cupom) {
 		this.cupom = cupom;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
 	}
 }

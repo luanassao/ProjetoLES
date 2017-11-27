@@ -56,10 +56,10 @@ public class CupomDAO extends AbstractJdbcDAO {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append(
-				"SELECT * from cupom_desconto");
+				"SELECT * from cupons");
 		sql.append(" WHERE 1=1 ");
 		if (cupom.getCodigo() != null && cupom.getCodigo().length() > 0) {
-			sql.append(" AND a.id_cupom = '" + cupom.getId() + "'" );
+			sql.append(" AND Codigo = '" + cupom.getCodigo() + "'" );
 		}
 
 		
@@ -73,7 +73,7 @@ public class CupomDAO extends AbstractJdbcDAO {
 			
 			while (rs.next()) {
 				Cupom c = new Cupom();
-				c.setCodigo(rs.getString("num_cupom"));
+				c.setCodigo(rs.getString("Codigo"));
 				c.setValor(rs.getDouble("valor"));
 				
 				cupons.add(c);

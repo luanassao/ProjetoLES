@@ -219,6 +219,7 @@ public class Fachada implements IFachada{
 		List<IStrategy> rnsCalculaFrete = new ArrayList<IStrategy>();
 		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
 		rnsCalculaFrete.add(adcCustoFrete);
+		rnsCalculaFrete.add(attPrecoCarrinho);
 		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação  do livro
@@ -290,7 +291,7 @@ public class Fachada implements IFachada{
 		resultado = new Resultado();
 		String nmClasse = entidade.getClass().getName();	
 		
-		String msg = executarRegras(entidade, "EXCLUIR");
+		String msg = executarRegras(entidade, "CONSULTAR");
 		
 		
 		if(msg == null){
@@ -435,7 +436,7 @@ public class Fachada implements IFachada{
 	@Override
 	public Resultado verificarCupom(EntidadeDominio entidade) {
 		resultado = new Resultado();
-		String msg = executarRegras(entidade, "VERIFICAR");
+		String msg = executarRegras(entidade, "CONSULTAR");
 		
 		if(msg == null){
 			List<EntidadeDominio> entidades = new ArrayList<EntidadeDominio>();

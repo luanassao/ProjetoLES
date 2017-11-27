@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Cliente extends EntidadeDominio{
 	private String nome, cpf, tipoTelefone, telefone, email, senha, genero;
-	private Boolean status;
+	private Boolean status, administrador;
 	private Calendar dtnascimento;
 	List<Endereco> enderecos = new ArrayList<>();
 	List<Cartao> cartoes = new ArrayList<>();
@@ -90,6 +90,12 @@ public class Cliente extends EntidadeDominio{
 	}
 	public void setCartoes(List<Cartao> cartoes) {
 		this.cartoes = cartoes;
+	}
+	public Boolean getAdministrador() {
+		return administrador;
+	}
+	public void setAdministrador(Boolean administrador) {
+		this.administrador = administrador;
 	}
 	
 }

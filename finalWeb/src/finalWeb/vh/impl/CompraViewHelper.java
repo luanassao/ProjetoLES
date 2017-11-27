@@ -1,8 +1,6 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +26,10 @@ public class CompraViewHelper implements IViewHelper{
 		if(operacao.equals("ATUALIZAR")) {
 			HttpSession session = request.getSession();
 			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
+			Cupom cupom = (Cupom)session.getAttribute("cupom");
+			if(cupom == null)
+				cupom = new Cupom();
+			carrinho.setCupom(cupom);
 			int idLivro = Integer.parseInt(request.getParameter("txtIdLivro"));
 			int quantidade = Integer.parseInt(request.getParameter("txtQtde"));
 			for(Produto p : carrinho.getProdutos())
@@ -37,7 +39,13 @@ public class CompraViewHelper implements IViewHelper{
 			}
 			return carrinho;
 		}
-		if(operacao.equals("VERIFICAR")) {
+		else if(operacao.equals("VERIFICAR"))
+		{
+			Cupom cupom = new Cupom();
+			cupom.setCodigo(request.getParameter("txtCupom"));
+			return cupom;
+		}
+		else if(operacao.equals("VERIFICAR")) {
 			Cupom cupom = new Cupom();
 			cupom.setCodigo(request.getParameter("txtCupom"));
 			return cupom;
@@ -49,18 +57,6 @@ public class CompraViewHelper implements IViewHelper{
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
 			int indice = Integer.parseInt(request.getParameter("txtIndice"));
 			carrinho.setEnderecoEntrega(cliente.getEnderecos().get(indice));
-			ArrayList<Produto> produtos = carrinho.getProdutos();
-			int quantidade;
-			for(int i = 0; i < carrinho.getProdutos().size(); i++)
-			{
-				try {
-					quantidade = Integer.parseInt(request.getParameter("txtQtde" + (i+1)));
-				}catch (Exception e) {
-					quantidade = 1;
-				}
-				produtos.get(i).setQuantidade(quantidade);
-			}
-			carrinho.setProdutos(produtos);
 			return carrinho;
 		}
 		else if(!operacao.equals("VISUALIZAR"))
@@ -147,19 +143,19 @@ public class CompraViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
-		if(resultado.getMsg() == null && operacao.equals("SELECIONAR")){
-			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+		if(resultado.getMsg() == null && (operacao.equals("ATUALIZAR") || operacao.equals("SELECIONAR"))){
 			
-			request.getSession().setAttribute("enderecoEntrega", carrinho.getEnderecoEntrega());
-			request.getSession().setAttribute("carrinho", carrinho);
+			request.getSession().setAttribute("enderecoEntrega", ((Carrinho)resultado.getEntidades().get(0)).getEnderecoEntrega());
+			request.getSession().setAttribute("carrinho", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
-		if(resultado.getMsg() == null && operacao.equals("ATUALIZAR")){
-			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
-			
-			request.getSession().setAttribute("enderecoEntrega", carrinho.getEnderecoEntrega());
-			request.getSession().setAttribute("carrinho", carrinho);
+		if(resultado.getMsg() == null && operacao.equals("VERIFICAR")){
+			try {
+				request.getSession().setAttribute("cupom", resultado.getEntidades().get(0));
+			}catch (Exception e) {
+				request.getSession().setAttribute("cupom", new Cupom());
+			}
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		

@@ -31,6 +31,7 @@
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
 		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
+		Cupom cupom = (Cupom) session.getAttribute("cupom");
 		Livro livro = (Livro) session.getAttribute("livro");
 		if(usuario != null)
 			out.print(usuario.getNome());
@@ -101,7 +102,7 @@
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
 				sbRegistro.append("<input type='number' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "' readonly='readonly'");
-				sbRegistro.append(p.getPreco());
+				sbRegistro.append("value='" + (p.getLivro().getValor() * p.getQuantidade()) + "'");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");
@@ -126,6 +127,9 @@
 		Frete
 		</TH>
 		<TH>
+		Desconto
+		</TH>
+		<TH>
 		Total
 		</TH>
 	</TR>
@@ -137,10 +141,13 @@
 		${empty enderecoEntrega ? '' : enderecoEntrega.getEstado()}
 		</TD>
 		<TD>
-		${empty carrinho? '' : carrinho.getFrete()}
+		${empty carrinho ? '' : carrinho.getFrete()}
 		</TD>
 		<TD>
-		${empty carrinho? '' : carrinho.getValorTotal()}
+		${empty cupom ? '0' : cupom.getValor()}
+		</TD>
+		<TD>
+		${empty carrinho ? '' : carrinho.getValorTotal()}
 		</TD>
 	</TR>
 </TABLE>
@@ -163,7 +170,7 @@
       </div>
       <div class="modal-body">
       	<%
-  		if (resultado != null) {
+  		if (usuario != null) {
 		List<Endereco> enderecos = usuario.getEnderecos();
 		StringBuilder sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
@@ -245,7 +252,7 @@
       <div class="modal-body">
       <form action="SalvarProduto">
       	<input type="text" id="txtCupom" name="txtCupom">
-      	<input type="submit" id="btnVerificar" name="btnVerificar" value="VERIFICAR">
+      	<input class="btn btn-primary" type="submit" id="btnVerificar" name="operacao" value="VERIFICAR">
       </form>
       </div>
       <div class="modal-footer">
@@ -257,6 +264,9 @@
 </div>
 
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
-<input type="submit" style="float:right" class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
+<a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
+<form action='SalvarProduto' method='post' id='frmSalvarLivro'>
+	<input type="submit" style="float:right" ${empty usuario ? 'disabled' : ''} class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
+</form>
 </body>
 </html>
