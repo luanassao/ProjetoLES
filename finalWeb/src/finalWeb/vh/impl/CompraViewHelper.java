@@ -23,7 +23,16 @@ public class CompraViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Produto produto = null;
 
-		if(operacao.equals("ATUALIZAR")) {
+		if(operacao.equals("FINALIZAR")) {
+			HttpSession session = request.getSession();
+			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
+			Cupom cupom = (Cupom)session.getAttribute("cupom");
+			if(cupom == null)
+				cupom = new Cupom();
+			carrinho.setCupom(cupom);
+			return carrinho;
+		}
+		else if(operacao.equals("ATUALIZAR")) {
 			HttpSession session = request.getSession();
 			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
 			Cupom cupom = (Cupom)session.getAttribute("cupom");
@@ -157,6 +166,12 @@ public class CompraViewHelper implements IViewHelper{
 				request.getSession().setAttribute("cupom", new Cupom());
 			}
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("FINALIZAR")){
+			
+			request.getSession().setAttribute("carrinho", resultado.getEntidades().get(0));
+			d= request.getRequestDispatcher("FormFinalizar.jsp");
 		}
 		
 		if(resultado.getMsg() != null){
