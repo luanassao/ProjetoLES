@@ -16,6 +16,7 @@ public class AdicionadorCustoFrete implements IStrategy{
 			for(Produto p : carrinho.getProdutos())
 			{
 				preco += p.getLivro().getPeso();
+				preco += p.getLivro().getPeso() * p.getQuantidade();
 			}
 			preco += carrinho.getEnderecoEntrega().getId() % 2 == 0 ? 20 : 30;
 			

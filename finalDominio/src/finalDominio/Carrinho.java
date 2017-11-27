@@ -8,6 +8,7 @@ public class Carrinho extends EntidadeDominio{
 	private int ID_Cliente, idEndereco;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status;
+	private Cupom cupom;
 	
 	public void AdicionarLivro(Produto produto)
 	{
@@ -84,5 +85,13 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setIdEndereco(int idEndereco) {
 		this.idEndereco = idEndereco;
+	}
+
+	public Cupom getCupom() {
+		return cupom;
+	}
+
+	public void setCupom(Cupom cupom) {
+		this.cupom = cupom;
 	}
 }

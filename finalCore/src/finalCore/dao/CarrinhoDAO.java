@@ -91,12 +91,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 	}
 
 	@Override
-	public void excluir(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		PreparedStatement pst = null;
 		Carrinho carrinho = (Carrinho) entidade;

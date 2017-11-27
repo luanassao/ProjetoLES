@@ -12,4 +12,6 @@ public interface IFachada {
 	public Resultado logar(EntidadeDominio entidade);
 	public Resultado adicionarAoCarrinho(EntidadeDominio entidade);
 	public Resultado selecionarEndereco(EntidadeDominio entidade);
+	public Resultado verificarCupom(EntidadeDominio entidade);
+	public Resultado atualizarQuantidadeProduto(EntidadeDominio entidade);
 }

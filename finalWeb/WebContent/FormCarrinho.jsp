@@ -20,6 +20,7 @@
 			document.getElementById("txtQtde" + id).value = maximo;
 			quantidade = maximo;
 		}
+		document.getElementById("txtQtdeH" + id).value = quantidade;
 		document.getElementById("txtPreco" + id).value = quantidade*preco;
 	}
 </script>
@@ -58,8 +59,7 @@
    </TR>
    
    <%
-   if (resultado != null) {
-		List<EntidadeDominio> entidades = resultado.getEntidades();
+   if (carrinho != null) {
 		StringBuilder sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
 		
@@ -86,10 +86,16 @@
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append("<input type='number' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId());
-				sbRegistro.append("'onchange='atualizar(" + p.getLivro().getId() + "," + p.getLivro().getValor() + "," + p.getLivro().getEstoque() + ")'");
+				sbRegistro.append(sbLink.toString());
+				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
+				sbRegistro.append("<input type='number' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
+				sbRegistro.append("value='" + p.getQuantidade() + "'");
+				sbRegistro.append("onchange='this.form.submit()'");
+				sbRegistro.append("onload='atualizar(" + p.getLivro().getId() + "," + p.getLivro().getValor() + "," + p.getLivro().getEstoque() + ")'");
 				sbRegistro.append("max='" + p.getLivro().getEstoque() + "'/>");
+				sbRegistro.append("<input type='hidden' name='txtIdLivro' value='" + p.getLivro().getId() + "'>");
+				sbRegistro.append("<input type='hidden' name='operacao' value='ATUALIZAR'>");
+				sbRegistro.append("</form>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
@@ -178,6 +184,27 @@
 				sbRegistro.append(e.getCep());
 				sbRegistro.append("<BR>");
 				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
+				if (carrinho != null) {
+					//sbRegistro = new StringBuilder();
+					sbLink = new StringBuilder();
+					
+					if(carrinho.getProdutos().size() > 0){
+						try
+						{
+						for (Produto p : carrinho.getProdutos()) {
+							//sbRegistro.setLength(0);
+							sbLink.setLength(0);
+										
+							sbRegistro.append("<input type='hidden' id='txtQtdeH" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'/>");
+							
+							//out.print(sbRegistro.toString());
+							
+						}
+						}catch(Exception ex){
+							
+						}
+					}
+				}
 				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
 				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
 				sbRegistro.append("</form>");

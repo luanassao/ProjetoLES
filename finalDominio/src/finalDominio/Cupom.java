@@ -1,15 +1,10 @@
 package finalDominio;
 
 public class Cupom extends EntidadeDominio{
-	private int id;
 	private double valor = 0.0;
 	private String codigo;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	private String mensagem = null;
+	
 	public double getValor() {
 		return valor;
 	}
@@ -21,5 +16,11 @@ public class Cupom extends EntidadeDominio{
 	}
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+	public String getMensagem() {
+		return mensagem;
+	}
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
 	}
 }

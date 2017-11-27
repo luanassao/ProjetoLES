@@ -14,6 +14,7 @@ import finalDominio.EntidadeDominio;
 import finalWeb.command.ICommand;
 import finalWeb.command.impl.AddCarrinhoCommand;
 import finalWeb.command.impl.AlterarCommand;
+import finalWeb.command.impl.AtualizarQtdeProdutoCommand;
 import finalWeb.command.impl.ConsultarCommand;
 import finalWeb.command.impl.LogarCommand;
 import finalWeb.command.impl.SalvarCommand;
@@ -52,6 +53,7 @@ public class Servlet extends HttpServlet {
     	commands.put("LOGAR", new LogarCommand());
     	commands.put("COMPRAR", new AddCarrinhoCommand());
     	commands.put("SELECIONAR", new SelecionarEnderecoCommand());
+    	commands.put("ATUALIZAR", new AtualizarQtdeProdutoCommand());
     	
     	
     	/* Utilizando o ViewHelper para tratar especificações de qualquer tela e indexando 

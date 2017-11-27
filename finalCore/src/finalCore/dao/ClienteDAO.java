@@ -102,12 +102,6 @@ public class ClienteDAO extends AbstractJdbcDAO{
 	}
 
 	@Override
-	public void excluir(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		// TODO Auto-generated method stub
 		PreparedStatement pst = null;
