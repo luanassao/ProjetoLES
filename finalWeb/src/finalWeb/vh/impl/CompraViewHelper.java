@@ -155,6 +155,14 @@ public class CompraViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("ATUALIZAR")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			
+			request.getSession().setAttribute("enderecoEntrega", carrinho.getEnderecoEntrega());
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
 		if(resultado.getMsg() != null){
 			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
 				request.getSession().setAttribute("resultado", resultado);

@@ -17,6 +17,7 @@ import finalCore.dao.CupomDAO;
 import finalCore.dao.EnderecoDAO;
 import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
+import finalCore.impl.negocio.AtualizadorPrecoCarrinho;
 import finalCore.impl.negocio.ValidadorCpf;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCartao;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCliente;
@@ -82,6 +83,7 @@ public class Fachada implements IFachada{
 		ValidadorUsuario vrUsuario = new ValidadorUsuario();
 		AdicionadorCustoFrete adcCustoFrete = new AdicionadorCustoFrete();
 		ValidadorLivroEstoque vrLivroEstoque = new ValidadorLivroEstoque();
+		AtualizadorPrecoCarrinho attPrecoCarrinho = new AtualizadorPrecoCarrinho();
 		
 		/* Criando uma lista para conter as regras de negócio de livro
 		 * quando a operação for salvar
@@ -169,27 +171,6 @@ public class Fachada implements IFachada{
 		 */
 		rns.put(Cartao.class.getName(), rnsCartao);
 		
-		/* Criando uma lista para conter as regras de negócio de carrinho
-		 * quando a operação for salvar
-		 */
-		List<IStrategy> rnsSalvarCarrinho = new ArrayList<IStrategy>();
-		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
-		
-		
-		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
-		 * por operação  do carrinho
-		 */
-		Map<String, List<IStrategy>> rnsCarrinho = new HashMap<String, List<IStrategy>>();
-		/*
-		 * Adiciona a listra de regras na operação salvar no mapa do carrinho (lista criada na linha 70)
-		 */
-		rnsCarrinho.put("SALVAR", rnsSalvarCarrinho);
-		rnsCarrinho.put("ALTERAR", rnsSalvarCarrinho);
-		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
-		 * pelo nome da entidade
-		 */
-		rns.put(Carrinho.class.getName(), rnsCarrinho);
-		
 		/* Criando uma lista para conter as regras de negócio de produto
 		 * quando a operação for salvar
 		 */
@@ -252,6 +233,29 @@ public class Fachada implements IFachada{
 		 * pelo nome da entidade
 		 */
 		rns.put(Carrinho.class.getName(), rnsCustoFrete);
+		
+		/* Criando uma lista para conter as regras de negócio de produto
+		 * quando a operação for salvar
+		 */
+		List<IStrategy> rnsValidarCarrinho = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
+		rnsValidarCarrinho.add(adcCustoFrete);
+		rnsValidarCarrinho.add(vrLivroEstoque);
+		rnsValidarCarrinho.add(attPrecoCarrinho);
+		
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
+		 * por operação  do livro
+		 */
+		Map<String, List<IStrategy>> rnsCarrinho = new HashMap<String, List<IStrategy>>();
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsCarrinho.put("ATUALIZAR", rnsValidarCarrinho);
+		
+		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		 * pelo nome da entidade
+		 */
+		rns.put(Carrinho.class.getName(), rnsCarrinho);
 	}
 	
 	

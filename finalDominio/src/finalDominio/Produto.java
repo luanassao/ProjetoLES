@@ -4,6 +4,7 @@ public class Produto extends EntidadeDominio{
 	private int ID_Produto, ID_Carrinho, quantidade = 0, ID_Livro;
 	private double preco;
 	private Livro livro;
+	private String mensagem;
 	
 	public int getID_Produto() {
 		return ID_Produto;
@@ -40,5 +41,11 @@ public class Produto extends EntidadeDominio{
 	}
 	public void setPreco(double preco) {
 		this.preco = preco;
+	}
+	public String getMensagem() {
+		return mensagem;
+	}
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
 	}
 }
