@@ -39,6 +39,11 @@
 						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
+					</td>
+				</tr>
 			</table>
 			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty cliente ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
 		</form>

@@ -187,62 +187,116 @@
         </button>
       </div>
       <div class="modal-body">
-      	<%
+      <%
   		if (usuario != null) {
-		List<Endereco> enderecos = usuario.getEnderecos();
-		StringBuilder sbRegistro = new StringBuilder();
-		StringBuilder sbLink = new StringBuilder();
-		
-		if(enderecos.size() > 0){
-			try
-			{
-			int i = 0;
-			for (Endereco e : enderecos) {
-				sbRegistro.setLength(0);
-				sbLink.setLength(0);
-				
-				sbRegistro.append(sbLink.toString());	
-				sbRegistro.append(e.getLogradouro() + ", " + e.getNumero());
-				sbRegistro.append("<BR>");
-				sbRegistro.append(e.getBairro() + ", " + e.getCidade() + ", " + e.getEstado());			
-				sbRegistro.append("<BR>");
-				sbRegistro.append(e.getCep());
-				sbRegistro.append("<BR>");
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				if (carrinho != null) {
-					//sbRegistro = new StringBuilder();
-					sbLink = new StringBuilder();
+			List<Endereco> enderecos = usuario.getEnderecos();
+			StringBuilder sbRegistro = new StringBuilder();
+			StringBuilder sbLink = new StringBuilder();
+			
+			if(enderecos.size() > 0){
+				try
+				{
+				int i = 0;
+				for (Endereco e : enderecos) {
+					sbRegistro.setLength(0);
+					sbLink.setLength(0);
 					
-					if(carrinho.getProdutos().size() > 0){
-						try
-						{
-						for (Produto p : carrinho.getProdutos()) {
-							//sbRegistro.setLength(0);
-							sbLink.setLength(0);
-										
-							sbRegistro.append("<input type='hidden' id='txtQtdeH" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'/>");
-							
-							//out.print(sbRegistro.toString());
-							
-						}
-						}catch(Exception ex){
-							
+					sbRegistro.append(sbLink.toString());	
+					sbRegistro.append(e.getLogradouro() + ", " + e.getNumero());
+					sbRegistro.append("<BR>");
+					sbRegistro.append(e.getBairro() + ", " + e.getCidade() + ", " + e.getEstado());			
+					sbRegistro.append("<BR>");
+					sbRegistro.append(e.getCep());
+					sbRegistro.append("<BR>");
+					sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
+					if (carrinho != null) {
+						//sbRegistro = new StringBuilder();
+						sbLink = new StringBuilder();
+						
+						if(carrinho.getProdutos().size() > 0){
+							try
+							{
+							for (Produto p : carrinho.getProdutos()) {
+								//sbRegistro.setLength(0);
+								sbLink.setLength(0);
+											
+								sbRegistro.append("<input type='hidden' id='txtQtdeH" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'/>");
+								
+								//out.print(sbRegistro.toString());
+								
+							}
+							}catch(Exception ex){
+								
+							}
 						}
 					}
+					sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
+					sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
+					sbRegistro.append("</form>");
+					
+					out.print(sbRegistro.toString());
+					i++;
 				}
-				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
-				sbRegistro.append("</form>");
-				
-				out.print(sbRegistro.toString());
-				i++;
-			}
-			}catch(Exception e){
-				
+				}catch(Exception e){
+					
+				}
 			}
 		}
-	}
-   %>
+	   %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
+		  Novo endereço
+		</button>
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
+		  Inserir cupom
+		</button>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      <form action="SalvarProduto">
+		      	<input type="text" id="txtCupom" name="txtCupom">
+		      	<input class="btn btn-primary" type="submit" id="btnVerificar" name="operacao" value="VERIFICAR">
+		      </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
+		  Novo endereço
+		</button>
+<!-- Modal -->
+<div class="modal fade" id="#novoEnderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	queijo
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
