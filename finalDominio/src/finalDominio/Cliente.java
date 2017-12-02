@@ -8,8 +8,9 @@ public class Cliente extends EntidadeDominio{
 	private String nome, cpf, tipoTelefone, telefone, email, senha, genero;
 	private Boolean status, administrador;
 	private Calendar dtnascimento;
-	List<Endereco> enderecos = new ArrayList<>();
-	List<Cartao> cartoes = new ArrayList<>();
+	private List<Endereco> enderecos = new ArrayList<>();
+	private List<Cartao> cartoes = new ArrayList<>();
+	private List<Carrinho> pedidos = new ArrayList<>();
 	private Cartao cartao;
 	
 	public String getNome() {
@@ -90,6 +91,12 @@ public class Cliente extends EntidadeDominio{
 	}
 	public void setCartoes(List<Cartao> cartoes) {
 		this.cartoes = cartoes;
+	}
+	public List<Carrinho> getPedidos() {
+		return pedidos;
+	}
+	public void setPedidos(List<Carrinho> pedidos) {
+		this.pedidos = pedidos;
 	}
 	public Boolean getAdministrador() {
 		return administrador;

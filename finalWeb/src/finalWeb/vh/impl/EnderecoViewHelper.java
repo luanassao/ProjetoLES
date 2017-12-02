@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
+import finalDominio.Cliente;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
@@ -109,11 +110,17 @@ public class EnderecoViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
 		}
 		
+		if(operacao.equals("SALVAR NOVO")){
+			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+			usuario.getEnderecos().add((Endereco)resultado.getEntidades().get(0));
+			request.setAttribute("usuario",usuario);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");  
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.setAttribute("endereco", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormClienteEnd.jsp"); 
-			//d= request.getRequestDispatcher("FormCliente.jsp");  			
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
@@ -122,11 +129,9 @@ public class EnderecoViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
 		}
 		
-		if(resultado.getMsg() != null){
-			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
-				request.getSession().setAttribute("resultado", resultado);
-				d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  	
-			}
+		if(resultado.getMsg() != null && (operacao.equals("SALVAR") || operacao.equals("ALTERAR"))){
+			request.getSession().setAttribute("resultado", resultado);
+			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
 		}
 		d.forward(request,response);
 	}

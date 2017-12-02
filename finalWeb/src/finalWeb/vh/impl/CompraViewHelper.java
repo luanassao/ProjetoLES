@@ -186,9 +186,11 @@ public class CompraViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("FINALIZAR")){
-			
-			request.getSession().setAttribute("carrinho", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormFinalizar.jsp");
+			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+			usuario.getPedidos().add((Carrinho)resultado.getEntidades().get(0));
+			request.setAttribute("usuario",usuario);
+			request.getSession().setAttribute("pedidos", usuario.getPedidos());
+			d= request.getRequestDispatcher("FormPedidos.jsp");
 		}
 		
 		if(resultado.getMsg() != null){

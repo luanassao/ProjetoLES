@@ -7,6 +7,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="resources/estilo.css">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
@@ -178,7 +179,12 @@
 
 <!-- Modal -->
 <div class="modal fade" id="enderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" style="
+    width: 100%;
+    height: 100%;
+    /* margin: 0; */
+    /* padding: 0; */
+" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
@@ -246,17 +252,14 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
-		  Novo endereço
-		</button>
+        
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
-		  Inserir cupom
+		  Novo endereço
 		</button>
 		
 		<!-- Modal -->
-		<div class="modal fade" id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" style='width:100%' id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -266,10 +269,124 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      <form action="SalvarProduto">
-		      	<input type="text" id="txtCupom" name="txtCupom">
-		      	<input class="btn btn-primary" type="submit" id="btnVerificar" name="operacao" value="VERIFICAR">
-		      </form>
+		      <form action="SalvarEndereco" method="post" id="frmSalvarEndereco">
+			<table class="table table-bordered">
+				<tr><TH COLSPAN="2">Cadastro de endereço</TH></tr>
+				<tr style="${empty usuario ? 'display:none' : ''}">
+					<td>
+						ID do cliente
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Tipo da residencia
+					</td>
+					<td>
+						<select id="ddlTipoResidencia" name="ddlTipoResidencia">
+							<option>Casa</option>
+							<option>Apartamento</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Tipo do logradouro
+					</td>
+					<td>
+						<select id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+							<option>Avenida</option>
+							<option>Rua</option>
+							<option>Travessa</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Logradouro
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Preferencial
+					</td>
+					<td>
+						Ativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="true">
+					    Inativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="false" checked>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Número
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtNumero" name="txtNumero" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Bairro
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtBairro" name="txtBairro" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						CEP
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtCep" name="txtCep" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Estado
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Cidade
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtCidade" name="txtCidade" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						País
+					</td>
+					<td>
+						<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Observação
+					</td>
+					<td>
+						<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Responsavel
+					</td>
+					<td>
+						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty usuario ? '' : ''}" readonly/>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR NOVO" class="btn btn-default" />
+		</form>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -277,29 +394,6 @@
 		    </div>
 		  </div>
 		</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
-		  Novo endereço
-		</button>
-<!-- Modal -->
-<div class="modal fade" id="#novoEnderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      	queijo
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
