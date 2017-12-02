@@ -81,6 +81,7 @@ public class CompraViewHelper implements IViewHelper{
 		}
 		else if(!operacao.equals("VISUALIZAR"))
 		{
+			System.out.println(operacao);
 			HttpSession session = request.getSession();
 			Livro livro = (Livro) session.getAttribute("livro");
 			if(livro == null)

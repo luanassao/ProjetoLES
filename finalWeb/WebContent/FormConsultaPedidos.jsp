@@ -17,6 +17,7 @@
 
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
+		Carrinho pedidos = (Carrinho) session.getAttribute("pedidos");
 	%>
 
 	<form action="SalvarCarrinho" method="post">
@@ -28,21 +29,27 @@
    		</TR>
 			<tr>
 				<td>
-				TITULO: <input type="text" id="txtTitulo" name="txtTitulo" /> 
+				Codigo do pedido: <input type="text" id="txtId" name="txtId" /> 
 				</td>
 				<td>
-				AUTOR:<input type="text" id="txtAutor" name="txtAutor" />
+				Codigo do cliente:<input type="text" id="txtIdCliente" name="txtIdCliente" />
+				</td>
+				<td>
+				Email do Cliente <input type="text" id="txtEmail" name="txtEmail"/>
 				</td>
 				<td>
 				Status 
 				<select id="rdStatus" name="rdStatus">
-					<option value="todos">Todos</option>
-					<option value="true">Ativos</option>
-					<option value="false">Inativos</option>
+					<option value="EM PROCESSAMENTO">EM PROCESSAMENTO</option>
+					<option value="EM TROCA">EM TROCA</option>
+					<option value="APROVADO">APROVADO</option>
+					<option value="REPROVADO">REPROVADO</option>
+					<option value="EM TRANSPORTE">EM TRANSPORTE</option>
+					<option value="ENTREGUE">ENTREGUE</option>
 				</select>
 				</td>
 			</tr>
-			<tr>
+			<tr style="display:none">
 				<td>
 				Ano <input type="text" id="txtAno" name="txtAno"/>
 				</td>
@@ -72,7 +79,7 @@
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
-      	<H3>Carrinhos</H3>
+      	<H3>Pedidos</H3>
       </TH>
    </TR>
    <TR>

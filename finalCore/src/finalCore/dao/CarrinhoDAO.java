@@ -137,6 +137,10 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		Carrinho carrinho = (Carrinho) entidade;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM carrinho WHERE 1=1\n");
+		if(carrinho.getEmail() != null && carrinho.getEmail().length() > 0)
+			sb.append(" AND email_cliente = '" + carrinho.getEmail() + "'");
+		if(carrinho.getID_Cliente() > 0)
+			sb.append(" AND ID_Cliente = '" + carrinho.getEmail() + "'");
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -151,6 +155,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				c.setFrete(rs.getDouble("valor_frete"));
 				c.setValorLivros(rs.getDouble("valor_livros"));
 				c.setValorTotal(rs.getDouble("valor_total"));
+				c.setEmail(rs.getString("email_cliente"));
 				carrinhos.add(c);
 			}
 			return carrinhos;

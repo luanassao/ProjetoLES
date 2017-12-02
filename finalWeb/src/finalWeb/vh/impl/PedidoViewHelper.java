@@ -10,10 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
-public class CarrinhoViewHelper implements IViewHelper{
+public class PedidoViewHelper implements IViewHelper{
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
@@ -43,6 +44,12 @@ public class CarrinhoViewHelper implements IViewHelper{
 			
 			carrinho.setStatus(status);
 			carrinho.setFormaPagamento(formaPagamento);
+		}
+		else if(operacao.equals("CONSULTAR"))
+		{
+			HttpSession session = request.getSession();
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			Carrinho c = new Carrinho();
 		}
 		else{
 			
