@@ -152,7 +152,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				Carrinho c = new Carrinho();
 				c.setId(rs.getInt("ID_Carrinho"));
 				c.setIdEndereco(rs.getInt("id_endereco"));
-				c.setFormaPagamento(rs.getString("forma_pagamento"));
 				c.setStatus(rs.getString("status"));
 				c.setFrete(rs.getDouble("valor_frete"));
 				c.setValorLivros(rs.getDouble("valor_livros"));
@@ -175,6 +174,32 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 					}
 				}
 				//Pegar o endereço de entrega
+				sb = new StringBuilder();
+				pst = null;
+				sb.append("SELECT * FROM ENDERECO WHERE ID_Endereco = " + rs.getInt("id_endereco"));
+				pst = connection.prepareStatement(sb.toString());
+				rst = pst.executeQuery();
+				while(rst.next()) {
+					if(rs.getInt("id_endereco") == rst.getInt("id_endereco")) {
+						Endereco e = new Endereco();
+						e.setId(rs.getInt("ID_Endereco"));
+						e.setPreferencial(rst.getBoolean("preferencial"));
+						e.setTipoResidencia(rst.getString("tipo_residencia"));
+						e.setTipoLogradouro(rst.getString("tipo_logradouro"));
+						e.setLogradouro(rst.getString("logradouro"));
+						e.setNumero(rst.getString("numero"));
+						e.setBairro(rst.getString("bairro"));
+						e.setCep(rst.getString("CEP"));
+						e.setCidade(rst.getString("cidade"));
+						e.setEstado(rst.getString("estado"));
+						e.setPais(rst.getString("pais"));
+						e.setObservacao(rst.getString("obs"));
+						e.setID_Cliente(rst.getInt("ID_Cliente"));
+						e.setAlterador(rst.getString("alterador"));
+						c.setEnderecoEntrega(e);
+					}
+				}
+				//Pegar os produtos de um pedido
 				sb = new StringBuilder();
 				pst = null;
 				sb.append("SELECT * FROM ENDERECO WHERE ID_Endereco = " + rs.getInt("id_endereco"));

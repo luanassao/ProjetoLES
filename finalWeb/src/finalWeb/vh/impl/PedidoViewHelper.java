@@ -50,7 +50,6 @@ public class PedidoViewHelper implements IViewHelper{
 			
 			for(EntidadeDominio c: resultado.getEntidades()){
 				if(c.getId() == txtId){
-					System.out.println("Encontrado, id = " + c.getId());
 					carrinho = (Carrinho)c;
 				}
 			}
@@ -90,7 +89,7 @@ public class PedidoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
 			
 			request.getSession().setAttribute("resultado", null);
-			d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");  
+			d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");
 		}
 		
 		if(resultado.getMsg() != null){

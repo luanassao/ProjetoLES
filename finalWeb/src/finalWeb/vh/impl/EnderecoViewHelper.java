@@ -110,7 +110,7 @@ public class EnderecoViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
 		}
 		
-		if(operacao.equals("SALVAR NOVO")){
+		if(resultado.getMsg() == null && operacao.equals("SALVAR NOVO")){
 			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
 			usuario.getEnderecos().add((Endereco)resultado.getEntidades().get(0));
 			request.setAttribute("usuario",usuario);

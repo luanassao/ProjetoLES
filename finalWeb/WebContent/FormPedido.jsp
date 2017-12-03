@@ -137,16 +137,16 @@
 	</TR>
 	<TR>
 		<TD>
-		${empty enderecoEntrega ? '' : enderecoEntrega.getLogradouro()} , ${empty enderecoEntrega ? '' : enderecoEntrega.getNumero()}
+		${empty carrinho ? '' : carrinho.getEnderecoEntrega().getLogradouro()} , ${empty carrinho ? '' : enderecoEntrega.getNumero()}
 		<BR>
-		${empty enderecoEntrega ? '' : enderecoEntrega.getBairro()} - ${empty enderecoEntrega ? '' : enderecoEntrega.getCidade()} -
-		${empty enderecoEntrega ? '' : enderecoEntrega.getEstado()}
+		${empty carrinho ? '' : carrinho.getEnderecoEntrega().getBairro()} - ${empty carrinho ? '' : carrinho.getEnderecoEntrega().getCidade()} -
+		${empty carrinho ? '' : carrinho.getEnderecoEntrega().getEstado()}
 		</TD>
 		<TD>
 		${empty carrinho ? '' : carrinho.getFrete()}
 		</TD>
 		<TD>
-		${empty cupom ? '0' : cupom.getValor()}
+		${empty carrinho ? '0' : carrinho.getCupom().getValor()}
 		</TD>
 		<TD>
 		${empty carrinho ? '' : carrinho.getValorLivros() + carrinho.getFrete() - (empty cupom ? 0 : cupom.getValor())}
@@ -180,9 +180,9 @@
 	</TR>
 	<TR>
 		<TD>
-		Código: ${empty cupom ? '' : cupom.getCodigo()}
+		Código: ${empty carrinho ? '' : carrinho.getCupom().getCodigo()}
 		<BR>
-		Valor do desconto: ${empty cupom ? '' : cupom.getValor()}
+		Valor do desconto: ${empty carrinho ? '' : carrinho.getCupom().getValor()}
 		</TD>
 	</TR>
 </TABLE>
