@@ -14,16 +14,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
-		Carrinho pedidos = (Carrinho) session.getAttribute("pedidos");
+		//Carrinho pedidos = (Carrinho) session.getAttribute("pedidos");
+		Cliente usuario = (Cliente) session.getAttribute("usuario");
+		if(usuario != null)
+			out.print(usuario.getNome());
 	%>
 
-	<form action="SalvarCarrinho" method="post">
+	<form action="SalvarPedido" method="post">
 		<table class="table" bordercolor="blue" BORDER="5" >
 		<TR>
-		      <TH COLSPAN="3"><BR>
+		      <TH COLSPAN="4"><BR>
 		      	<H3>FILTROS</H3>
 		      </TH>
    		</TR>
@@ -39,7 +41,7 @@
 				</td>
 				<td>
 				Status 
-				<select id="rdStatus" name="rdStatus">
+				<select id="ddlStatus" name="ddlStatus">
 					<option value="EM PROCESSAMENTO">EM PROCESSAMENTO</option>
 					<option value="EM TROCA">EM TROCA</option>
 					<option value="APROVADO">APROVADO</option>
@@ -113,7 +115,7 @@
 				
 				sbLink.append("<a id = '");
 					sbLink.append(c.getId());
-					sbLink.append("' href=SalvarCarrinho?");
+					sbLink.append("' href=SalvarPedido?");
 					sbLink.append("txtId=");
 					sbLink.append(c.getId());						
 					sbLink.append("&");
@@ -128,6 +130,12 @@
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getEmail());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(c.getStatus());

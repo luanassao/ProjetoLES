@@ -21,10 +21,11 @@
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
 	}
-	else{
+	else if(usuario != null){
 		out.print("Bem vindo, " + usuario.getNome());
 	}
-	
+	if(usuario == null)
+		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
 	%>
 	<form action="SalvarCliente" method="post" id="frmSalvarCliente">
 			<table class="table table-bordered">
@@ -42,6 +43,11 @@
 				<tr>
 					<td>
 						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
 					</td>
 				</tr>
 			</table>

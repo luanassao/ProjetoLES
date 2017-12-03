@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import finalDominio.Carrinho;
+import finalDominio.Cupom;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Produto;
 
@@ -156,6 +158,48 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				c.setValorLivros(rs.getDouble("valor_livros"));
 				c.setValorTotal(rs.getDouble("valor_total"));
 				c.setEmail(rs.getString("email_cliente"));
+				c.setID_Cliente(rs.getInt("id_cliente"));
+				//Pegar os cupons utilizados na compra
+				sb = new StringBuilder();
+				pst = null;
+				sb.append("SELECT * FROM CUPONS WHERE ID_Cupom = " + rs.getInt("id_cupom"));
+				pst = connection.prepareStatement(sb.toString());
+				ResultSet rst = pst.executeQuery();
+				while(rst.next()) {
+					if(rs.getInt("id_cupom") == rst.getInt("id_cupom")) {
+						Cupom cupom = new Cupom();
+						cupom.setId(rst.getInt("id_cupom"));
+						cupom.setCodigo(rst.getString("codigo"));
+						cupom.setValor(rst.getDouble("valor"));
+						c.setCupom(cupom);
+					}
+				}
+				//Pegar o endereço de entrega
+				sb = new StringBuilder();
+				pst = null;
+				sb.append("SELECT * FROM ENDERECO WHERE ID_Endereco = " + rs.getInt("id_endereco"));
+				pst = connection.prepareStatement(sb.toString());
+				rst = pst.executeQuery();
+				while(rst.next()) {
+					if(rs.getInt("id_endereco") == rst.getInt("id_endereco")) {
+						Endereco e = new Endereco();
+						e.setId(rs.getInt("ID_Endereco"));
+						e.setPreferencial(rst.getBoolean("preferencial"));
+						e.setTipoResidencia(rst.getString("tipo_residencia"));
+						e.setTipoLogradouro(rst.getString("tipo_logradouro"));
+						e.setLogradouro(rst.getString("logradouro"));
+						e.setNumero(rst.getString("numero"));
+						e.setBairro(rst.getString("bairro"));
+						e.setCep(rst.getString("CEP"));
+						e.setCidade(rst.getString("cidade"));
+						e.setEstado(rst.getString("estado"));
+						e.setPais(rst.getString("pais"));
+						e.setObservacao(rst.getString("obs"));
+						e.setID_Cliente(rst.getInt("ID_Cliente"));
+						e.setAlterador(rst.getString("alterador"));
+						c.setEnderecoEntrega(e);
+					}
+				}
 				carrinhos.add(c);
 			}
 			return carrinhos;

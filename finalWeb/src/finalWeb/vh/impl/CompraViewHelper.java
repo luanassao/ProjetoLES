@@ -191,7 +191,7 @@ public class CompraViewHelper implements IViewHelper{
 			usuario.getPedidos().add((Carrinho)resultado.getEntidades().get(0));
 			request.setAttribute("usuario",usuario);
 			request.getSession().setAttribute("pedidos", usuario.getPedidos());
-			d= request.getRequestDispatcher("FormPedidos.jsp");
+			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");
 		}
 		
 		if(resultado.getMsg() != null){

@@ -71,7 +71,7 @@ public class Servlet extends HttpServlet {
     	vhs.put("/finalWeb/SalvarCliente", new ClienteViewHelper());
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
-    	vhs.put("/finalWeb/SalvarCarrinho", new PedidoViewHelper());
+    	vhs.put("/finalWeb/SalvarPedido", new PedidoViewHelper());
     	vhs.put("/finalWeb/SalvarProduto", new CompraViewHelper());
     	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
     	

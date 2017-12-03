@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
-import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -24,7 +23,6 @@ public class PedidoViewHelper implements IViewHelper{
 		if(!operacao.equals("VISUALIZAR"))
 		{
 			String status = request.getParameter("ddlStatus");
-			String formaPagamento = request.getParameter("ddlPagamento");
 			
 			carrinho = new Carrinho();
 			
@@ -43,13 +41,6 @@ public class PedidoViewHelper implements IViewHelper{
 			}
 			
 			carrinho.setStatus(status);
-			carrinho.setFormaPagamento(formaPagamento);
-		}
-		else if(operacao.equals("CONSULTAR"))
-		{
-			HttpSession session = request.getSession();
-			Cliente cliente = (Cliente)session.getAttribute("usuario");
-			Carrinho c = new Carrinho();
 		}
 		else{
 			
@@ -59,6 +50,7 @@ public class PedidoViewHelper implements IViewHelper{
 			
 			for(EntidadeDominio c: resultado.getEntidades()){
 				if(c.getId() == txtId){
+					System.out.println("Encontrado, id = " + c.getId());
 					carrinho = (Carrinho)c;
 				}
 			}
@@ -81,7 +73,7 @@ public class PedidoViewHelper implements IViewHelper{
 			}
 			
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");  			
+			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");  			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
@@ -92,7 +84,7 @@ public class PedidoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.setAttribute("carrinho", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormCompra.jsp");  			
+			d= request.getRequestDispatcher("FormPedido.jsp");  			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){

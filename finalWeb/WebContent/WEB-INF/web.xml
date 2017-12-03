@@ -39,7 +39,7 @@
   
   <servlet-mapping>
     <servlet-name>Servlet</servlet-name>
-    <url-pattern>/SalvarCarrinho</url-pattern>
+    <url-pattern>/SalvarPedido</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
