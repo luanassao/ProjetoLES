@@ -83,7 +83,7 @@ public class PedidoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.setAttribute("carrinho", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher("FormPedido.jsp");  			
+			d= request.getRequestDispatcher("FormPedido.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){

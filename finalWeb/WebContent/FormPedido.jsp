@@ -30,7 +30,8 @@
 
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
-		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+		Carrinho carrinho = (Carrinho)resultado.getEntidades().get(0);
+		//Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		Cupom cupom = (Cupom) session.getAttribute("cupom");
 		Livro livro = (Livro) session.getAttribute("livro");
@@ -38,8 +39,9 @@
 		if(usuario != null)
 			out.print(usuario.getNome());
 	%>
+	<BR>
 	<%
-	
+	out.print("Quantidade de produtos: " + carrinho.getProdutos().size());
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
 	}

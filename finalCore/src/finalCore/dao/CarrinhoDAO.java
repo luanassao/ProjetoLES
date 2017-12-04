@@ -233,6 +233,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				rst = pst.executeQuery();
 				while(rst.next()) {
 					if(rs.getInt("id_carrinho") == rst.getInt("id_carrinho")) {
+						System.out.println("Achou 1 produto");
 						Livro l = new Livro();
 						Produto p = new Produto();
 						l.setId(rst.getInt("ID_Livro"));
