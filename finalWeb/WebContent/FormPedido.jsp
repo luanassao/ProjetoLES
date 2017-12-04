@@ -50,7 +50,7 @@
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
-      	<H3><img src='https://image.freepik.com/icones-gratis/carrinho-de-compras-de-design-de-linhas-horizontais_318-50800.jpg' style='width: 50px; height: 50px;' alt='First slide'>Carrinho</H3>
+      	<H3><img src='https://image.freepik.com/icones-gratis/carrinho-de-compras-de-design-de-linhas-horizontais_318-50800.jpg' style='width: 50px; height: 50px;' alt='First slide'>Pedidos</H3>
       </TH>
    </TR>
    <TR>
@@ -163,10 +163,10 @@
 	</TR>
 	<TR>
 		<TD>
-		${empty cartao ? '' : cartao.getBandeira()}
+		${empty carrinho ? '' : carrinho.getCartao().getBandeira()}
 		<BR>
-		${empty cartao ? '' : cartao.getTitular()} - ${empty cartao ? '' : cartao.getNumero()} -
-		${empty cartao ? '' : cartao.getValidadeFormatado()}
+		${empty carrinho ? '' : carrinho.getCartao().getTitular()} - ${empty carrinho ? '' : carrinho.getCartao().getNumero()} -
+		${empty carrinho ? '' : carrinho.getCartao().getValidadeFormatado()}
 		</TD>
 	</TR>
 </TABLE>
@@ -415,93 +415,7 @@
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
-  Selecionar forma de pagamento
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="cartaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <%
-  		if (usuario != null) {
-		List<Cartao> cartoes = usuario.getCartoes();
-		StringBuilder sbRegistro = new StringBuilder();
-		StringBuilder sbLink = new StringBuilder();
-		
-		if(cartoes.size() > 0){
-			try
-			{
-			int i = 0;
-			for (Cartao c : cartoes) {
-				sbRegistro.setLength(0);
-				sbLink.setLength(0);
-				
-				sbRegistro.append(sbLink.toString());	
-				sbRegistro.append(c.getBandeira());
-				sbRegistro.append("<BR>");
-				sbRegistro.append(c.getTitular() + ", " + c.getNumero());			
-				sbRegistro.append("<BR>");
-				sbRegistro.append("Validade: " + c.getValidadeFormatado());
-				sbRegistro.append("<BR>");
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='CONFIRMAR'>");
-				sbRegistro.append("</form>");
-				
-				out.print(sbRegistro.toString());
-				i++;
-			}
-			}catch(Exception e){
-				
-			}
-		}
-	}
-   %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
-  Inserir cupom
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="SalvarProduto">
-      	<input type="text" id="txtCupom" name="txtCupom">
-      	<input class="btn btn-primary" type="submit" id="btnVerificar" name="operacao" value="VERIFICAR">
-      </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
 <a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>

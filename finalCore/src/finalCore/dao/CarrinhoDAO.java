@@ -4,12 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import finalDominio.Carrinho;
+import finalDominio.Cartao;
 import finalDominio.Cupom;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
+import finalDominio.Livro;
 import finalDominio.Produto;
 
 public class CarrinhoDAO extends AbstractJdbcDAO{
@@ -199,30 +202,65 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 						c.setEnderecoEntrega(e);
 					}
 				}
-				//Pegar os produtos de um pedido
+				//Pegar o cartão
 				sb = new StringBuilder();
 				pst = null;
-				sb.append("SELECT * FROM ENDERECO WHERE ID_Endereco = " + rs.getInt("id_endereco"));
+				sb.append("SELECT * FROM CARTAO WHERE ID_Cartao = " + rs.getInt("id_cartao"));
 				pst = connection.prepareStatement(sb.toString());
 				rst = pst.executeQuery();
 				while(rst.next()) {
-					if(rs.getInt("id_endereco") == rst.getInt("id_endereco")) {
-						Endereco e = new Endereco();
-						e.setId(rs.getInt("ID_Endereco"));
-						e.setPreferencial(rst.getBoolean("preferencial"));
-						e.setTipoResidencia(rst.getString("tipo_residencia"));
-						e.setTipoLogradouro(rst.getString("tipo_logradouro"));
-						e.setLogradouro(rst.getString("logradouro"));
-						e.setNumero(rst.getString("numero"));
-						e.setBairro(rst.getString("bairro"));
-						e.setCep(rst.getString("CEP"));
-						e.setCidade(rst.getString("cidade"));
-						e.setEstado(rst.getString("estado"));
-						e.setPais(rst.getString("pais"));
-						e.setObservacao(rst.getString("obs"));
-						e.setID_Cliente(rst.getInt("ID_Cliente"));
-						e.setAlterador(rst.getString("alterador"));
-						c.setEnderecoEntrega(e);
+					if(rs.getInt("id_cartao") == rst.getInt("id_cartao")) {
+						Cartao ca = new Cartao();
+						ca.setId(rst.getInt("ID_cartao"));
+						ca.setTitular(rst.getString("titular"));
+						ca.setNumero(rst.getString("numero"));
+						ca.setCodigo(rst.getString("codigo"));
+						Calendar calendV = Calendar.getInstance();
+						calendV.setTime(rst.getDate("validade"));
+						ca.setValidade(calendV);
+						ca.setID_Cliente(rst.getInt("id_cliente"));
+						ca.setAlterador(rst.getString("alterador"));
+						ca.setPreferencial(rst.getBoolean("preferencial"));
+						ca.setBandeira(rst.getString("bandeira"));
+						c.setCartao(ca);
+					}
+				}
+				//Pegar os produtos referentes ao pedido
+				sb = new StringBuilder();
+				pst = null;
+				sb.append("SELECT * FROM PRODUTO JOIN LIVROS using(id_livro) WHERE ID_Carrinho = " + rs.getInt("id_carrinho"));
+				pst = connection.prepareStatement(sb.toString());
+				rst = pst.executeQuery();
+				while(rst.next()) {
+					if(rs.getInt("id_carrinho") == rst.getInt("id_carrinho")) {
+						Livro l = new Livro();
+						Produto p = new Produto();
+						l.setId(rst.getInt("ID_Livro"));
+						l.setAutor(rst.getString("autor"));
+						l.setCategoria(rst.getString("categoria"));
+						l.setSubcategoria(rst.getString("subcategoria"));
+						l.setAno(rst.getString("ano"));
+						l.setTitulo(rst.getString("titulo"));
+						l.setEditora(rst.getString("editora"));
+						l.setEdicao(rst.getString("edicao"));
+						l.setISBN(rst.getString("isbn"));
+						l.setNpaginas(rst.getString("npaginas"));
+						l.setSinopse(rst.getString("sinopse"));
+						l.setStatus(rst.getBoolean("status"));
+						l.setAltura(rst.getDouble("altura"));
+						l.setLargura(rst.getDouble("largura"));
+						l.setPeso(rst.getDouble("peso"));
+						l.setProfundidade(rst.getDouble("profundidade"));
+						l.setAlterador(rst.getString("alterador"));
+						l.setPreco(rst.getDouble("preco"));
+						l.setValor(rst.getDouble("valor"));
+						l.setPrecificacao(rst.getString("precificacao"));
+						l.setEstoque(rst.getInt("estoque"));
+						p.setLivro(l);
+						p.setID_Carrinho(rst.getInt("ID_Carrinho"));
+						p.setId(rst.getInt("ID_Produto"));
+						p.setQuantidade(rst.getInt("quantidade"));
+						c.getProdutos().add(p);
 					}
 				}
 				carrinhos.add(c);
