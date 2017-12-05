@@ -30,8 +30,8 @@
 
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
-		Carrinho carrinho = (Carrinho)resultado.getEntidades().get(0);
-		//Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+		//Carrinho carrinho = (Carrinho)resultado.getEntidades().get(0);
+		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		Cupom cupom = (Cupom) session.getAttribute("cupom");
 		Livro livro = (Livro) session.getAttribute("livro");
@@ -41,7 +41,6 @@
 	%>
 	<BR>
 	<%
-	out.print("Quantidade de produtos: " + carrinho.getProdutos().size());
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
 	}
@@ -92,15 +91,9 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='number' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
-				sbRegistro.append("value='" + p.getQuantidade() + "'");
-				sbRegistro.append("onchange='this.form.submit()'");
-				sbRegistro.append("onload='atualizar(" + p.getLivro().getId() + "," + p.getLivro().getValor() + "," + p.getLivro().getEstoque() + ")'");
-				sbRegistro.append("max='" + p.getLivro().getEstoque() + "'/>");
-				sbRegistro.append("<input type='hidden' name='txtIdLivro' value='" + p.getLivro().getId() + "'>");
-				sbRegistro.append("<input type='hidden' name='operacao' value='ATUALIZAR'>");
-				sbRegistro.append("</form>");
+				sbRegistro.append("<label id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'>");
+				sbRegistro.append(p.getQuantidade());
+				sbRegistro.append("</label>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
@@ -192,7 +185,7 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
-  Escolher endereço
+  Detalhes
 </button>
 
 <!-- Modal -->
@@ -211,218 +204,24 @@
         </button>
       </div>
       <div class="modal-body">
-      <%
-  		if (usuario != null) {
-			List<Endereco> enderecos = usuario.getEnderecos();
-			StringBuilder sbRegistro = new StringBuilder();
-			StringBuilder sbLink = new StringBuilder();
-			
-			if(enderecos.size() > 0){
-				try
-				{
-				int i = 0;
-				for (Endereco e : enderecos) {
-					sbRegistro.setLength(0);
-					sbLink.setLength(0);
-					
-					sbRegistro.append(sbLink.toString());	
-					sbRegistro.append(e.getLogradouro() + ", " + e.getNumero());
-					sbRegistro.append("<BR>");
-					sbRegistro.append(e.getBairro() + ", " + e.getCidade() + ", " + e.getEstado());			
-					sbRegistro.append("<BR>");
-					sbRegistro.append(e.getCep());
-					sbRegistro.append("<BR>");
-					sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-					if (carrinho != null) {
-						//sbRegistro = new StringBuilder();
-						sbLink = new StringBuilder();
-						
-						if(carrinho.getProdutos().size() > 0){
-							try
-							{
-							for (Produto p : carrinho.getProdutos()) {
-								//sbRegistro.setLength(0);
-								sbLink.setLength(0);
-											
-								sbRegistro.append("<input type='hidden' id='txtQtdeH" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'/>");
-								
-								//out.print(sbRegistro.toString());
-								
-							}
-							}catch(Exception ex){
-								
-							}
-						}
-					}
-					sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-					sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
-					sbRegistro.append("</form>");
-					
-					out.print(sbRegistro.toString());
-					i++;
-				}
-				}catch(Exception e){
-					
-				}
-			}
-		}
-	   %>
+        <form action='SalvarProduto' method='post' id='frmSalvarLivro'>
+        	Status atual do pedido: ${carrinho.getStatus()}
+        	<BR>
+          <select id="ddlStatus" name="ddlStatus">
+			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>APROVADO</option>
+			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>REPROVADO</option>
+			<option ${carrinho.getStatus() == 'APROVADO' ? '' : 'style="display:none"' }>EM TRANSPORTE</option>
+			<option ${carrinho.getStatus() == 'EM TRANSPORTE' ? '' : 'style="display:none"' }>ENTREGUE</option>
+		  </select>
+		  <input type="submit" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="ALTERAR" />
+	    </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
-		  Novo endereço
-		</button>
-		
-		<!-- Modal -->
-		<div class="modal fade" style='width:100%' id="novoEnderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		      <form action="SalvarEndereco" method="post" id="frmSalvarEndereco">
-			<table class="table table-bordered">
-				<tr><TH COLSPAN="2">Cadastro de endereço</TH></tr>
-				<tr style="${empty usuario ? 'display:none' : ''}">
-					<td>
-						ID do cliente
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Tipo da residencia
-					</td>
-					<td>
-						<select id="ddlTipoResidencia" name="ddlTipoResidencia">
-							<option>Casa</option>
-							<option>Apartamento</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Tipo do logradouro
-					</td>
-					<td>
-						<select id="ddlTipoLogradouro" name="ddlTipoLogradouro">
-							<option>Avenida</option>
-							<option>Rua</option>
-							<option>Travessa</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Logradouro
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Preferencial
-					</td>
-					<td>
-						Ativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="true">
-					    Inativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="false" checked>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Número
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtNumero" name="txtNumero" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Bairro
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtBairro" name="txtBairro" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						CEP
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtCep" name="txtCep" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Estado
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Cidade
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtCidade" name="txtCidade" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						País
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Observação
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Responsavel
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty usuario ? '' : ''}" readonly/>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR NOVO" class="btn btn-default" />
-		</form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+      
       </div>
     </div>
   </div>
 </div>
 
-
-
-<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
-<a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
-<form action='SalvarProduto' method='post' id='frmSalvarLivro'>
-	<input type="submit" style="float:right" ${empty usuario ? 'disabled' : ''} ${empty cartao ? 'disabled' : ''} ${empty enderecoEntrega ? 'disabled' : ''} class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
-</form>
 </body>
 </html>
