@@ -6,6 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="resources/estilo.css">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -38,6 +39,7 @@
 		Cartao cartao = (Cartao) session.getAttribute("cartao");
 		if(usuario != null)
 			out.print(usuario.getNome());
+		out.print("<a href='http://localhost:8080/finalWeb/Index.jsp'>Início</a>");
 	%>
 	<BR>
 	<%
@@ -204,7 +206,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action='SalvarProduto' method='post' id='frmSalvarLivro'>
+        <form action='SalvarPedido' method='post' id='frmSalvarLivro'>
         	Status atual do pedido: ${carrinho.getStatus()}
         	<BR>
           <select id="ddlStatus" name="ddlStatus">

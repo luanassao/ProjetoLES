@@ -27,31 +27,33 @@
 	if(usuario == null)
 		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
 	%>
-	<form action="SalvarCliente" method="post" id="frmSalvarCliente">
-			<table class="table table-bordered">
-				<tr><TH COLSPAN="2">Pagina principal</TH></tr>
-				<tr style="${empty cliente ? 'display:none' : ''}">
-					<td>
-						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaCliente.jsp">Consultar clientes</a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty cliente ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
-		</form>
+	<table class="table table-bordered">
+		<tr><TH COLSPAN="2">Pagina principal</TH></tr>
+		<tr style="${empty usuario ? 'display:none' : usuario.getAdministrador() == true ? '' : 'display:none'}">
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar Livro</a>
+			</td>
+		</tr>
+		<tr style="${empty usuario ? 'display:none' : usuario.getAdministrador() == true ? '' : 'display:none'}">
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>

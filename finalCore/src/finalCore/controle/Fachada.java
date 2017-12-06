@@ -251,11 +251,22 @@ public class Fachada implements IFachada{
 		 */
 		rnsCarrinho.put("SALVAR", rnsSalvarCarrinho);
 		
+		/* Criando uma lista para conter as regras de negócio de livro
+		 * quando a operação for alterar
+		 */
+		List<IStrategy> rnsAlterarCarrinho = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do livro*/
+		
+	
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsCarrinho.put("ALTERAR", rnsAlterarCarrinho);
+		
 		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
 		 * pelo nome da entidade
 		 */
 		rns.put(Carrinho.class.getName(), rnsCarrinho);
-		
 		
 		/* Criando uma lista para conter as regras de negócio de produto
 		 * quando a operação for salvar
@@ -375,7 +386,7 @@ public class Fachada implements IFachada{
 	public Resultado alterar(EntidadeDominio entidade) {
 		resultado = new Resultado();
 		String nmClasse = entidade.getClass().getName();	
-		
+		System.out.println("Classe no alterar: " + nmClasse);
 		String msg = executarRegras(entidade, "ALTERAR");
 	
 		if(msg == null){

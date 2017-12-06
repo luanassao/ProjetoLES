@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -20,9 +21,21 @@ public class PedidoViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Carrinho carrinho = null;
 
-		if(!operacao.equals("VISUALIZAR"))
+		if(operacao.equals("ALTERAR"))
 		{
 			String status = request.getParameter("ddlStatus");
+			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
+			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
+			carrinho = new Carrinho();
+			
+			carrinho.setId(pedido.getId());
+			carrinho.setEmail(cliente.getEmail());
+			carrinho.setStatus(status);
+		}
+		else if(!operacao.equals("VISUALIZAR"))
+		{
+			String status = request.getParameter("ddlStatus");
+			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
 			
 			carrinho = new Carrinho();
 			
@@ -40,6 +53,7 @@ public class PedidoViewHelper implements IViewHelper{
 				// TODO: handle exception
 			}
 			
+			carrinho.setEmail(cliente.getEmail());
 			carrinho.setStatus(status);
 		}
 		else{
@@ -62,7 +76,6 @@ public class PedidoViewHelper implements IViewHelper{
 			throws IOException, ServletException {
 		RequestDispatcher d=null;
 		request.getSession().setAttribute("resultado", null);
-		request.getSession().setAttribute("carrinho", null);
 		
 		String operacao = request.getParameter("operacao");
 		
@@ -77,7 +90,7 @@ public class PedidoViewHelper implements IViewHelper{
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
 			
-			d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");  
+			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");  
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
@@ -89,13 +102,13 @@ public class PedidoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
 			
 			request.getSession().setAttribute("resultado", null);
-			d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");
+			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");
 		}
 		
 		if(resultado.getMsg() != null){
 			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
 				request.getSession().setAttribute("resultado", resultado);
-				d= request.getRequestDispatcher("FormConsultaCarrinho.jsp");  	
+				d= request.getRequestDispatcher("FormConsultaPedidos.jsp");  	
 			}
 		}
 		d.forward(request,response);

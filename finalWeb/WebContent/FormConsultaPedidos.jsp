@@ -42,6 +42,7 @@
 				<td>
 				Status 
 				<select id="ddlStatus" name="ddlStatus">
+					<option value="">TODOS</option>
 					<option value="EM PROCESSAMENTO">EM PROCESSAMENTO</option>
 					<option value="EM TROCA">EM TROCA</option>
 					<option value="APROVADO">APROVADO</option>

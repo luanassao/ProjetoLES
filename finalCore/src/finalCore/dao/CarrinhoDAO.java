@@ -42,18 +42,18 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			pst.setInt(6, carrinho.getCupom().getId());
 			pst.setInt(7, carrinho.getID_Cliente());
 			pst.setString(8, carrinho.getEmail());
-			System.out.println(pst);
+			System.out.println(pst + "\nQuantidade de produtos: " + carrinho.getProdutos().size());
 			pst.executeUpdate();
 			connection.commit();
-			
+			pst.close();
 			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT ID_Carrinho FROM carrinho WHERE 1=1");
+			sb.append("SELECT ID_Carrinho FROM carrinho WHERE 1=1 order by 1");
 			try{
 				openConnection();
 				pst = connection.prepareStatement(sb.toString());
 				ResultSet rs = pst.executeQuery();
-				
 				while(rs.next()){
+					System.out.println("Procurando o carrinho, atual: " + rs.getInt("ID_Carrinho"));
 					if(rs.isLast())
 					{
 						Carrinho c = new Carrinho();
@@ -66,6 +66,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			}
 			for(Produto p : carrinho.getProdutos())
 			{
+				System.out.println("Inserindo produto no carrinho: " + carrinhos.get(0).getId());
 				try {
 					connection.setAutoCommit(false);
 					sql = new StringBuilder();
@@ -108,13 +109,11 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE carrinho SET valor_frete = ?, valor_livros = ?, valor_total = ? WHERE ID_Carrinho = ?");
+			sql.append("UPDATE carrinho SET status = ? WHERE ID_Carrinho = ?");
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setDouble(1, carrinho.getFrete());
-			pst.setDouble(2, carrinho.getValorLivros());
-			pst.setDouble(3, carrinho.getValorTotal());
-			pst.setInt(4, carrinho.getId());
+			pst.setString(1, carrinho.getStatus());
+			pst.setInt(2, carrinho.getId());
 			System.out.println(pst);
 			pst.executeUpdate();
 			connection.commit();
@@ -146,6 +145,8 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			sb.append(" AND email_cliente = '" + carrinho.getEmail() + "'");
 		if(carrinho.getID_Cliente() > 0)
 			sb.append(" AND ID_Cliente = '" + carrinho.getEmail() + "'");
+		if(carrinho.getStatus() != null && carrinho.getStatus().length() > 0)
+			sb.append(" AND status = '" + carrinho.getStatus() + "'");
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -233,7 +234,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				rst = pst.executeQuery();
 				while(rst.next()) {
 					if(rs.getInt("id_carrinho") == rst.getInt("id_carrinho")) {
-						System.out.println("Achou 1 produto");
 						Livro l = new Livro();
 						Produto p = new Produto();
 						l.setId(rst.getInt("ID_Livro"));
