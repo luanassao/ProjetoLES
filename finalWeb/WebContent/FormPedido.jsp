@@ -186,12 +186,12 @@
 <BR>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal">
   Detalhes
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="enderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="detalhesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="
     width: 100%;
     height: 100%;

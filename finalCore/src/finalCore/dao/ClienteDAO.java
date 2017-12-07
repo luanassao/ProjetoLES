@@ -25,8 +25,8 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO clientes(nome, dt_nasc, dt_cadastro, cpf, genero, tipo_tel, telefone, email, senha, status, alterador)");
-			sql.append("VALUES (?,?,sysdate(),?,?,?,?,?,?,?,?)");		
+			sql.append("INSERT INTO clientes(nome, dt_nasc, dt_cadastro, cpf, genero, tipo_tel, telefone, email, senha, status, alterador, administrador)");
+			sql.append("VALUES (?,?,sysdate(),?,?,?,?,?,?,?,?,false)");		
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, cliente.getNome());
@@ -131,8 +131,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 				Calendar calendC = Calendar.getInstance();
 				calendC.setTime(rs.getDate("dt_cadastro"));
 				c.setDtCadastro(calendC);
-				c.setAdministrador(true);
-				System.out.println("status: " + c.getAdministrador());
+				c.setAdministrador(rs.getBoolean("administrador"));
 				clientes.add(c);
 			}
 			return clientes;

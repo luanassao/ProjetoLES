@@ -42,7 +42,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			pst.setInt(6, carrinho.getCupom().getId());
 			pst.setInt(7, carrinho.getID_Cliente());
 			pst.setString(8, carrinho.getEmail());
-			System.out.println(pst + "\nQuantidade de produtos: " + carrinho.getProdutos().size());
 			pst.executeUpdate();
 			connection.commit();
 			pst.close();
@@ -53,7 +52,6 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				pst = connection.prepareStatement(sb.toString());
 				ResultSet rs = pst.executeQuery();
 				while(rs.next()){
-					System.out.println("Procurando o carrinho, atual: " + rs.getInt("ID_Carrinho"));
 					if(rs.isLast())
 					{
 						Carrinho c = new Carrinho();
@@ -77,6 +75,17 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 					pst.setInt(1, carrinhos.get(0).getId());
 					pst.setInt(2, p.getLivro().getId());
 					pst.setInt(3, p.getQuantidade());
+					pst.executeUpdate();
+					connection.commit();
+					pst.close();
+					
+					sql = new StringBuilder();
+					sql.append("UPDATE Livros set estoque = ? WHERE ID_Livro = ?");
+					
+					pst = connection.prepareStatement(sql.toString());
+					pst.setInt(1, (p.getLivro().getEstoque() - p.getQuantidade()));
+					pst.setInt(2, p.getLivro().getId());
+					System.out.println(pst);
 					pst.executeUpdate();
 					connection.commit();
 				}catch (Exception e) {
