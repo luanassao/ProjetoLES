@@ -24,34 +24,34 @@
 	else if(usuario != null){
 		out.print("Bem vindo, " + usuario.getNome());
 	}
-	if(usuario == null)
+	else if(usuario == null)
 		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
 	%>
 	<table class="table table-bordered">
 		<tr><TH COLSPAN="2">Pagina principal</TH></tr>
-		<tr style="${empty usuario ? 'display:none' : usuario.getAdministrador() == true ? '' : 'display:none'}">
+		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar Livro</a>
 			</td>
 		</tr>
-		<tr style="${empty usuario ? 'display:none' : usuario.getAdministrador() == true ? '' : 'display:none'}">
+		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>
 			</td>
 		</tr>
-		<tr>
+		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
+			</td>
+		</tr>
+		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
 			</td>
 		</tr>
-		<tr>
+		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
 			</td>
 		</tr>
 	</table>

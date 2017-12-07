@@ -49,6 +49,7 @@ public class ValidadorUsuario implements IStrategy{
 				{
 					cliente.setNome(cli.getNome());
 					cliente.setId(cli.getId());
+					cliente.setAdministrador(cli.getAdministrador());
 					for(EntidadeDominio e : enderecos)
 					{
 						end = (Endereco)e;

@@ -132,6 +132,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 				calendC.setTime(rs.getDate("dt_cadastro"));
 				c.setDtCadastro(calendC);
 				c.setAdministrador(true);
+				System.out.println("status: " + c.getAdministrador());
 				clientes.add(c);
 			}
 			return clientes;
