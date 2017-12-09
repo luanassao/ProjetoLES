@@ -52,6 +52,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setDouble(18, livro.getPreco());
 			pst.setString(19, String.valueOf(livro.getPrecificacao()));
 			pst.setDouble(20, livro.getValor());
+			System.out.println(pst);
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {

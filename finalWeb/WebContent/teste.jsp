@@ -1,54 +1,47 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<script src="C:/Users/ASSAO/Desktop/HighCharts/code/highcharts.js"></script>
-		<title>Highcharts Example</title>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
-		<style type="text/css">
-#container {
-	min-width: 310px;
-	max-width: 800px;
-	height: 400px;
-	margin: 0 auto
-}
-		</style>
-	</head>
-	<body>
-<script src="C:/Users/ASSAO/Desktop/HighCharts/code/highcharts.js"></script>
-<script src="C:/Users/ASSAO/Desktop/HighCharts/code/modules/series-label.js"></script>
-<script src="C:/Users/ASSAO/Desktop/HighCharts/code/modules/exporting.js"></script>
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
 
-<div id="container"></div>
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
 
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
 
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2],
+          ['queijo', 5]
+        ]);
 
-		<script type="text/javascript">
-		alert("queijo");
-		$(function () { 
-		    var myChart = Highcharts.chart('container', {
-		        chart: {
-		            type: 'bar'
-		        },
-		        title: {
-		            text: 'Fruit Consumption'
-		        },
-		        xAxis: {
-		            categories: ['Apples', 'Bananas', 'Oranges']
-		        },
-		        yAxis: {
-		            title: {
-		                text: 'Fruit eaten'
-		            }
-		        },
-		        series: [{
-		            name: 'Jane',
-		            data: [1, 0, 4]
-		        }, {
-		            name: 'John',
-		            data: [5, 7, 3]
-		        }]
-		    });
-		});
-		</script>
-	</body>
+        // Set chart options
+        var options = {'title':'How Much Pizza I Ate Last Night',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+
+  <body>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+  </body>
 </html>

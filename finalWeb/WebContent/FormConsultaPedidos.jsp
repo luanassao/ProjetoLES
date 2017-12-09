@@ -89,7 +89,6 @@
       <TH>Codigo</TH>
       <TH>Comprador</TH>
       <TH>Status</TH>
-      <TH>Forma de pagamento</TH>
       <TH>ID do endereço</TH>
       <TH>Valor do frete</TH>
       <TH>Valor dos livros</TH>
@@ -145,19 +144,13 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getFormaPagamento());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(c.getIdEndereco());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getFrete());
+				sbRegistro.append(c.getFrete() > 0 ? c.getFrete() : "Pedido de troca");
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				

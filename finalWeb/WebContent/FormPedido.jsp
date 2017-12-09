@@ -58,7 +58,7 @@
       </TH>
    </TR>
    <TR>
-   	  ${usuario.getAdministrador() == false ? '<TH>Trocar</TH>' : ''}
+   	  ${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '<TH>Trocar</TH>' : ''}
    	  <TH>#</TH>
       <TH>Titulo</TH>
       <TH>Preço unitário</TH>
@@ -82,7 +82,7 @@
 				
 				sbRegistro.append("<TR ALIGN='CENTER'>");
 				
-				if(!usuario.getAdministrador()) {
+				if(!usuario.getAdministrador() && carrinho.getStatus().equals("ENTREGUE")) {
 					sbRegistro.append("<TD>");
 					sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'");
 					sbRegistro.append("</TD>");
@@ -124,8 +124,8 @@
 	}
    %>
 </TABLE>
-<input type="submit" style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}" class="btn btn-primary" id="operacao" name="operacao" value="SOLICITAR TROCA" />
-<input type="submit" style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" />
+<input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="SOLICITAR TROCA" />
+<input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" />
 </form>
 <BR>
 

@@ -188,10 +188,10 @@
 					</td>
 					<td>
 						<select id="ddlPrecificacao" name="ddlPrecificacao">
-							<option ${empty livro ? 'selected' : '' }>A - 30%</option>
-							<option ${livro.getPrecificacao() == 'B' ? 'selected' : '' }>B - 40%</option>
-							<option ${livro.getPrecificacao() == 'C' ? 'selected' : '' }>C - 50%</option>
-							<option ${livro.getPrecificacao() == 'D' ? 'selected' : '' }>D - 60%</option>
+							<option value="A" ${empty livro ? 'selected' : '' }>A - 30%</option>
+							<option value="B" ${livro.getPrecificacao() == 'B' ? 'selected' : '' }>B - 40%</option>
+							<option value="C" ${livro.getPrecificacao() == 'C' ? 'selected' : '' }>C - 50%</option>
+							<option value="D" ${livro.getPrecificacao() == 'D' ? 'selected' : '' }>D - 60%</option>
 						</select>
 					</td>
 				</tr>

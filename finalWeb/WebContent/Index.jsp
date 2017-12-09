@@ -39,6 +39,11 @@
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>
 			</td>
 		</tr>
+		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/grafico.jsp">Gráfico</a>
+			</td>
+		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>

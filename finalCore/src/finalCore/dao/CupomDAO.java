@@ -55,8 +55,7 @@ public class CupomDAO extends AbstractJdbcDAO {
 		Cupom cupom = (Cupom) entidade;
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append(
-				"SELECT * from cupons");
+		sql.append("SELECT * from cupons");
 		sql.append(" WHERE 1=1 ");
 		if (cupom.getCodigo() != null && cupom.getCodigo().length() > 0) {
 			sql.append(" AND Codigo = '" + cupom.getCodigo() + "'" );

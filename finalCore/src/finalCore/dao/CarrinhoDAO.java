@@ -30,6 +30,15 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE carrinho set status = 'TROCADO' WHERE ID_Carrinho = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setInt(1, carrinho.getIdPedido());
+			System.out.println(pst);
+			pst.executeUpdate();
+			connection.commit();
+			
+			sql = new StringBuilder();
 			sql.append("INSERT INTO carrinho(id_endereco, valor_frete, valor_livros, valor_total, id_cartao, data_criacao, ID_Cupom, id_cliente, email_cliente, status)");
 			sql.append("VALUES (?,?,?,?,?,sysdate(),?,?,?,?)");
 			
