@@ -81,7 +81,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE livros SET autor = ?, categoria = ?, subcategoria = ?, ano = ?, titulo = ?, editora = ?,");
-			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, status = ?, altura = ?, largura = ?, peso = ?, profundidade = ?, alterador = ? WHERE ID_Livro = ?");		
+			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, status = ?, altura = ?, largura = ?, peso = ?, ");
+			sql.append("profundidade = ?, alterador = ?, estoque=? WHERE ID_Livro = ?");		
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, livro.getAutor());
@@ -100,7 +101,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setDouble(14, livro.getPeso());
 			pst.setDouble(15, livro.getProfundidade());
 			pst.setString(16, livro.getAlterador());
-			pst.setInt(17, livro.getId());
+			pst.setInt(17, livro.getEstoque());
+			pst.setInt(18, livro.getId());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {

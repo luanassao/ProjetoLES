@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
 import finalDominio.Cliente;
+import finalDominio.Cupom;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -21,20 +22,42 @@ public class PedidoViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Carrinho carrinho = null;
 
-		if(operacao.equals("ALTERAR"))
+		if(operacao.equals("SOLICITAR TROCA")) {
+			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
+			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
+			carrinho = new Carrinho();
+			carrinho.setEmail(cliente.getEmail());
+			carrinho.setID_Cliente(cliente.getId());
+			carrinho.setStatus("EM TROCA");
+			carrinho.setCupom(pedido.getCupom() == null ? new Cupom() : pedido.getCupom());
+			carrinho.setEnderecoEntrega(pedido.getEnderecoEntrega());
+			carrinho.setIdPedido(pedido.getId());
+			carrinho.setCartao(pedido.getCartao());
+			System.out.println("Solicitando troca!");
+			for(int i = 0; i < pedido.getProdutos().size(); i++) {
+				System.out.println(request.getParameter("cbTroca" + pedido.getProdutos().get(i).getId()));
+				if(request.getParameter("cbTroca" + pedido.getProdutos().get(i).getId()) != null)
+					carrinho.getProdutos().add(pedido.getProdutos().get(i));
+			}
+		}
+		else if(operacao.equals("ALTERAR"))
 		{
-			String status = request.getParameter("ddlStatus");
 			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
 			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
 			carrinho = new Carrinho();
-			
-			carrinho.setId(pedido.getId());
-			carrinho.setEmail(cliente.getEmail());
-			carrinho.setStatus(status);
+
+			carrinho = pedido;
+			if(cliente.getAdministrador()) {
+				String status = request.getParameter("ddlStatus");
+				carrinho.setStatus(status);
+			}
+			else
+				carrinho.setStatus("EM TROCA");
 		}
 		else if(!operacao.equals("VISUALIZAR"))
 		{
 			String status = request.getParameter("ddlStatus");
+			String email = request.getParameter("txtEmail");
 			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
 			
 			carrinho = new Carrinho();
@@ -47,13 +70,23 @@ public class PedidoViewHelper implements IViewHelper{
 			}
 			
 			try {
+				int idC = Integer.parseInt(request.getParameter("txtIdCliente"));
+				carrinho.setID_Cliente(idC);
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			try {
 				int idEndereco = Integer.parseInt(request.getParameter("txtIdEndereco"));
 				carrinho.setIdEndereco(idEndereco);
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
 			
-			carrinho.setEmail(cliente.getEmail());
+			if(!cliente.getAdministrador())
+				carrinho.setEmail(cliente.getEmail());
+			else
+				carrinho.setEmail(email);
 			carrinho.setStatus(status);
 		}
 		else{

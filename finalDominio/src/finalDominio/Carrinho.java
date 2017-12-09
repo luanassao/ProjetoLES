@@ -6,7 +6,7 @@ public class Carrinho extends EntidadeDominio{
 	private ArrayList<Produto> produtos = new ArrayList<>();
 	private Endereco enderecoEntrega;
 	private Cartao cartao;
-	private int ID_Cliente, idEndereco;
+	private int ID_Cliente, idEndereco, idPedido;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status, email;
 	private Cupom cupom;
@@ -86,6 +86,14 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setIdEndereco(int idEndereco) {
 		this.idEndereco = idEndereco;
+	}
+
+	public int getIdPedido() {
+		return idPedido;
+	}
+
+	public void setIdPedido(int idPedido) {
+		this.idPedido = idPedido;
 	}
 
 	public Cupom getCupom() {

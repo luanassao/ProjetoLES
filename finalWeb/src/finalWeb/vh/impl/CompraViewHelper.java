@@ -38,6 +38,7 @@ public class CompraViewHelper implements IViewHelper{
 			carrinho.setEmail(cliente.getEmail());
 			carrinho.setCupom(cupom);
 			carrinho.setCartao(cartao);
+			carrinho.setStatus("EM PROCESSAMENTO");
 			carrinho.setEnderecoEntrega(endereco);
 			return carrinho;
 		}

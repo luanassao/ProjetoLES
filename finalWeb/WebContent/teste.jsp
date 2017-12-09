@@ -1,15 +1,54 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-	<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
-	<input type="button" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
-	<input id="operacao" name="operacao" value="CONSULTAR" />
-	<a href="javascript:alert('Hello World!');">Execute JavaScript</a>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script src="C:/Users/ASSAO/Desktop/HighCharts/code/highcharts.js"></script>
+		<title>Highcharts Example</title>
+
+		<style type="text/css">
+#container {
+	min-width: 310px;
+	max-width: 800px;
+	height: 400px;
+	margin: 0 auto
+}
+		</style>
+	</head>
+	<body>
+<script src="C:/Users/ASSAO/Desktop/HighCharts/code/highcharts.js"></script>
+<script src="C:/Users/ASSAO/Desktop/HighCharts/code/modules/series-label.js"></script>
+<script src="C:/Users/ASSAO/Desktop/HighCharts/code/modules/exporting.js"></script>
+
+<div id="container"></div>
+
+
+
+		<script type="text/javascript">
+		alert("queijo");
+		$(function () { 
+		    var myChart = Highcharts.chart('container', {
+		        chart: {
+		            type: 'bar'
+		        },
+		        title: {
+		            text: 'Fruit Consumption'
+		        },
+		        xAxis: {
+		            categories: ['Apples', 'Bananas', 'Oranges']
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Fruit eaten'
+		            }
+		        },
+		        series: [{
+		            name: 'Jane',
+		            data: [1, 0, 4]
+		        }, {
+		            name: 'John',
+		            data: [5, 7, 3]
+		        }]
+		    });
+		});
+		</script>
+	</body>
 </html>

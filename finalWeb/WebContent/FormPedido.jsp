@@ -50,6 +50,7 @@
 	%>
 <BR>
 
+<form action="SalvarPedido" method="post">
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
@@ -57,6 +58,7 @@
       </TH>
    </TR>
    <TR>
+   	  ${usuario.getAdministrador() == false ? '<TH>Trocar</TH>' : ''}
    	  <TH>#</TH>
       <TH>Titulo</TH>
       <TH>Preço unitário</TH>
@@ -80,9 +82,15 @@
 				
 				sbRegistro.append("<TR ALIGN='CENTER'>");
 				
+				if(!usuario.getAdministrador()) {
+					sbRegistro.append("<TD>");
+					sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'");
+					sbRegistro.append("</TD>");
+				}
+				
 				sbRegistro.append("<TD><img src='http://livresaber.sead.ufscar.br:8080/jspui/bitstream/123456789/1354/2/icone%20livro.jpg' style='width: 50px; height: 50px;' alt='First slide'></TD>");
 				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());	
+				sbRegistro.append(sbLink.toString());
 				sbRegistro.append(p.getLivro().getTitulo());	
 				sbRegistro.append("</TD>");
 				
@@ -116,6 +124,10 @@
 	}
    %>
 </TABLE>
+<input type="submit" style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}" class="btn btn-primary" id="operacao" name="operacao" value="SOLICITAR TROCA" />
+<input type="submit" style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" />
+</form>
+<BR>
 
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
@@ -186,7 +198,7 @@
 <BR>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal">
+<button type="button" style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}" class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal">
   Detalhes
 </button>
 
@@ -209,13 +221,13 @@
         <form action='SalvarPedido' method='post' id='frmSalvarLivro'>
         	Status atual do pedido: ${carrinho.getStatus()}
         	<BR>
-          <select id="ddlStatus" name="ddlStatus">
+          <select style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" id="ddlStatus" name="ddlStatus">
 			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>APROVADO</option>
 			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>REPROVADO</option>
 			<option ${carrinho.getStatus() == 'APROVADO' ? '' : 'style="display:none"' }>EM TRANSPORTE</option>
 			<option ${carrinho.getStatus() == 'EM TRANSPORTE' ? '' : 'style="display:none"' }>ENTREGUE</option>
 		  </select>
-		  <input type="submit" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="ALTERAR" />
+		  <input type="submit" style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="ALTERAR" />
 	    </form>
       </div>
       <div class="modal-footer">

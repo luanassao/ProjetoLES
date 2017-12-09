@@ -30,8 +30,8 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO carrinho(id_endereco, valor_frete, valor_livros, valor_total, id_cartao, status, data_criacao, ID_Cupom, id_cliente, email_cliente)");
-			sql.append("VALUES (?,?,?,?,?,'EM PROCESSAMENTO',sysdate(),?,?,?)");
+			sql.append("INSERT INTO carrinho(id_endereco, valor_frete, valor_livros, valor_total, id_cartao, data_criacao, ID_Cupom, id_cliente, email_cliente, status)");
+			sql.append("VALUES (?,?,?,?,?,sysdate(),?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setInt(1, carrinho.getEnderecoEntrega().getId());
@@ -42,6 +42,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			pst.setInt(6, carrinho.getCupom().getId());
 			pst.setInt(7, carrinho.getID_Cliente());
 			pst.setString(8, carrinho.getEmail());
+			pst.setString(9, carrinho.getStatus());
 			pst.executeUpdate();
 			connection.commit();
 			pst.close();
@@ -159,6 +160,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
+			System.out.println(pst);
 			ResultSet rs = pst.executeQuery();
 			List<EntidadeDominio> carrinhos = new ArrayList<>();
 			while(rs.next()){

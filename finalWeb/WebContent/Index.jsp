@@ -39,11 +39,6 @@
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>
 			</td>
 		</tr>
-		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
-			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">Pedidos</a>
-			</td>
-		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
@@ -52,6 +47,12 @@
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
 				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCarrinho.jsp">Carrinho</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaPedidos.jsp">
+				${usuario.getAdministrador() ==  true ? 'Pedidos' : 'Meus pedidos'}</a>
 			</td>
 		</tr>
 	</table>
