@@ -1,6 +1,7 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import finalDominio.Carrinho;
 import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
+import finalDominio.CupomTroca;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
@@ -32,6 +34,7 @@ public class CompraViewHelper implements IViewHelper{
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
 			Cartao cartao = (Cartao)session.getAttribute("cartao");
 			Cupom cupom = (Cupom)session.getAttribute("cupom");
+			System.out.println(carrinho.getCupons().size());
 			if(cupom == null)
 				cupom = new Cupom();
 			carrinho.setID_Cliente(cliente.getId());
@@ -70,6 +73,14 @@ public class CompraViewHelper implements IViewHelper{
 			int indice = Integer.parseInt(request.getParameter("txtIndice"));
 			carrinho.setCartao(cliente.getCartoes().get(indice));
 			return carrinho.getCartao();
+		}
+		else if(operacao.equals("SELECIONAR CUPOM"))
+		{
+			HttpSession session = request.getSession();
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			int indice = Integer.parseInt(request.getParameter("txtIndice"));
+			cliente.getCupons().get(indice).setStatus(false);
+			return cliente.getCupons().get(indice);
 		}
 		else if(operacao.equals("SELECIONAR"))
 		{
@@ -139,6 +150,15 @@ public class CompraViewHelper implements IViewHelper{
 			
 			request.getSession().setAttribute("resultado", null);
 			d= request.getRequestDispatcher("FormConsultaProduto.jsp");  
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("SELECIONAR CUPOM")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			if(carrinho == null)
+				System.out.println("carrinho nulo");
+			carrinho.getCupons().add((CupomTroca)resultado.getEntidades().get(0));
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("COMPRAR")){

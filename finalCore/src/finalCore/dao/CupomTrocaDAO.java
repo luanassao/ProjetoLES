@@ -55,7 +55,36 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 	@Override
 	public void alterar(EntidadeDominio entidade) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		openConnection();
+		PreparedStatement pst = null;
+		CupomTroca cupom = (CupomTroca)entidade;
+		System.out.println("operação de alterar");
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE cupomtroca SET status = ? WHERE ID_Cupom = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setBoolean(1, false);
+			pst.setInt(2, cupom.getId());
+			pst.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}finally{
+			try {
+				pst.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	@Override

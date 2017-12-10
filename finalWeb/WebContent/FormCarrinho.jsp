@@ -175,7 +175,7 @@
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
 		<TH>
-		Cupom
+		Cupom de desconto
 		</TH>
 	</TR>
 	<TR>
@@ -185,6 +185,51 @@
 		Valor do desconto: ${empty cupom ? '' : cupom.getValor()}
 		</TD>
 	</TR>
+</TABLE>
+<BR>
+
+<TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
+	<TR>
+		<TH>
+		Cupom de troca
+		</TH>
+	</TR>
+	<%
+	try{
+	if (carrinho.getCupons() != null) {
+		List<CupomTroca> cupons = carrinho.getCupons();
+		StringBuilder sbRegistro = new StringBuilder();
+		StringBuilder sbLink = new StringBuilder();
+		
+		if(cupons.size() > 0){
+			try
+			{
+			for (CupomTroca c : cupons) {
+				sbRegistro.setLength(0);
+				sbLink.setLength(0);
+				
+				sbRegistro.append(sbLink.toString());
+				sbRegistro.append("<TR>");
+				sbRegistro.append("<TD>");
+				sbRegistro.append("Valor do cupom: ");
+				sbRegistro.append(c.getValor());
+				sbRegistro.append("<BR>");
+				sbRegistro.append("Status: ");
+				sbRegistro.append(c.getStatus());
+				sbRegistro.append("</TD>");
+				sbRegistro.append("</TR>");
+				
+				out.print(sbRegistro.toString());
+			}
+			}catch(Exception e){
+				
+			}
+		}
+	}
+	}catch(Exception e){
+		out.print("ERRO!");
+	}
+	%>
 </TABLE>
 <BR>
 
@@ -279,7 +324,7 @@
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+		        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -484,7 +529,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cupons de troca</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -509,10 +554,11 @@
 				sbRegistro.append(c.getValor());
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Status: ");
-				sbRegistro.append(c.getStatus());
+				sbRegistro.append(c.getStatus() == true ? "Utilizavel" : "Já utilizado");
 				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
 				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='CONFIRMAR'>");
+				if(c.getStatus())
+					sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR CUPOM'>");
 				sbRegistro.append("</form>");
 				
 				out.print(sbRegistro.toString());
@@ -542,7 +588,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cupom</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

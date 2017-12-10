@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
+import finalDominio.Carrinho;
 import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
@@ -132,7 +133,7 @@ public class ClienteViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("LOGAR")){
-			
+			request.getSession().setAttribute("carrinho", new Carrinho());
 			request.getSession().setAttribute("usuario", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("Index.jsp");  
 		}

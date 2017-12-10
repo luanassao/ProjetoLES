@@ -1,9 +1,11 @@
 package finalDominio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Carrinho extends EntidadeDominio{
 	private ArrayList<Produto> produtos = new ArrayList<>();
+	private List<CupomTroca> cupons = new ArrayList<>();
 	private Endereco enderecoEntrega;
 	private Cartao cartao;
 	private int ID_Cliente, idEndereco, idPedido;
@@ -127,5 +129,13 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setCupomTroca(CupomTroca cupomTroca) {
 		this.cupomTroca = cupomTroca;
+	}
+
+	public ArrayList<CupomTroca> getCupons() {
+		return (ArrayList<CupomTroca>) cupons;
+	}
+
+	public void setCupons(ArrayList<CupomTroca> cupons) {
+		this.cupons = cupons;
 	}
 }
