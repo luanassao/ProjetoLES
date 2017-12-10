@@ -7,9 +7,11 @@ import java.util.List;
 import finalCore.IStrategy;
 import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
+import finalCore.dao.CupomTrocaDAO;
 import finalCore.dao.EnderecoDAO;
 import finalDominio.Cartao;
 import finalDominio.Cliente;
+import finalDominio.CupomTroca;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 
@@ -22,16 +24,20 @@ public class ValidadorUsuario implements IStrategy{
 			ClienteDAO cliDAO = new ClienteDAO();
 			EnderecoDAO endDAO = new EnderecoDAO();
 			CartaoDAO cartaoDAO = new CartaoDAO();
+			CupomTrocaDAO cupomDAO = new CupomTrocaDAO();
 			List<EntidadeDominio> clientes = new ArrayList<>();
 			List<EntidadeDominio> enderecos = new ArrayList<>();
 			List<EntidadeDominio> cartoes = new ArrayList<>();
+			List<EntidadeDominio> cupons = new ArrayList<>();
 			List<Endereco> enderecosCliente = new ArrayList<>();
 			List<Cartao> cartoesCliente = new ArrayList<>();
+			List<CupomTroca> cuponsCliente = new ArrayList<>();
 			
 			try {
 				clientes = cliDAO.consultar(new Cliente());
 				enderecos = endDAO.consultar(new Endereco());
 				cartoes = cartaoDAO.consultar(new Cartao());
+				cupons = cupomDAO.consultar(new CupomTroca());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 			}
@@ -41,6 +47,7 @@ public class ValidadorUsuario implements IStrategy{
 			Cliente cli;
 			Endereco end;
 			Cartao car;
+			CupomTroca cupo;
 			
 			for(EntidadeDominio c : clientes)
 			{
@@ -62,8 +69,19 @@ public class ValidadorUsuario implements IStrategy{
 						if(cliente.getId() == car.getID_Cliente())
 							cartoesCliente.add(car);
 					}
+					for(EntidadeDominio cup : cupons)
+					{
+						cupo = (CupomTroca)cup;
+						if(cliente.getId() == cupo.getID_Cliente()) {
+							System.out.println("ID: " + cupo.getId() +
+									" ID_Cliente: " + cupo.getID_Cliente() +
+									" Valor: " + cupo.getValor());
+							cuponsCliente.add(cupo);
+						}
+					}
 					cliente.setEnderecos(enderecosCliente);
 					cliente.setCartoes(cartoesCliente);
+					cliente.setCupons(cuponsCliente);
 					return null;
 				}
 			}

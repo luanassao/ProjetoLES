@@ -3,6 +3,7 @@ package finalDominio;
 public class CupomTroca extends EntidadeDominio{
 	private int ID_Cliente, ID_Carrinho;
 	private double valor = 0.0;
+	private Boolean status;
 	
 	public int getID_Cliente() {
 		return ID_Cliente;
@@ -21,5 +22,11 @@ public class CupomTroca extends EntidadeDominio{
 	}
 	public void setID_Carrinho(int iD_Carrinho) {
 		ID_Carrinho = iD_Carrinho;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 }

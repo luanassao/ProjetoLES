@@ -11,6 +11,7 @@ public class Cliente extends EntidadeDominio{
 	private List<Endereco> enderecos = new ArrayList<>();
 	private List<Cartao> cartoes = new ArrayList<>();
 	private List<Carrinho> pedidos = new ArrayList<>();
+	private List<CupomTroca> cupons = new ArrayList<>();
 	private Cartao cartao;
 	
 	public String getNome() {
@@ -103,6 +104,12 @@ public class Cliente extends EntidadeDominio{
 	}
 	public void setAdministrador(Boolean administrador) {
 		this.administrador = administrador;
+	}
+	public List<CupomTroca> getCupons() {
+		return cupons;
+	}
+	public void setCupons(List<CupomTroca> cupons) {
+		this.cupons = cupons;
 	}
 	
 }

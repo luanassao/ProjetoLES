@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import finalDominio.Cupom;
 import finalDominio.CupomTroca;
 import finalDominio.EntidadeDominio;
 
@@ -62,13 +61,13 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		PreparedStatement pst = null;
-		Cupom cupom = (Cupom) entidade;
+		CupomTroca cupom = (CupomTroca) entidade;
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT * from cupomcompra");
+		sql.append("SELECT * from cupomtroca");
 		sql.append(" WHERE 1=1 ");
-		if (cupom.getCodigo() != null && cupom.getCodigo().length() > 0) {
-			sql.append(" AND Codigo = '" + cupom.getCodigo() + "'" );
+		if (cupom.getID_Cliente() > 0) {
+			sql.append(" AND ID_Cliente = '" + cupom.getID_Cliente() + "'" );
 		}
 
 		
@@ -81,12 +80,15 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 			
 			
 			while (rs.next()) {
-				Cupom c = new Cupom();
+				if(rs.getBoolean("status")) {
+				CupomTroca c = new CupomTroca();
 				c.setId(rs.getInt("ID_Cupom"));
-				c.setCodigo(rs.getString("Codigo"));
+				c.setID_Cliente(rs.getInt("ID_Cliente"));
 				c.setValor(rs.getDouble("valor"));
+				c.setStatus(rs.getBoolean("status"));
 				
 				cupons.add(c);
+				}
 
 			}
 			return cupons;
