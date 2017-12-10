@@ -14,6 +14,7 @@ import finalCore.dao.CarrinhoDAO;
 import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
 import finalCore.dao.CupomDAO;
+import finalCore.dao.CupomTrocaDAO;
 import finalCore.dao.EnderecoDAO;
 import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
@@ -30,6 +31,7 @@ import finalDominio.Carrinho;
 import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
+import finalDominio.CupomTroca;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
@@ -64,6 +66,7 @@ public class Fachada implements IFachada{
 		CartaoDAO cartaoDAO = new CartaoDAO();
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		CupomDAO cupomDAO = new CupomDAO();
+		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 		
 		/* Adicionando cada dao no MAP indexando pelo nome da classe */
 		daos.put(Livro.class.getName(), livroDAO);
@@ -72,6 +75,7 @@ public class Fachada implements IFachada{
 		daos.put(Cartao.class.getName(), cartaoDAO);
 		daos.put(Carrinho.class.getName(), carrinhoDAO);
 		daos.put(Cupom.class.getName(), cupomDAO);
+		daos.put(CupomTroca.class.getName(), cupomTrocaDAO);
 		
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();
@@ -286,6 +290,27 @@ public class Fachada implements IFachada{
 		 * pelo nome da entidade
 		 */
 		rns.put(Carrinho.class.getName(), rnsCarrinho);
+		
+		/* Criando uma lista para conter as regras de negócio de livro
+		 * quando a operação for salvar
+		 */
+		List<IStrategy> rnsSalvarCupomTroca = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação salvar do livro*/
+		
+		
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
+		 * por operação  do livro
+		 */
+		Map<String, List<IStrategy>> rnsCupomTroca = new HashMap<String, List<IStrategy>>();
+		/*
+		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 */
+		rnsCupomTroca.put("SALVAR", rnsSalvarCupomTroca);
+		rnsCupomTroca.put("ALTERAR", rnsSalvarCupomTroca);
+		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		 * pelo nome da entidade
+		 */
+		rns.put(CupomTroca.class.getName(), rnsCupomTroca);
 	}
 	
 	

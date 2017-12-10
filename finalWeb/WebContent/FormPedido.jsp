@@ -126,6 +126,7 @@
 </TABLE>
 <input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="SOLICITAR TROCA" />
 <input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" />
+<input type="submit" style="${usuario.getAdministrador() ==  true && carrinho.getStatus() == 'EM TROCA' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="TROCAR" />
 </form>
 <BR>
 

@@ -12,6 +12,7 @@ import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
+import finalDominio.CupomTroca;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -22,7 +23,15 @@ public class PedidoViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Carrinho carrinho = null;
 
-		if(operacao.equals("SOLICITAR TROCA")) {
+		if(operacao.equals("TROCAR")) {
+			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
+			CupomTroca cupom = new CupomTroca();
+			cupom.setID_Carrinho(pedido.getId());
+			cupom.setValor(pedido.getValorLivros());
+			cupom.setID_Cliente(pedido.getID_Cliente());
+			return cupom;
+		}
+		else if(operacao.equals("SOLICITAR TROCA")) {
 			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
 			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
 			carrinho = new Carrinho();
@@ -111,7 +120,7 @@ public class PedidoViewHelper implements IViewHelper{
 		request.getSession().setAttribute("resultado", null);
 		
 		String operacao = request.getParameter("operacao");
-		
+		System.out.println(resultado.getMsg());
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
 				resultado.setMsg("Carrinho cadastrado com sucesso!");
