@@ -417,7 +417,7 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
-  Selecionar forma de pagamento
+  Selecionar cartão
 </button>
 
 <!-- Modal -->
@@ -452,6 +452,64 @@
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Validade: " + c.getValidadeFormatado());
 				sbRegistro.append("<BR>");
+				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
+				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
+				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='CONFIRMAR'>");
+				sbRegistro.append("</form>");
+				
+				out.print(sbRegistro.toString());
+				i++;
+			}
+			}catch(Exception e){
+				
+			}
+		}
+	}
+   %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomTModal">
+  Selecionar cupom de troca
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="cupomTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cartões</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <%
+  		if (usuario != null) {
+		List<CupomTroca> cupons = usuario.getCupons();
+		StringBuilder sbRegistro = new StringBuilder();
+		StringBuilder sbLink = new StringBuilder();
+		
+		if(cupons.size() > 0){
+			try
+			{
+			int i = 0;
+			for (CupomTroca c : cupons) {
+				sbRegistro.setLength(0);
+				sbLink.setLength(0);
+				
+				sbRegistro.append(sbLink.toString());
+				sbRegistro.append("Valor do cupom: ");
+				sbRegistro.append(c.getValor());
+				sbRegistro.append("<BR>");
+				sbRegistro.append("Status: ");
+				sbRegistro.append(c.getStatus());
 				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
 				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
 				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='CONFIRMAR'>");
