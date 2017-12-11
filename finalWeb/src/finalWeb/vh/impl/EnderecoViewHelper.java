@@ -35,6 +35,7 @@ public class EnderecoViewHelper implements IViewHelper{
 			String pais = request.getParameter("txtPais");
 			String observacao = request.getParameter("txtObservacao");
 			String responsavel = request.getParameter("txtResponsavel");
+			String tipo = request.getParameter("ddlTipoEndereco");
 
 			endereco = new Endereco();
 			try {
@@ -53,13 +54,19 @@ public class EnderecoViewHelper implements IViewHelper{
 			}
 			
 			try {
-				int idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				int idc;
+				HttpSession session = request.getSession();
+				Cliente cliente = (Cliente)session.getAttribute("usuario");
+				if(cliente.getAdministrador())
+					idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				else
+					idc = cliente.getId();
 				endereco.setID_Cliente(idc);
-				System.out.println("ID do cliente: " + endereco.getID_Cliente());
 			}catch (Exception e) {
-				// TODO: handle exception
+				System.out.println("Erro ao pegar ID DO CLIENTE");
 			}
 			
+			endereco.setTipo(tipo);
 			endereco.setTipoResidencia(tipoRes);
 			endereco.setTipoLogradouro(tipoLog);
 			endereco.setLogradouro(logradouro);
@@ -71,6 +78,7 @@ public class EnderecoViewHelper implements IViewHelper{
 			endereco.setPais(pais);
 			endereco.setObservacao(observacao);
 			endereco.setAlterador(responsavel);
+			System.out.println(endereco.getTipo());
 		}
 		else{
 			
@@ -98,6 +106,9 @@ public class EnderecoViewHelper implements IViewHelper{
 		
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
+				Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+				usuario.getEnderecos().add((Endereco)resultado.getEntidades().get(0));
+				request.getSession().setAttribute("usuario",usuario);
 				resultado.setMsg("Endereço cadastrado com sucesso!");
 			}
 			
@@ -113,7 +124,7 @@ public class EnderecoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("SALVAR NOVO")){
 			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
 			usuario.getEnderecos().add((Endereco)resultado.getEntidades().get(0));
-			request.setAttribute("usuario",usuario);
+			request.getSession().setAttribute("usuario",usuario);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");  
 		}
 		

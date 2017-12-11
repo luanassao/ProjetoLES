@@ -76,6 +76,16 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			}
 			for(CupomTroca c : carrinho.getCupons())
 			{
+				if(c.getValor() > carrinho.getValorTotal())
+				{
+					CupomTrocaDAO cupomDAO = new CupomTrocaDAO();
+					CupomTroca cupom = new CupomTroca();
+					cupom.setID_Cliente(carrinho.getID_Cliente());
+					cupom.setValor(c.getValor()-carrinho.getValorTotal());
+					cupomDAO.salvar(cupom);
+				}
+				else
+					carrinho.setValorTotal(carrinho.getValorTotal()-c.getValor());
 				System.out.println("Inserindo produto no carrinho: " + carrinhos.get(0).getId());
 				try {
 					connection.setAutoCommit(false);

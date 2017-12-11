@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import finalCore.aplicacao.Resultado;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalWeb.vh.IViewHelper;
@@ -55,6 +56,11 @@ public class LivroViewHelper implements IViewHelper{
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
+			
+			HttpSession session = request.getSession();
+			Cliente usuario = (Cliente)session.getAttribute("usuario");
+			if(!usuario.getAdministrador())
+				estoque = 1;
 			
 			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
 			status = request.getParameter("rdStatus").equals("todos") ? null : status;

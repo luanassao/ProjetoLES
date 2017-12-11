@@ -265,6 +265,8 @@
 				{
 				int i = 0;
 				for (Endereco e : enderecos) {
+					if(e.getTipo().equals("Entrega"))
+					{
 					sbRegistro.setLength(0);
 					sbLink.setLength(0);
 					
@@ -302,6 +304,7 @@
 					sbRegistro.append("</form>");
 					
 					out.print(sbRegistro.toString());
+					}
 					i++;
 				}
 				}catch(Exception e){
@@ -339,6 +342,7 @@
 					</td>
 					<td>
 						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
+						<input type="hidden" name="ddlTipoEndereco" value="Entrega">
 					</td>
 				</tr>
 				<tr>
@@ -442,7 +446,7 @@
 						Responsavel
 					</td>
 					<td>
-						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty usuario ? '' : ''}" readonly/>
+						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty usuario ? '' : ''}"/>
 					</td>
 				</tr>
 			</table>
@@ -485,8 +489,11 @@
 		if(cartoes.size() > 0){
 			try
 			{
+			Calendar calend = Calendar.getInstance();
 			int i = 0;
 			for (Cartao c : cartoes) {
+				if(c.getValidade().after( calend))
+				{
 				sbRegistro.setLength(0);
 				sbLink.setLength(0);
 				
@@ -503,6 +510,7 @@
 				sbRegistro.append("</form>");
 				
 				out.print(sbRegistro.toString());
+				}
 				i++;
 			}
 			}catch(Exception e){
@@ -514,6 +522,112 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoCartaoModal">
+		  Novo cartão
+		</button>
+		
+		<!-- Modal -->
+		<div class="modal fade" style='width:100%' id="novoCartaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      <form action="SalvarCartao" method="post" id="frmSalvarCartao">
+			<table class="table table-bordered">
+				<tr><TH COLSPAN="2">Cadastro de cartão</TH></tr>
+				<tr style="${empty cliente ? 'display:none' : ''}">
+					<td>
+						ID
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtId" name="txtId" value="${empty cartao ? '' : cartao.getId()}" readonly="readonly"/>
+					</td>
+				</tr>
+				<tr style="${empty cliente ? 'display:none' : ''}">
+					<td>
+						ID do cliente
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Titular
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtTitular" name="txtTitular" value="${empty cartao ? '' : cartao.getTitular()}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Numero
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtNumeroCartao" name="txtNumeroCartao" value="${empty cartao ? '' : cartao.getNumero()}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Codigo
+					</td>
+					<td>
+						<input type="text" class="form-control" id="txtCodigo" name="txtCodigo" value="${empty cartao ? '' : cartao.getCodigo()}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						preferencial
+					</td>
+					<td>
+						Preferencial    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="true" ${cartao.getPreferencial() == true ? 'checked' : ''}>
+					    Comum    <input type="radio" id="rdCPreferencial" name="rdCPreferencial" value="false" checked>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						validade
+					</td>
+					<td>
+						<input type="text"class="form-control" id="txtValidade" name="txtValidade" value="${empty cartao ? '' : cartao.getValidadeFormatado()}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Bandeira
+					</td>
+					<td>
+						<select id="ddlBandeira" name="ddlBandeira">
+							<option ${endereco.getTipoLogradouro() == 'Visa' ? 'selected' : '' }>Visa</option>
+							<option ${endereco.getTipoLogradouro() == 'Caixa' ? 'selected' : '' }>Caixa</option>
+							<option ${endereco.getTipoLogradouro() == 'Itau' ? 'selected' : '' }>Itau</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Responsavel
+					</td>
+					<td>
+						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty cartao ? '' : cartao.getAlterador()}" />
+					</td>
+				</tr>
+			</table>
+			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR NOVO" class="btn btn-default" />
+		</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
       </div>
     </div>
   </div>

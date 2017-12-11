@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import finalCore.aplicacao.Resultado;
 import finalDominio.Cartao;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -53,7 +54,13 @@ public class CartaoViewHelper  implements IViewHelper{
 			}
 			
 			try {
-				int idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				int idc;
+				HttpSession session = request.getSession();
+				Cliente cliente = (Cliente)session.getAttribute("usuario");
+				if(cliente.getAdministrador())
+					idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				else
+					idc = cliente.getId();
 				cartao.setID_Cliente(idc);
 			}catch (Exception e) {
 				// TODO: handle exception
@@ -93,6 +100,9 @@ public class CartaoViewHelper  implements IViewHelper{
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
 				resultado.setMsg("Cartao cadastrado com sucesso!");
+				Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+				usuario.getCartoes().add((Cartao)resultado.getEntidades().get(0));
+				request.getSession().setAttribute("usuario", usuario);
 			}
 			
 			request.getSession().setAttribute("resultado", resultado);
@@ -102,6 +112,13 @@ public class CartaoViewHelper  implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
 			
 			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("SALVAR NOVO")){
+			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+			usuario.getCartoes().add((Cartao)resultado.getEntidades().get(0));
+			request.getSession().setAttribute("usuario",usuario);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");  
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){

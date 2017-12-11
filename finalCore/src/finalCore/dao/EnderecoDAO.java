@@ -14,6 +14,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		super("clientes", "id_cliente");
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public void salvar(EntidadeDominio entidade) throws SQLException {
 		openConnection();
@@ -23,8 +24,8 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO endereco(preferencial, tipo_Residencia, tipo_Logradouro, logradouro, numero, bairro, CEP, cidade, estado, pais, obs, ID_Cliente, alterador)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			sql.append("INSERT INTO endereco(preferencial, tipo_Residencia, tipo_Logradouro, logradouro, numero, bairro, CEP, cidade, estado, pais, obs, ID_Cliente, alterador, tipo)");
+			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setBoolean(1, endereco.getPreferencial());
@@ -40,8 +41,42 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			pst.setString(11, endereco.getObservacao());
 			pst.setInt(12, endereco.getID_Cliente());
 			pst.setString(13, endereco.getAlterador());
+			pst.setString(14, endereco.getTipo());
 			pst.executeUpdate();
 			connection.commit();
+			
+			pst = null;
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM endereco WHERE 1=1\n");
+			try{
+				openConnection();
+				pst = connection.prepareStatement(sb.toString());
+				ResultSet rs = pst.executeQuery();
+				while(rs.next()){
+					if(rs.isLast())
+					{
+					Endereco e = new Endereco();
+					e.setId(rs.getInt("ID_Endereco"));
+					e.setPreferencial(rs.getBoolean("preferencial"));
+					e.setTipoResidencia(rs.getString("tipo_residencia"));
+					e.setTipoLogradouro(rs.getString("tipo_logradouro"));
+					e.setLogradouro(rs.getString("logradouro"));
+					e.setNumero(rs.getString("numero"));
+					e.setBairro(rs.getString("bairro"));
+					e.setCep(rs.getString("CEP"));
+					e.setCidade(rs.getString("cidade"));
+					e.setEstado(rs.getString("estado"));
+					e.setPais(rs.getString("pais"));
+					e.setObservacao(rs.getString("obs"));
+					e.setID_Cliente(rs.getInt("ID_Cliente"));
+					e.setAlterador(rs.getString("alterador"));
+					e.setTipo(rs.getString("tipo"));
+					entidade = e;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -137,6 +172,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 				e.setObservacao(rs.getString("obs"));
 				e.setID_Cliente(rs.getInt("ID_Cliente"));
 				e.setAlterador(rs.getString("alterador"));
+				e.setTipo(rs.getString("tipo"));
 				enderecos.add(e);
 			}
 			return enderecos;

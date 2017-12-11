@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.sun.corba.se.impl.encoding.EncapsInputStream;
+
 import finalDominio.Cartao;
 import finalDominio.EntidadeDominio;
 
@@ -39,6 +41,34 @@ public class CartaoDAO extends AbstractJdbcDAO{
 			pst.setString(8, cartao.getBandeira());
 			pst.executeUpdate();			
 			connection.commit();
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM cartao WHERE 1=1\n");
+			try{
+				openConnection();
+				pst = connection.prepareStatement(sb.toString());
+				ResultSet rs = pst.executeQuery();
+				while(rs.next()){
+					if(rs.isLast())
+					{
+					Cartao c = new Cartao();
+					c.setId(rs.getInt("ID_cartao"));
+					c.setTitular(rs.getString("titular"));
+					c.setNumero(rs.getString("numero"));
+					c.setCodigo(rs.getString("codigo"));
+					Calendar calendV = Calendar.getInstance();
+					calendV.setTime(rs.getDate("validade"));
+					c.setValidade(calendV);
+					c.setID_Cliente(rs.getInt("id_cliente"));
+					c.setAlterador(rs.getString("alterador"));
+					c.setPreferencial(rs.getBoolean("preferencial"));
+					c.setBandeira(rs.getString("bandeira"));
+					entidade = c;
+					}
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();

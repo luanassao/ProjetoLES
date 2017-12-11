@@ -175,6 +175,17 @@
 				</tr>
 				<tr>
 					<td>
+						Tipo do endereço
+					</td>
+					<td>
+						<select id="ddlTipoEndereco" name="ddlTipoEndereco">
+							<option ${endereco.getTipo() == 'Cobranca' ? 'selected' : '' }>Cobranca</option>
+							<option ${endereco.getTipo() == 'Entrega' ? 'selected' : '' }>Entrega</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						Tipo da residencia
 					</td>
 					<td>

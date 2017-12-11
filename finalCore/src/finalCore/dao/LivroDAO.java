@@ -146,6 +146,9 @@ public class LivroDAO extends AbstractJdbcDAO{
 		if(livro.getISBN() != null && livro.getISBN().length() > 0) {
 			sb.append(" and isbn = '" + livro.getISBN() + "'");
 		}
+		if(livro.getEstoque() == 1) {
+			sb.append(" and estoque > 0");
+		}
 		try {
 			if(livro.getStatus()) {
 				sb.append(" and status = " + livro.getStatus());

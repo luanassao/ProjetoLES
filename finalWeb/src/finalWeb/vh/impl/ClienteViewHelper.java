@@ -66,11 +66,16 @@ public class ClienteViewHelper implements IViewHelper{
 			cliente = new Cliente();
 			try {
 				int id = Integer.parseInt(request.getParameter("txtId"));
+				HttpSession session = request.getSession();
+				Cliente usuario = (Cliente)session.getAttribute("usuario");
+				if(usuario.getAdministrador())
+					id = Integer.parseInt(request.getParameter("txtIdCliente"));
+				else
+					id = usuario.getId();
 				cliente.setId(id);
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
-			
 			cliente.setNome(nome);
 			cliente.setCpf(cpf);
 			cliente.setGenero(genero);
