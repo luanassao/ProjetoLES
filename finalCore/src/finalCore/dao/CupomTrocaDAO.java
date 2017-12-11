@@ -78,7 +78,6 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 			e.printStackTrace();			
 		}finally{
 			try {
-				pst.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

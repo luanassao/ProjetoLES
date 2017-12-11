@@ -10,6 +10,7 @@ import java.util.List;
 import finalDominio.Carrinho;
 import finalDominio.Cartao;
 import finalDominio.Cupom;
+import finalDominio.CupomTroca;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
@@ -25,6 +26,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		openConnection();
 		PreparedStatement pst = null;
 		Carrinho carrinho = (Carrinho)entidade;
+		System.out.println("Quantia de cupons: " + carrinho.getCupons().size());
 		List<Carrinho> carrinhos = new ArrayList<>();
 		
 		try {
@@ -71,6 +73,35 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 				}
 			}catch(SQLException e){
 				e.printStackTrace();
+			}
+			for(CupomTroca c : carrinho.getCupons())
+			{
+				System.out.println("Inserindo produto no carrinho: " + carrinhos.get(0).getId());
+				try {
+					connection.setAutoCommit(false);
+					sql = new StringBuilder();
+					sql.append("INSERT INTO cupom_compra(ID_Carrinho, ID_Cupom)");
+					sql.append("VALUES (?,?)");
+					
+					pst = connection.prepareStatement(sql.toString());
+					pst.setInt(1, carrinhos.get(0).getId());
+					pst.setInt(2, c.getId());
+					pst.executeUpdate();
+					connection.commit();
+					pst.close();
+					
+					sql = new StringBuilder();
+					sql.append("UPDATE cupomtroca set status = ? WHERE ID_Cupom = ?");
+					
+					pst = connection.prepareStatement(sql.toString());
+					pst.setBoolean(1, false);
+					pst.setInt(2, c.getId());
+					System.out.println(pst);
+					pst.executeUpdate();
+					connection.commit();
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
 			for(Produto p : carrinho.getProdutos())
 			{

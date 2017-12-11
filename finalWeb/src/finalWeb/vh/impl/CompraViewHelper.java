@@ -1,7 +1,6 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ public class CompraViewHelper implements IViewHelper{
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
 			Cartao cartao = (Cartao)session.getAttribute("cartao");
 			Cupom cupom = (Cupom)session.getAttribute("cupom");
-			System.out.println(carrinho.getCupons().size());
+			
 			if(cupom == null)
 				cupom = new Cupom();
 			carrinho.setID_Cliente(cliente.getId());
@@ -79,7 +78,6 @@ public class CompraViewHelper implements IViewHelper{
 			HttpSession session = request.getSession();
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
 			int indice = Integer.parseInt(request.getParameter("txtIndice"));
-			cliente.getCupons().get(indice).setStatus(false);
 			return cliente.getCupons().get(indice);
 		}
 		else if(operacao.equals("SELECIONAR"))
@@ -154,10 +152,12 @@ public class CompraViewHelper implements IViewHelper{
 		
 		if(resultado.getMsg() == null && operacao.equals("SELECIONAR CUPOM")){
 			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
-			if(carrinho == null)
-				System.out.println("carrinho nulo");
+			Cliente cliente = (Cliente)request.getSession().getAttribute("usuario");
+			int indice = Integer.parseInt(request.getParameter("txtIndice"));
+			cliente.getCupons().get(indice).setStatus(false);
 			carrinho.getCupons().add((CupomTroca)resultado.getEntidades().get(0));
 			request.getSession().setAttribute("carrinho", carrinho);
+			request.getSession().setAttribute("usuario", cliente);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
