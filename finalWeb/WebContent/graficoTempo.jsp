@@ -36,7 +36,7 @@
 		document.getElementById('btnPie').style="display:none";
 	}
       <%
-      	String dadosVenda = geradorDados.gerarDadosLivros(entidades);
+      	String dadosVendaMes = geradorDados.gerarDadosVendaMes(entidades);
       
 		sbRegistro = new StringBuilder();
 		
@@ -47,7 +47,7 @@
 		sbRegistro.append("data.addColumn('string', 'Topping');");
 		sbRegistro.append("data.addColumn('number', 'Unidades');");
 		sbRegistro.append("data.addRows([");
-		sbRegistro.append(dadosVenda);
+		sbRegistro.append(dadosVendaMes);
 		sbRegistro.append("]);");
 		sbRegistro.append("var options = {'title':'Quantidade de livros vendidos','width':900,'height':800};");
 		sbRegistro.append("var chart = new google.visualization.BarChart(document.getElementById('barchart_div'));");
@@ -64,7 +64,7 @@
 		sbRegistro.append("data.addColumn('string', 'Topping');");
 		sbRegistro.append("data.addColumn('number', 'Unidades');");
 		sbRegistro.append("data.addRows([");
-		sbRegistro.append(dadosVenda);
+		sbRegistro.append(dadosVendaMes);
 		sbRegistro.append("]);");
 		sbRegistro.append("var options = {'title':'Quantidade de livros vendidos','width':900,'height':800};");
 		sbRegistro.append("var chart = new google.visualization.PieChart(document.getElementById('piechart_div'));");
@@ -80,9 +80,9 @@
 	<BR>
 	<form action="SalvarProduto" method="post" id="frmGrafico">
 		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" class="btn btn-default">
-		Vendas por mes
+		Vendas gerais
 		</button>
-		<input type="hidden" name="tipo" value="tempo">
+		<input type="hidden" name="tipo" value="geral">
 	</form>
 	<BR>
 	<input id="btnBar" class="btn btn-primary" style="display:none" type="button" onclick="mostrarBar()" value="Barras">

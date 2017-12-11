@@ -41,7 +41,23 @@
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
 			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/grafico.jsp">Gráfico</a>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormClienteEnd.jsp">Cadastrar cliente</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaCliente.jsp">
+				${usuario.getAdministrador() ==  true ? 'Consultar cliente' : 'Meus dados'}</a>
+			</td>
+		</tr>
+		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
+			<td>
+				<form action="SalvarProduto" method="post" id="frmGrafico">
+				<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" class="btn btn-default">
+				Graficos de análise
+				</button>
+				<input type="hidden" name="tipo" value="geral">
+				</form>
 			</td>
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">

@@ -13,6 +13,7 @@ import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
 import finalDominio.CupomTroca;
+import finalDominio.DadosGrafico;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
@@ -88,6 +89,12 @@ public class CompraViewHelper implements IViewHelper{
 			int indice = Integer.parseInt(request.getParameter("txtIndice"));
 			carrinho.setEnderecoEntrega(cliente.getEnderecos().get(indice));
 			return carrinho;
+		}
+		else if(operacao.equals("CONSULTAR"))
+		{
+			DadosGrafico dados = new DadosGrafico();
+			
+			return dados;
 		}
 		else if(!operacao.equals("VISUALIZAR"))
 		{
@@ -183,6 +190,19 @@ public class CompraViewHelper implements IViewHelper{
 			}
 			request.getSession().setAttribute("carrinho", carrinho);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")){
+			String tipo = null;
+			try{
+				tipo = request.getParameter("tipo");
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			if(tipo != null && tipo.equals("tempo"))
+				d= request.getRequestDispatcher("graficoTempo.jsp");
+			else
+				d= request.getRequestDispatcher("grafico.jsp");
 		}
 		
 		if(resultado.getMsg() == null && (operacao.equals("ATUALIZAR") || operacao.equals("SELECIONAR"))){

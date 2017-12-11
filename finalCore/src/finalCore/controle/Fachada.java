@@ -15,6 +15,7 @@ import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
 import finalCore.dao.CupomDAO;
 import finalCore.dao.CupomTrocaDAO;
+import finalCore.dao.DadosGraficoDAO;
 import finalCore.dao.EnderecoDAO;
 import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
@@ -32,6 +33,7 @@ import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
 import finalDominio.CupomTroca;
+import finalDominio.DadosGrafico;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
@@ -67,6 +69,7 @@ public class Fachada implements IFachada{
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		CupomDAO cupomDAO = new CupomDAO();
 		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
+		DadosGraficoDAO dadosGraficoDAO = new DadosGraficoDAO();
 		
 		/* Adicionando cada dao no MAP indexando pelo nome da classe */
 		daos.put(Livro.class.getName(), livroDAO);
@@ -76,6 +79,7 @@ public class Fachada implements IFachada{
 		daos.put(Carrinho.class.getName(), carrinhoDAO);
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(CupomTroca.class.getName(), cupomTrocaDAO);
+		daos.put(DadosGrafico.class.getName(), dadosGraficoDAO);
 		
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();
