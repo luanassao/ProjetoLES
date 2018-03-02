@@ -27,6 +27,7 @@ import finalWeb.vh.impl.ClienteViewHelper;
 import finalWeb.vh.impl.EnderecoViewHelper;
 import finalWeb.vh.impl.LivroViewHelper;
 import finalWeb.vh.impl.CompraViewHelper;
+import finalWeb.vh.impl.CatAutViewHelper;
 
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -71,6 +72,7 @@ public class Servlet extends HttpServlet {
     	 * está configurado no web.xml e sendo utilizada no action do html
     	 */
     	vhs.put("/finalWeb/SalvarLivro", new LivroViewHelper());
+    	vhs.put("/finalweb/DadosLivro", new CatAutViewHelper());
     	vhs.put("/finalWeb/SalvarCliente", new ClienteViewHelper());
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
@@ -114,6 +116,8 @@ public class Servlet extends HttpServlet {
 		
 		//Obtêm um viewhelper indexado pela uri que invocou esta servlet
 		IViewHelper vh = vhs.get(uri);
+		System.out.println(uri);
+		System.out.println(vhs.get(uri).getClass().getName());
 		
 		//O viewhelper retorna a entidade especifica para a tela que chamou esta servlet
 		EntidadeDominio entidade =  vh.getEntidade(request);

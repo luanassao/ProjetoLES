@@ -52,4 +52,9 @@
     <url-pattern>/Logar</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+    <servlet-name>Servlet</servlet-name>
+    <url-pattern>/DadosLivro</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -58,7 +58,10 @@ public class EnderecoViewHelper implements IViewHelper{
 				HttpSession session = request.getSession();
 				Cliente cliente = (Cliente)session.getAttribute("usuario");
 				if(cliente.getAdministrador())
+				{
+					System.out.println("Administrador logado");
 					idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				}
 				else
 					idc = cliente.getId();
 				endereco.setID_Cliente(idc);

@@ -62,6 +62,8 @@ public class LivroViewHelper implements IViewHelper{
 			if(!usuario.getAdministrador())
 				estoque = 1;
 			
+			alterador = usuario.getEmail();
+			
 			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
 			status = request.getParameter("rdStatus").equals("todos") ? null : status;
 			

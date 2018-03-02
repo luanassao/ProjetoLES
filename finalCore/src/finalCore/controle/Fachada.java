@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import auxiliar.IdDesc;
 import finalCore.IDAO;
 import finalCore.IFachada;
 import finalCore.IStrategy;
@@ -17,6 +18,7 @@ import finalCore.dao.CupomDAO;
 import finalCore.dao.CupomTrocaDAO;
 import finalCore.dao.DadosGraficoDAO;
 import finalCore.dao.EnderecoDAO;
+import finalCore.dao.HelperDAO;
 import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
 import finalCore.impl.negocio.AtualizadorPrecoCarrinho;
@@ -70,6 +72,7 @@ public class Fachada implements IFachada{
 		CupomDAO cupomDAO = new CupomDAO();
 		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 		DadosGraficoDAO dadosGraficoDAO = new DadosGraficoDAO();
+		HelperDAO catautDAO = new HelperDAO();
 		
 		/* Adicionando cada dao no MAP indexando pelo nome da classe */
 		daos.put(Livro.class.getName(), livroDAO);
@@ -80,6 +83,7 @@ public class Fachada implements IFachada{
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(CupomTroca.class.getName(), cupomTrocaDAO);
 		daos.put(DadosGrafico.class.getName(), dadosGraficoDAO);
+		daos.put(IdDesc.class.getName(), catautDAO);
 		
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();

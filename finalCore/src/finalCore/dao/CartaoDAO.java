@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.sun.corba.se.impl.encoding.EncapsInputStream;
-
 import finalDominio.Cartao;
 import finalDominio.EntidadeDominio;
 
@@ -18,6 +16,7 @@ public class CartaoDAO extends AbstractJdbcDAO{
 		super("cartao", "id_cartao");
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public void salvar(EntidadeDominio entidade) throws SQLException {
 		openConnection();
