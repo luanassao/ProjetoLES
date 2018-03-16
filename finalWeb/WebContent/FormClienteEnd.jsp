@@ -156,7 +156,7 @@
 <section class="conteudo">
 	<form style='display:none' action="SalvarEndereco" method="post" id="frmSalvarEndereco">
 			<table class="table table-bordered">
-				<tr><TH COLSPAN="2">Cadastro de livros</TH></tr>
+				<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
 				<tr style="${empty cliente ? 'display:none' : ''}">
 					<td>
 						ID

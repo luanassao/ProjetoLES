@@ -5,6 +5,7 @@ public class Livro extends EntidadeDominio{
 	private Boolean status;
 	private double altura, largura, peso, profundidade, preco, valor;
 	private int estoque;
+	private String motivo;
 
 	public String getAutor() {
 		return autor;
@@ -164,6 +165,14 @@ public class Livro extends EntidadeDominio{
 
 	public void setPrecificacao(String precificacao) {
 		this.precificacao = precificacao;
+	}
+
+	public String getMotivo() {
+		return motivo;
+	}
+
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
 	}
 	
 }

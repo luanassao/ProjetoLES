@@ -12,6 +12,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Consultar livro</title>
+<script type="text/javascript">
+ function IdLivroExcluir(id) {
+	 	alert(id);
+	 	document.getElementById("txtId").value = id;
+	 	document.getElementById("lblId").innerHTML=id;
+	}
+</script>
 </head>
 <body>
 
@@ -72,7 +79,7 @@
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
-      	<H3>Clientes</H3>
+      	<H3>Livros</H3>
       </TH>
    </TR>
    <TR>
@@ -93,6 +100,7 @@
       <TH>Peso</TH>
       <TH>Profundidade</TH>
       <TH>Alterador</TH>
+      <TH>-</TH>
    </TR>
    
    <%
@@ -224,6 +232,11 @@
 				sbRegistro.append(l.getAlterador());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
+
+				sbRegistro.append("<TD>");
+				sbRegistro.append("<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#MotivoModal'" +
+					"onclick='IdLivroExcluir(" + l.getId() + ")'>Exibir modal</button>");
+				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");
 				
@@ -238,6 +251,33 @@
    
    %>
 </TABLE>
+<!-- Modal -->
+<div class="modal fade" id="MotivoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Exemplo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+		Livro a ser excluido:
+		<label id="lblId"></label>
+		<input type="hidden" id="txtId" name="txtId" value="0">
+		<br>
+		Motivo de inativação:
+		<input type="text" id="txtMotivo" name="txtMotivo"/>
+      </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Confirmar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar livro</a>
 </body>
 </html>

@@ -72,13 +72,14 @@ public class Servlet extends HttpServlet {
     	 * está configurado no web.xml e sendo utilizada no action do html
     	 */
     	vhs.put("/finalWeb/SalvarLivro", new LivroViewHelper());
-    	vhs.put("/finalweb/DadosLivro", new CatAutViewHelper());
+    	vhs.put("/finalWeb/DadosLivro", new CatAutViewHelper());
     	vhs.put("/finalWeb/SalvarCliente", new ClienteViewHelper());
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
     	vhs.put("/finalWeb/SalvarPedido", new PedidoViewHelper());
     	vhs.put("/finalWeb/SalvarProduto", new CompraViewHelper());
     	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
+    	
     	
     }
     
@@ -116,8 +117,6 @@ public class Servlet extends HttpServlet {
 		
 		//Obtêm um viewhelper indexado pela uri que invocou esta servlet
 		IViewHelper vh = vhs.get(uri);
-		System.out.println(uri);
-		System.out.println(vhs.get(uri).getClass().getName());
 		
 		//O viewhelper retorna a entidade especifica para a tela que chamou esta servlet
 		EntidadeDominio entidade =  vh.getEntidade(request);

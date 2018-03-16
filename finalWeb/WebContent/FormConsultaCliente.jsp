@@ -27,11 +27,13 @@
    		</TR>
 			<tr>
 				<td>
-				TITULO: <input type="text" id="txtTitulo" name="txtTitulo" /> 
+				CODIGO: <input type="text" id="txtTitulo" name="txtTitulo" /> 
 				</td>
 				<td>
-				AUTOR:<input type="text" id="txtAutor" name="txtAutor" />
+				NOME:<input type="text" id="txtAutor" name="txtAutor" size="45"/>
 				</td>
+			</TR>
+			<tr>
 				<td>
 				Status 
 				<select id="rdStatus" name="rdStatus">
@@ -40,16 +42,8 @@
 					<option value="false">Inativos</option>
 				</select>
 				</td>
-			</tr>
-			<tr>
 				<td>
-				Ano <input type="text" id="txtAno" name="txtAno"/>
-				</td>
-				<td>
-				Editora <input type="text" id="txtEditora" name="txtEditora">
-				</td>
-				<td>
-				ISBN <input type="text" id="txtISBN" name="txtISBN">
+				EMAIL: <input type="text" id="txtAno" name="txtAno" size="45"/>
 				</td>
 			</tr>
 		</table>
@@ -194,6 +188,6 @@
    
    %>
 </TABLE>
-<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormClienteEnd.jsp">Cadastrar livro</a>
+<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormClienteEnd.jsp">Cadastrar Cliente</a>
 </body>
 </html>

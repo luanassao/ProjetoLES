@@ -34,7 +34,7 @@
 				<form action="DadosLivro" method="post">
 				<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" >Cadastrar Livro</button>
 				</form>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar Livro</a>
+				<!--<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar Livro</a>-->
 			</td>
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
