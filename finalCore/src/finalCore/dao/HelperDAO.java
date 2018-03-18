@@ -30,4 +30,10 @@ public class HelperDAO extends AbstractJdbcDAO{
 		return null;
 	}
 
+	@Override
+	public void excluir(EntidadeDominio entidade) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

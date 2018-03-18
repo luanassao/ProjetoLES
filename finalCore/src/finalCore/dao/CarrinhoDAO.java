@@ -333,4 +333,10 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public void excluir(EntidadeDominio entidade) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
 }

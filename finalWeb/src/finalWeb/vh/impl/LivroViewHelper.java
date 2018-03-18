@@ -55,6 +55,7 @@ public class LivroViewHelper implements IViewHelper{
 				profundidade = Double.parseDouble(request.getParameter("txtProfundidade"));
 			}catch (Exception e) {
 				// TODO: handle exception
+				// Valor inválido informado
 			}
 			
 			HttpSession session = request.getSession();

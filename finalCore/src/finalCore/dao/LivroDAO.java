@@ -196,4 +196,38 @@ public class LivroDAO extends AbstractJdbcDAO{
 		return null;
 	}
 
+	@Override
+	public void excluir(EntidadeDominio entidade) throws SQLException {
+		openConnection();
+		PreparedStatement pst = null;
+		Livro livro = (Livro)entidade;
+		
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE livros SET status = ?, motivo = ?, alterador = ? WHERE ID_Livro = ?");		
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setBoolean(1, livro.getStatus());
+			pst.setString(2, livro.getMotivo());
+			pst.setString(3, livro.getAlterador());
+			pst.executeUpdate();			
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}finally{
+			try {
+				pst.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

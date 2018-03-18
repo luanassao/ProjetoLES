@@ -181,4 +181,10 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public void excluir(EntidadeDominio entidade) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
 }
