@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import auxiliar.IdDesc;
+import auxiliar.DadosCadLivro;
 import finalCore.IDAO;
 import finalCore.IFachada;
 import finalCore.IStrategy;
@@ -72,7 +72,7 @@ public class Fachada implements IFachada{
 		CupomDAO cupomDAO = new CupomDAO();
 		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 		DadosGraficoDAO dadosGraficoDAO = new DadosGraficoDAO();
-		HelperDAO catautDAO = new HelperDAO();
+		HelperDAO HelperDAO = new HelperDAO();
 		
 		/* Adicionando cada dao no MAP indexando pelo nome da classe */
 		daos.put(Livro.class.getName(), livroDAO);
@@ -83,7 +83,7 @@ public class Fachada implements IFachada{
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(CupomTroca.class.getName(), cupomTrocaDAO);
 		daos.put(DadosGrafico.class.getName(), dadosGraficoDAO);
-		daos.put(IdDesc.class.getName(), catautDAO);
+		daos.put(DadosCadLivro.class.getName(), HelperDAO);
 		
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();
@@ -457,7 +457,7 @@ public class Fachada implements IFachada{
 				resultado.setEntidades(entidades);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				resultado.setMsg("Não foi possível realizar o registro!");
+				resultado.setMsg("Não foi possível realizar a inativação!");
 				
 			}
 		}else{

@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public class Cartao extends EntidadeDominio {
 	
-	private String titular, numero, codigo, bandeira;
+	private String titular, numero, codigo, bandeira, alterador;
 	private int ID_Cliente;
 	private Boolean preferencial;
 	private Calendar validade;
@@ -57,5 +57,11 @@ public class Cartao extends EntidadeDominio {
 	}
 	public void setBandeira(String bandeira) {
 		this.bandeira = bandeira;
+	}
+	public String getAlterador() {
+		return alterador;
+	}
+	public void setAlterador(String alterador) {
+		this.alterador = alterador;
 	}
 }

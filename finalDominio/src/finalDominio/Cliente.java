@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public class Cliente extends EntidadeDominio{
-	private String nome, cpf, tipoTelefone, telefone, email, senha, genero;
+	private String nome, cpf, tipoTelefone, telefone, email, senha, genero, alterador;
 	private Boolean status, administrador;
-	private Calendar dtnascimento;
+	private Calendar dtnascimento, dtCadastro;
 	private List<Endereco> enderecos = new ArrayList<>();
 	private List<Cartao> cartoes = new ArrayList<>();
 	private List<Carrinho> pedidos = new ArrayList<>();
@@ -37,6 +37,24 @@ public class Cliente extends EntidadeDominio{
 		data += dtnascimento.get(Calendar.DATE) < 10 ? "0" + dtnascimento.get(Calendar.DATE) : dtnascimento.get(Calendar.DATE);
 		data += "/" + (dtnascimento.get(Calendar.MONTH) < 10 ? "0" + dtnascimento.get(Calendar.MONTH) : dtnascimento.get(Calendar.MONTH));
 		data += "/" + dtnascimento.get(Calendar.YEAR);
+		return data;
+	}
+	public Calendar getDtCadastro() {
+		return dtCadastro;
+	}
+
+	public void setDtCadastro(Calendar dtCadastro) {
+		this.dtCadastro = dtCadastro;
+	}
+	public String getDtCadFormatado() {
+		String data = "";
+		try {
+			data += dtCadastro.get(Calendar.DATE) < 10 ? "0" + dtCadastro.get(Calendar.DATE) : dtCadastro.get(Calendar.DATE);
+			data += "/" + (dtCadastro.get(Calendar.MONTH) < 10 ? "0" + dtCadastro.get(Calendar.MONTH) : dtCadastro.get(Calendar.MONTH));
+			data += "/" + dtCadastro.get(Calendar.YEAR);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		return data;
 	}
 	public String getCpf() {
@@ -110,6 +128,12 @@ public class Cliente extends EntidadeDominio{
 	}
 	public void setCupons(List<CupomTroca> cupons) {
 		this.cupons = cupons;
+	}
+	public String getAlterador() {
+		return alterador;
+	}
+	public void setAlterador(String alterador) {
+		this.alterador = alterador;
 	}
 	
 }

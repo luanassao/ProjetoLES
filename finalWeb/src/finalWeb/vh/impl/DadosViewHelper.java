@@ -7,12 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import auxiliar.IdDesc;
+import auxiliar.DadosCadLivro;
 import finalCore.aplicacao.Resultado;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
-public class CatAutViewHelper implements IViewHelper{
+public class DadosViewHelper implements IViewHelper{
 	/** 
 	 * TODO Descrição do Método
 	 * @param request
@@ -23,8 +23,8 @@ public class CatAutViewHelper implements IViewHelper{
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		System.out.println("getEntidade de CatAutViewHelper");
-		IdDesc dadosLivro = new IdDesc();
-		return dadosLivro;
+		DadosCadLivro dados = new DadosCadLivro();
+		return dados;
 	}
 
 	/** 

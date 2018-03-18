@@ -1,7 +1,7 @@
 package finalDominio;
 
 public class Endereco extends EntidadeDominio{
-	private String tipoResidencia, tipoLogradouro, logradouro, numero, bairro, cep, estado, cidade, pais, observacao, tipo;
+	private String tipoResidencia, tipoLogradouro, logradouro, numero, bairro, cep, estado, cidade, pais, observacao, tipo, alterador;
 	private Boolean preferencial;
 	int ID_Cliente;
 
@@ -107,5 +107,13 @@ public class Endereco extends EntidadeDominio{
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getAlterador() {
+		return alterador;
+	}
+
+	public void setAlterador(String alterador) {
+		this.alterador = alterador;
 	}
 }

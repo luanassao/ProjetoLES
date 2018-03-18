@@ -27,7 +27,7 @@ import finalWeb.vh.impl.ClienteViewHelper;
 import finalWeb.vh.impl.EnderecoViewHelper;
 import finalWeb.vh.impl.LivroViewHelper;
 import finalWeb.vh.impl.CompraViewHelper;
-import finalWeb.vh.impl.CatAutViewHelper;
+import finalWeb.vh.impl.DadosViewHelper;
 
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -72,7 +72,7 @@ public class Servlet extends HttpServlet {
     	 * está configurado no web.xml e sendo utilizada no action do html
     	 */
     	vhs.put("/finalWeb/SalvarLivro", new LivroViewHelper());
-    	vhs.put("/finalWeb/DadosLivro", new CatAutViewHelper());
+    	vhs.put("/finalWeb/DadosLivro", new DadosViewHelper());
     	vhs.put("/finalWeb/SalvarCliente", new ClienteViewHelper());
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
