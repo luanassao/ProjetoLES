@@ -19,17 +19,13 @@ public class LivroDAO extends AbstractJdbcDAO{
 		openConnection();
 		PreparedStatement pst = null;
 		Livro livro = (Livro)entidade;
-		/*estoque int,
-	    preco double,
-	    precificacao varchar(2),
-	    valor double,*/
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
 			sql.append("INSERT INTO livros(autor, categoria, subcategoria, ano, titulo, editora,");
 			sql.append("edicao, ISBN, npaginas, sinopse, status, altura, largura, peso, profundidade, alterador,");
 			sql.append("estoque, preco, precificacao, valor)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");		
+			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, livro.getAutor());

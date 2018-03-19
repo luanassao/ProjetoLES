@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import auxiliar.Autor;
 import auxiliar.DadosCadLivro;
 import finalCore.aplicacao.Resultado;
 import finalDominio.EntidadeDominio;
@@ -22,7 +23,7 @@ public class DadosViewHelper implements IViewHelper{
 	 */
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		// TODO Auto-generated method stub
-		System.out.println("getEntidade de CatAutViewHelper");
+		
 		DadosCadLivro dados = new DadosCadLivro();
 		return dados;
 	}
@@ -37,8 +38,19 @@ public class DadosViewHelper implements IViewHelper{
 	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		request.getSession().setAttribute("resultado", null);
+		String operacao = request.getParameter("target");
+			EntidadeDominio e = resultado.getEntidades().get(0);
+			DadosCadLivro dados = (DadosCadLivro)e;
+			for(Autor a : dados.getAutores())
+			{
+				System.out.println(a.getNome());
+			}
+			request.getSession().setAttribute("autores", dados.getAutores());
+			for(EntidadeDominio entidades:resultado.getEntidades())
+				System.out.println(entidades.getClass().getName());
 		request.getSession().setAttribute("resultado", resultado);
-		RequestDispatcher d= request.getRequestDispatcher("FormLivro.jsp");
+		RequestDispatcher d= request.getRequestDispatcher(operacao);
 		d.forward(request,response);
 	}
 

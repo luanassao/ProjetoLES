@@ -27,7 +27,7 @@ public class LivroViewHelper implements IViewHelper{
 
 		if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
-			String autor = request.getParameter("txtAutor");
+			String autor = request.getParameter("ddlAutor");
 			String categoria = request.getParameter("ddlCategoria");
 			String subcategoria = request.getParameter("ddlsCategoria");
 			String ano = request.getParameter("txtAno");

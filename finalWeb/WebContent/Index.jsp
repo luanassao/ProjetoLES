@@ -33,13 +33,18 @@
 			<td>
 				<form action="DadosLivro" method="post">
 				<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" >Cadastrar Livro</button>
+				<input type="hidden" id="target" name="target" value="FormLivro.jsp">
 				</form>
 				<!--<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLivro.jsp">Cadastrar Livro</a>-->
 			</td>
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
 			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>
+				<form action="DadosLivro" method="post">
+				<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" >Consultar Livros</button>
+				<input type="hidden" id="target" name="target" value="FormConsultaLivro.jsp">
+				</form>
+				<!--<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaLivro.jsp">Consultar Livros</a>-->
 			</td>
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">

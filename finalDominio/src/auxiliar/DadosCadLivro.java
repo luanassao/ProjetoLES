@@ -6,11 +6,11 @@ import finalDominio.EntidadeDominio;
 
 public class DadosCadLivro extends EntidadeDominio{
 	private ArrayList<Autor> Autores = new ArrayList<>();
-	private ArrayList<DadosBasicos> Editoras = new ArrayList<>();
-	private ArrayList<DadosBasicos> Categorias = new ArrayList<>();
-	private ArrayList<DadosBasicos> Precificacoes = new ArrayList<>();
-	private ArrayList<DadosBasicos> CategoriasAtivacao = new ArrayList<>();
-	private ArrayList<DadosBasicos> CategoriasInativacao = new ArrayList<>();
+	private ArrayList<Editora> Editoras = new ArrayList<>();
+	private ArrayList<Categoria> Categorias = new ArrayList<>();
+	private ArrayList<Precificacao> Precificacoes = new ArrayList<>();
+	private ArrayList<CategoriaAtivacao> CategoriasAtivacao = new ArrayList<>();
+	private ArrayList<CategoriaInativacao> CategoriasInativacao = new ArrayList<>();
 	
 	public ArrayList<Autor> getAutores() {
 		return Autores;
@@ -18,34 +18,34 @@ public class DadosCadLivro extends EntidadeDominio{
 	public void setAutores(ArrayList<Autor> autores) {
 		Autores = autores;
 	}
-	public ArrayList<DadosBasicos> getEditoras() {
+	public ArrayList<Editora> getEditoras() {
 		return Editoras;
 	}
-	public void setEditoras(ArrayList<DadosBasicos> editoras) {
+	public void setEditoras(ArrayList<Editora> editoras) {
 		Editoras = editoras;
 	}
-	public ArrayList<DadosBasicos> getCategorias() {
+	public ArrayList<Categoria> getCategorias() {
 		return Categorias;
 	}
-	public void setCategorias(ArrayList<DadosBasicos> categorias) {
+	public void setCategorias(ArrayList<Categoria> categorias) {
 		Categorias = categorias;
 	}
-	public ArrayList<DadosBasicos> getPrecificacoes() {
+	public ArrayList<Precificacao> getPrecificacoes() {
 		return Precificacoes;
 	}
-	public void setPrecificacoes(ArrayList<DadosBasicos> precificacoes) {
+	public void setPrecificacoes(ArrayList<Precificacao> precificacoes) {
 		Precificacoes = precificacoes;
 	}
-	public ArrayList<DadosBasicos> getCategoriasAtivacao() {
+	public ArrayList<CategoriaAtivacao> getCategoriasAtivacao() {
 		return CategoriasAtivacao;
 	}
-	public void setCategoriasAtivacao(ArrayList<DadosBasicos> categoriasAtivacao) {
+	public void setCategoriasAtivacao(ArrayList<CategoriaAtivacao> categoriasAtivacao) {
 		CategoriasAtivacao = categoriasAtivacao;
 	}
-	public ArrayList<DadosBasicos> getCategoriasInativacao() {
+	public ArrayList<CategoriaInativacao> getCategoriasInativacao() {
 		return CategoriasInativacao;
 	}
-	public void setCategoriasInativacao(ArrayList<DadosBasicos> categoriasInativacao) {
+	public void setCategoriasInativacao(ArrayList<CategoriaInativacao> categoriasInativacao) {
 		CategoriasInativacao = categoriasInativacao;
 	}
 }

@@ -364,7 +364,6 @@ public class Fachada implements IFachada{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				resultado.setMsg("Não foi possível realizar a consulta!");
-				
 			}
 		}else{
 			resultado.setMsg(msg);

@@ -1,7 +1,9 @@
+<%@page import="auxiliar.Autor"%>
+<%@page import="auxiliar.DadosCadLivro"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page
-	import="finalDominio.*, java.util.*"%>
+	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -25,6 +27,16 @@
 		</script>
 	</head>
 	<body>
+		<%
+			Resultado resultado = (Resultado) session.getAttribute("resultado");
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			/*try{
+				List<EntidadeDominio> entidades = resultado.getEntidades();
+				DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			}catch(Exception e){
+				e.printStackTrace();
+			}*/
+		%>
 		<form action="SalvarLivro" method="post" id="frmSalvarLivro">
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de livros</TH></tr>
@@ -49,6 +61,20 @@
 						Autor do livro
 					</td>
 					<td>
+						<select id="ddlAutor" name="ddlAutor">
+							<%
+								DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+								StringBuilder sbRegistro = new StringBuilder();
+								for(Autor autor:dados.getAutores())
+								{
+									sbRegistro.append("<option value='");
+									sbRegistro.append(autor.getId() + "'>");
+									sbRegistro.append(autor.getNome());
+									sbRegistro.append("</option>");
+								}
+								out.print(sbRegistro.toString());
+							%>
+						</select>
 						<input type="text"class="form-control" id="txtAutor" name="txtAutor" value="${empty livro ? '' : livro.getAutor()}" />
 					</td>
 				</tr>
