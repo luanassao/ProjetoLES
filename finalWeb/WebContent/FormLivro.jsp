@@ -1,3 +1,6 @@
+<%@page import="auxiliar.Categoria"%>
+<%@page import="auxiliar.Precificacao"%>
+<%@page import="auxiliar.Editora"%>
 <%@page import="auxiliar.Autor"%>
 <%@page import="auxiliar.DadosCadLivro"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,9 +17,22 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Cadastro de livros</title>
 		<script type="text/javascript">
+			function adcCategoria(id, nome) {
+				document.getElementById("btn" + id).disabled = true;
+				if(document.getElementById("txtCategorias").value == "")
+				{
+					document.getElementById("txtCategorias").value = nome;
+					document.getElementById("txtCatAtuais").value = nome;
+				}
+				else
+				{
+					document.getElementById("txtCategorias").value += ", " + nome;
+					document.getElementById("txtCatAtuais").value += ", " + nome;
+				}
+				document.getElementById("hdCategorias").value += id + " ";
+			}
 			function Atualizar() {
-				if(document.getElementById("txtTitulo").value == '' || document.getElementById("txtAutor").value == ''
-					|| document.getElementById("txtAno").value == '' || document.getElementById("txtEditora").value == ''
+				if(document.getElementById("txtTitulo").value == '' || document.getElementById("txtAno").value == ''
 					|| document.getElementById("txtEdicao").value == '' || document.getElementById("txtISBN").value == ''
 					|| document.getElementById("txtPaginas").value == '' || document.getElementById("txtSinopse").value == '')
 				{
@@ -28,17 +44,14 @@
 	</head>
 	<body>
 		<%
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
+			Resultado resultado = (Resultado) session.getAttribute("dados");
 			List<EntidadeDominio> entidades = resultado.getEntidades();
-			/*try{
-				List<EntidadeDominio> entidades = resultado.getEntidades();
-				DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
-			}catch(Exception e){
-				e.printStackTrace();
-			}*/
+
+			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			StringBuilder sbRegistro;
 		%>
 		<form action="SalvarLivro" method="post" id="frmSalvarLivro">
-			<table class="table table-bordered">
+			<table  class="table" bordercolor="black" BORDER="5">
 				<tr><TH COLSPAN="2">Cadastro de livros</TH></tr>
 				<tr style="${empty livro ? 'display:none' : ''}">
 					<td>
@@ -51,20 +64,14 @@
 				<tr>
 					<td>
 						Titulo do livro
-					</td>
-					<td>
 						<input type="text"class="form-control" id="txtTitulo" name="txtTitulo" value="${empty livro ? '' : livro.getTitulo()}" />
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Autor do livro
-					</td>
-					<td>
-						<select id="ddlAutor" name="ddlAutor">
+						<br>
+						<select class="btn btn-outline-dark" id="ddlAutor" name="ddlAutor">
 							<%
-								DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
-								StringBuilder sbRegistro = new StringBuilder();
+								sbRegistro = new StringBuilder();
 								for(Autor autor:dados.getAutores())
 								{
 									sbRegistro.append("<option value='");
@@ -75,80 +82,73 @@
 								out.print(sbRegistro.toString());
 							%>
 						</select>
-						<input type="text"class="form-control" id="txtAutor" name="txtAutor" value="${empty livro ? '' : livro.getAutor()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Status do livro
+						<br>
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						  <label class="btn btn-outline-dark">
+						    <input type="radio" name="rdStatus" id="rdStatus" autocomplete="off" checked> Ativo
+						  </label>
+						  <label class="btn btn-outline-dark">
+						    <input type="radio" name="rdStatus" id="rdStatus" autocomplete="off" ${livro.getStatus() == false ? 'checked' : ''}> Inativo
+						  </label>
+						</div>
 					</td>
-					<td>
-						Ativo    <input type="radio" id="rdStatus" name="rdStatus" value="true" checked>
-					    Inativo    <input type="radio" id="rdStatus" name="rdStatus" value="false" ${livro.getStatus() == false ? 'checked' : ''}>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Categoria do livro
-					</td>
-					<td>
-						<select id="ddlCategoria" name="ddlCategoria">
-							<option ${empty livro ? 'selected' : '' }>Didatico</option>
-							<option ${livro.getCategoria() == 'Aventura' ? 'selected' : '' }>Aventura</option>
-							<option ${livro.getCategoria() == 'Comedia' ? 'selected' : '' }>Comedia</option>
-							<option ${livro.getCategoria() == 'Terror' ? 'selected' : '' }>Terror</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Subcategoria do livro
-					</td>
-					<td>
-						<select id="ddlsCategoria" name="ddlsCategoria">
-							<option ${empty livro ? 'selected' : '' }>Matematica</option>
-							<option ${livro.getSubcategoria() == 'Fantasia' ? 'selected' : '' }>Fantasia</option>
-							<option ${livro.getSubcategoria() == 'Cientifico' ? 'selected' : '' }>Cientifico</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
 					<td>
 						Ano do livro
-					</td>
-					<td>
 						<input type="text"class="form-control" id="txtAno" name="txtAno" value="${empty livro ? '' : livro.getAno()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						Editora do livro
+						Categorias do livro
 					</td>
 					<td>
-						<input type="text"class="form-control" id="txtEditora" name="txtEditora" value="${empty livro ? '' : livro.getEditora()}" />
+						<div class="input-group mb-3">
+						  <input type="text" class="form-control" id="txtCategorias" name="txtCategorias" placeholder="Adicione alguma categoria">
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-secondary" type="button" data-toggle='modal' data-target='#CategoriaModal'>Adicionar</button>
+						  </div>
+						</div>
+						<input type="hidden" id="hdCategorias" name="hdCategorias">
 					</td>
 				</tr>
 				<tr>
 					<td>
-						Edição do livro
+						Editora do livro
+					<br>
+						<select class="btn btn-outline-dark" id="ddlEditora" name="ddlEditora">
+							<%
+								sbRegistro = new StringBuilder();
+								for(Editora editora:dados.getEditoras())
+								{
+									sbRegistro.append("<option value='");
+									sbRegistro.append(editora.getId() + "'>");
+									sbRegistro.append(editora.getNome());
+									sbRegistro.append("</option>");
+								}
+								out.print(sbRegistro.toString());
+							%>
+						</select>
 					</td>
 					<td>
+						Edição do livro
+					<br>
 						<input type="text"class="form-control" id="txtEdicao" name="txtEdicao" value="${empty livro ? '' : livro.getEdicao()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
 						ISBN do livro
-					</td>
-					<td>
+					<br>
 						<input type="text"class="form-control" id="txtISBN" name="txtISBN" value="${empty livro ? '' : livro.getISBN()}" />
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Número de páginas do livro
-					</td>
-					<td>
+					<br>
 						<input type="text"class="form-control" id="txtPaginas" name="txtPaginas" value="${empty livro ? '' : livro.getNpaginas()}" />
 					</td>
 				</tr>
@@ -163,69 +163,56 @@
 				<tr>
 					<td>
 						Altura do livro
-					</td>
-					<td>
 						<input type="text" class="form-control" id="txtAltura" name="txtAltura" value="${empty livro ? '' : livro.getAltura()}" />
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Largura do livro
-					</td>
-					<td>
 						<input type="text" class="form-control" id="txtLargura" name="txtLargura" value="${empty livro ? '' : livro.getLargura()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Peso do livro
-					</td>
-					<td>
 						<input type="text" class="form-control" id="txtPeso" name="txtPeso" value="${empty livro ? '' : livro.getPeso()}" />
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Profundidade do livro
-					</td>
-					<td>
 						<input type="text" class="form-control" id="txtProfundidade" name="txtProfundidade" value="${empty livro ? '' : livro.getProfundidade()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Quantidade em estoque
-					</td>
-					<td>
+					<br>
 						<input type="text" class="form-control" id="txtEstoque" name="txtEstoque" value="${empty livro ? '' : livro.getEstoque()}" />
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Preço do livro
-					</td>
-					<td>
+					<br>
 						<input type="text" class="form-control" id="txtPreco" name="txtPreco" value="${empty livro ? '' : livro.getPreco()}" />
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Grupo de precificação
-					</td>
-					<td>
-						<select id="ddlPrecificacao" name="ddlPrecificacao">
-							<option value="A" ${empty livro ? 'selected' : '' }>A - 30%</option>
-							<option value="B" ${livro.getPrecificacao() == 'B' ? 'selected' : '' }>B - 40%</option>
-							<option value="C" ${livro.getPrecificacao() == 'C' ? 'selected' : '' }>C - 50%</option>
-							<option value="D" ${livro.getPrecificacao() == 'D' ? 'selected' : '' }>D - 60%</option>
+					<br>
+						<select class="btn btn-outline-dark" id="ddlPrecificacao" name="ddlPrecificacao">
+							<%
+								sbRegistro = new StringBuilder();
+								for(Precificacao precificacao:dados.getPrecificacoes())
+								{
+									sbRegistro.append("<option value='");
+									sbRegistro.append(precificacao.getId() + "'>");
+									sbRegistro.append(precificacao.getNome() + " - " + precificacao.getMargem() + "%");
+									sbRegistro.append("</option>");
+								}
+								out.print(sbRegistro.toString());
+							%>
 						</select>
 					</td>
-				</tr>
-				<tr>
 					<td>
 						Valor do livro
-					</td>
-					<td>
+					<br>
 						<input type="text" class="form-control" id="txtValor" name="txtValor" value="${empty livro ? '' : livro.getValor()}" />
 					</td>
 				</tr>
@@ -240,5 +227,45 @@
 			</table>
 			<input onclick="Atualizar()" type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty livro ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
 		</form>
+		<!-- Modal -->
+		<div class="modal fade" id="CategoriaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Adicionar categorias</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+				Clique no + para adicionar uma categoria
+				<br>
+				<input type="text" class="form-control" id="txtCatAtuais" placeholder="Adicione alguma categoria">
+		      <br>
+		      <table class="table" align="center">
+		      	<%
+					sbRegistro = new StringBuilder();
+					for(Categoria categoria:dados.getCategorias())
+					{
+						sbRegistro.append("<tr><td>");
+						sbRegistro.append(categoria.getNome());
+						sbRegistro.append("</td><td>");
+						sbRegistro.append("<button type='button' class='btn btn-primary' onclick='adcCategoria(`");
+						sbRegistro.append(categoria.getId() + "`,`" + categoria.getNome() + "`)' id='btn" + categoria.getId() + "'>");
+						sbRegistro.append("+");
+						sbRegistro.append("</button>");
+						sbRegistro.append("</td>");
+					}
+					out.print(sbRegistro.toString());
+				%>
+				</table>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</body>
 </html>

@@ -1,26 +1,31 @@
 package finalDominio;
 
+import java.util.ArrayList;
+
+import auxiliar.Alterador;
+import auxiliar.Autor;
+import auxiliar.Categoria;
+import auxiliar.Editora;
+import auxiliar.Precificacao;
+
 public class Livro extends EntidadeDominio{
-	private String autor, categoria, subcategoria, ano, titulo, editora, edicao, ISBN, npaginas, sinopse, alterador, precificacao;
+	private String ano, titulo, edicao, ISBN, npaginas, sinopse;
 	private Boolean status;
 	private double altura, largura, peso, profundidade, preco, valor;
 	private int estoque;
 	private String motivo;
+	private Autor autor;
+	private Editora editora;
+	private Precificacao precificacao;
+	private Alterador alterador;
+	private ArrayList<Categoria> categorias;
 
-	public String getAutor() {
-		return autor;
-	}
-
-	public String getAlterador() {
+	public Alterador getAlterador() {
 		return alterador;
 	}
 
-	public void setAlterador(String alterador) {
+	public void setAlterador(Alterador alterador) {
 		this.alterador = alterador;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
 	}
 
 	public boolean getStatus() {
@@ -29,22 +34,6 @@ public class Livro extends EntidadeDominio{
 
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}
-
-	public String getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-
-	public String getSubcategoria() {
-		return subcategoria;
-	}
-
-	public void setSubcategoria(String subcategoria) {
-		this.subcategoria = subcategoria;
 	}
 
 	public String getAno() {
@@ -61,14 +50,6 @@ public class Livro extends EntidadeDominio{
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-
-	public String getEditora() {
-		return editora;
-	}
-
-	public void setEditora(String editora) {
-		this.editora = editora;
 	}
 
 	public String getEdicao() {
@@ -159,20 +140,44 @@ public class Livro extends EntidadeDominio{
 		this.estoque = estoque;
 	}
 
-	public String getPrecificacao() {
-		return precificacao;
-	}
-
-	public void setPrecificacao(String precificacao) {
-		this.precificacao = precificacao;
-	}
-
 	public String getMotivo() {
 		return motivo;
 	}
 
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
+	}
+
+	public ArrayList<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(ArrayList<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
+	public Autor getAutor() {
+		return autor;
+	}
+
+	public void setAutor(Autor autor) {
+		this.autor = autor;
+	}
+
+	public Editora getEditora() {
+		return editora;
+	}
+
+	public void setEditora(Editora editora) {
+		this.editora = editora;
+	}
+
+	public Precificacao getPrecificacao() {
+		return precificacao;
+	}
+
+	public void setPrecificacao(Precificacao precificacao) {
+		this.precificacao = precificacao;
 	}
 	
 }

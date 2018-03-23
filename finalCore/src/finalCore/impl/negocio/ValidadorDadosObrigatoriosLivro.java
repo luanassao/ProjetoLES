@@ -11,10 +11,8 @@ public class ValidadorDadosObrigatoriosLivro implements IStrategy{
 		if(entidade instanceof Livro){
 			Livro livro = (Livro)entidade;
 			
-			String autor = livro.getAutor();
 			String ano = livro.getAno();
 			String titulo = livro.getTitulo();
-			String editora = livro.getEditora();
 			String edicao = livro.getEdicao();
 			String isbn = livro.getISBN();
 			String numPaginas = livro.getNpaginas();
@@ -23,16 +21,15 @@ public class ValidadorDadosObrigatoriosLivro implements IStrategy{
 			double peso = livro.getPeso();
 			double profundidade = livro.getProfundidade();
 			
-			if(autor == null || ano==null || titulo == null   || editora == null  ||
-					edicao == null || isbn == null || numPaginas == null || sinopse == null || altura == 0   ||  peso == 0 ||
+			if(ano==null || titulo == null   || edicao == null || isbn == null || 
+					numPaginas == null || sinopse == null || altura == 0   ||  peso == 0 ||
 					profundidade == 0){
 				return "Todos os dados cadastrais de um livro são obrigatórios!";
 				
 			}
 			
-			if(autor.trim().equals("") || 
-					ano.trim().equals("")|| titulo.trim().equals("") || editora.trim().equals("")
-					|| edicao.trim().equals("") || isbn.trim().equals("") || numPaginas.trim().equals("") ||
+			if(ano.trim().equals("")|| titulo.trim().equals("") || edicao.trim().equals("") 
+					|| isbn.trim().equals("") || numPaginas.trim().equals("") ||
 					sinopse.trim().equals("")){
 				return "Todos os dados cadastrais de um livro são obrigatórios!";
 			}

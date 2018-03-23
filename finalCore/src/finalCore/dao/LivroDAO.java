@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import auxiliar.Categoria;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 
@@ -22,35 +23,55 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO livros(autor, categoria, subcategoria, ano, titulo, editora,");
-			sql.append("edicao, ISBN, npaginas, sinopse, status, altura, largura, peso, profundidade, alterador,");
-			sql.append("estoque, preco, precificacao, valor)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			sql.append("CALL SALVAR_LIVRO (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			/*sql.append("INSERT INTO livros(id_autor, ano, titulo, id_editora, edicao, ISBN,");
+			sql.append("npaginas, sinopse, status, altura, largura, peso, profundidade, alterador,");
+			sql.append("estoque, preco, id_precificacao, valor)");
+			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");*/
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, livro.getAutor());
-			pst.setString(2, livro.getCategoria());
-			pst.setString(3, livro.getSubcategoria());
-			pst.setString(4, livro.getAno());
-			pst.setString(5, livro.getTitulo());
-			pst.setString(6, livro.getEditora());
-			pst.setString(7, livro.getEdicao());
-			pst.setString(8, livro.getISBN());
-			pst.setString(9, livro.getNpaginas());
-			pst.setString(10, livro.getSinopse());
-			pst.setBoolean(11, livro.getStatus());
-			pst.setDouble(12, livro.getAltura());
-			pst.setDouble(13, livro.getLargura());
-			pst.setDouble(14, livro.getPeso());
-			pst.setDouble(15, livro.getProfundidade());
-			pst.setString(16, livro.getAlterador());
-			pst.setInt(17, livro.getEstoque());
-			pst.setDouble(18, livro.getPreco());
-			pst.setString(19, String.valueOf(livro.getPrecificacao()));
-			pst.setDouble(20, livro.getValor());
+			pst.setInt(1, livro.getAutor().getId());
+			pst.setString(2, livro.getAno());
+			pst.setString(3, livro.getTitulo());
+			pst.setInt(4, livro.getEditora().getId());
+			pst.setString(5, livro.getEdicao());
+			pst.setString(6, livro.getISBN());
+			pst.setString(7, livro.getNpaginas());
+			pst.setString(8, livro.getSinopse());
+			pst.setInt(9, livro.getEstoque());
+			pst.setDouble(10, livro.getPreco());
+			pst.setInt(11, livro.getPrecificacao().getId());
+			pst.setDouble(12, livro.getValor());
+			pst.setBoolean(13, livro.getStatus());
+			pst.setDouble(14, livro.getAltura());
+			pst.setDouble(15, livro.getLargura());
+			pst.setDouble(16, livro.getPeso());
+			pst.setDouble(17, livro.getProfundidade());
+			pst.setInt(18, livro.getAlterador().getId());
 			System.out.println(pst);
 			pst.executeUpdate();			
 			connection.commit();
+			
+			sql = new StringBuilder();
+			sql.append("CALL ID_Livro_Salvo()");
+			pst = connection.prepareStatement(sql.toString());
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()){
+				livro.setId(rs.getInt("ID_Livro"));
+			}
+			
+			for(Categoria c:livro.getCategorias())
+			{
+				sql = new StringBuilder();
+				sql.append("CALL SALVAR_CATEGORIA_LIVRO (?,?)");
+				
+				pst = connection.prepareStatement(sql.toString());
+				pst.setInt(1, livro.getId());
+				pst.setInt(2, c.getId());
+				System.out.println(pst);
+				pst.executeUpdate();			
+				connection.commit();
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -130,11 +151,11 @@ public class LivroDAO extends AbstractJdbcDAO{
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
 			sb.append(" and titulo = '" + livro.getTitulo() + "'");
 		}
-		if(livro.getAutor() != null && livro.getAutor().length() > 0){
-			sb.append(" and autor = '" + livro.getAutor() + "'");
+		if(livro.getAutor().getId() != 0){
+			sb.append(" and id_autor = '" + livro.getAutor().getId() + "'");
 		}
-		if(livro.getEditora() != null && livro.getEditora().length() > 0) {
-			sb.append(" and editora = '" + livro.getEditora() + "'");
+		if(livro.getEditora().getId() != 0) {
+			sb.append(" and id_editora = '" + livro.getEditora().getId() + "'");
 		}
 		if(livro.getAno() != null && livro.getAno().length() > 0) {
 			sb.append(" and ano = '" + livro.getAno() + "'");

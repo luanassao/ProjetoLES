@@ -1,12 +1,20 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import auxiliar.Alterador;
+import auxiliar.Autor;
+import auxiliar.Categoria;
+import auxiliar.DadosCadLivro;
+import auxiliar.Editora;
+import auxiliar.Precificacao;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
@@ -27,19 +35,13 @@ public class LivroViewHelper implements IViewHelper{
 
 		if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
-			String autor = request.getParameter("ddlAutor");
-			String categoria = request.getParameter("ddlCategoria");
-			String subcategoria = request.getParameter("ddlsCategoria");
 			String ano = request.getParameter("txtAno");
 			String titulo = request.getParameter("txtTitulo");
-			String editora = request.getParameter("txtEditora");
 			String edicao = request.getParameter("txtEdicao");
 			String isbn = request.getParameter("txtISBN");
 			String npaginas = request.getParameter("txtPaginas");
 			String sinopse = request.getParameter("txtSinopse");
-			String alterador = request.getParameter("txtResponsavel");
-			String precificacao = request.getParameter("ddlPrecificacao");
-
+			
 			livro = new Livro();
 			
 			int estoque = 0, id = 0;
@@ -63,11 +65,53 @@ public class LivroViewHelper implements IViewHelper{
 			if(!usuario.getAdministrador())
 				estoque = 1;
 			
-			alterador = usuario.getEmail();
+			Alterador alterador = new Alterador();
+			alterador.setId(usuario.getId());
+			alterador.setEmail(usuario.getEmail());
 			
 			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
 			status = request.getParameter("rdStatus").equals("todos") ? null : status;
 			
+
+			String hdcategoria = request.getParameter("hdCategorias");
+			System.out.println(hdcategoria);
+			String[] categorias = hdcategoria.split(" ");
+			Resultado resultado = (Resultado) session.getAttribute("dados");
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			try {
+			for(String c : categorias)
+			{
+				for(Categoria cat:dados.getCategorias())
+				{
+					if(cat.getId() == Integer.parseInt(c))
+						livro.getCategorias().add(cat);
+				}
+			}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			String autor = request.getParameter("ddlAutor");
+			for(Autor a:dados.getAutores())
+			{
+				if(a.getId() == Integer.parseInt(autor))
+					livro.setAutor(a);
+			}
+
+			String editora = request.getParameter("ddlEditora");
+			for(Editora e:dados.getEditoras())
+			{
+				if(e.getId() == Integer.parseInt(editora))
+					livro.setEditora(e);
+			}
+
+			String precificacao = request.getParameter("ddlPrecificacao");
+			for(Precificacao p:dados.getPrecificacoes())
+			{
+				if(p.getId() == Integer.parseInt(precificacao))
+					livro.setPrecificacao(p);
+			}
 			
 			try {
 				id = Integer.parseInt(request.getParameter("txtId"));
@@ -80,12 +124,8 @@ public class LivroViewHelper implements IViewHelper{
 			livro.setPreco(preco);
 			livro.setValor(valor);
 			livro.setId(id);
-			livro.setAutor(autor);
-			livro.setCategoria(categoria);
-			livro.setSubcategoria(subcategoria);
 			livro.setAno(ano);
 			livro.setTitulo(titulo);
-			livro.setEditora(editora);
 			livro.setEdicao(edicao);
 			livro.setISBN(isbn);
 			livro.setNpaginas(npaginas);
@@ -95,7 +135,6 @@ public class LivroViewHelper implements IViewHelper{
 			livro.setLargura(largura);
 			livro.setPeso(peso);
 			livro.setProfundidade(profundidade);
-			livro.setPrecificacao(precificacao);
 			livro.setAlterador(alterador);
 		}
 		else{
