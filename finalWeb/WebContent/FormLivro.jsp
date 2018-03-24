@@ -45,6 +45,7 @@
 	<body>
 		<%
 			Resultado resultado = (Resultado) session.getAttribute("dados");
+			Livro livro = (Livro) session.getAttribute("livro");
 			List<EntidadeDominio> entidades = resultado.getEntidades();
 
 			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
@@ -75,7 +76,7 @@
 								for(Autor autor:dados.getAutores())
 								{
 									sbRegistro.append("<option value='");
-									sbRegistro.append(autor.getId() + "'>");
+									sbRegistro.append(autor.getId() + "'${empty livro?  : (livro.getAutor().getId() == " + autor.getId() + " ? selected : )}" + ">");
 									sbRegistro.append(autor.getNome());
 									sbRegistro.append("</option>");
 								}
@@ -90,10 +91,10 @@
 						<br>
 						<div class="btn-group btn-group-toggle" data-toggle="buttons">
 						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdStatus" id="rdStatus" autocomplete="off" checked> Ativo
+						    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off" checked> Ativo
 						  </label>
 						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdStatus" id="rdStatus" autocomplete="off" ${livro.getStatus() == false ? 'checked' : ''}> Inativo
+						    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off" ${livro.getStatus() == false ? 'checked' : ''}> Inativo
 						  </label>
 						</div>
 					</td>
@@ -221,7 +222,7 @@
 						Responsavel
 					</td>
 					<td>
-						<input type="text" class="form-control" id="txtResponsavel" name="txtResponsavel" value="${empty livro ? '' : livro.getAlterador()}" />
+						<input type="text" class="form-control" id="txtResponsavel" name="txtResponsavel" value="${empty livro ? '' : livro.getAlterador().getId()}" />
 					</td>
 				</tr>
 			</table>

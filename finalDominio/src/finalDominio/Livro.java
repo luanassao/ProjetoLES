@@ -18,7 +18,7 @@ public class Livro extends EntidadeDominio{
 	private Editora editora;
 	private Precificacao precificacao;
 	private Alterador alterador;
-	private ArrayList<Categoria> categorias;
+	private ArrayList<Categoria> categorias = new ArrayList<>();
 
 	public Alterador getAlterador() {
 		return alterador;
@@ -28,7 +28,7 @@ public class Livro extends EntidadeDominio{
 		this.alterador = alterador;
 	}
 
-	public boolean getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 

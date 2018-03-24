@@ -6,9 +6,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import auxiliar.Alterador;
+import auxiliar.Autor;
 import auxiliar.Categoria;
+import auxiliar.Editora;
+import auxiliar.Precificacao;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
+import javafx.scene.media.AudioClip;
 
 public class LivroDAO extends AbstractJdbcDAO{
 	public LivroDAO() {
@@ -55,6 +60,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 			sql = new StringBuilder();
 			sql.append("CALL ID_Livro_Salvo()");
 			pst = connection.prepareStatement(sql.toString());
+			System.out.println(pst);
 			ResultSet rs = pst.executeQuery();
 			while(rs.next()){
 				livro.setId(rs.getInt("ID_Livro"));
@@ -147,14 +153,22 @@ public class LivroDAO extends AbstractJdbcDAO{
 		PreparedStatement pst = null;
 		Livro livro = (Livro) entidade;
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM livros WHERE 1=1\n");
+		sb.append("SELECT * FROM livros ");
+		sb.append("LEFT JOIN Autor using(ID_Autor)");
+		sb.append("LEFT JOIN precificacao using(ID_Precificacao)");
+		sb.append("LEFT JOIN editora using(ID_Editora)");
+		sb.append("LEFT JOIN livro_possui_categoria using(ID_Livro)");
+		sb.append("LEFT JOIN categoria using(ID_Categoria)");
+		sb.append("LEFT JOIN (select ID_Cliente, Email from clientes) alterador on (alterador = alterador.ID_Cliente)");
+		sb.append("WHERE 1=1\n");
+		
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
 			sb.append(" and titulo = '" + livro.getTitulo() + "'");
 		}
-		if(livro.getAutor().getId() != 0){
+		if(livro.getAutor() != null && livro.getAutor().getId() != 0){
 			sb.append(" and id_autor = '" + livro.getAutor().getId() + "'");
 		}
-		if(livro.getEditora().getId() != 0) {
+		if(livro.getEditora() != null && livro.getEditora().getId() != 0) {
 			sb.append(" and id_editora = '" + livro.getEditora().getId() + "'");
 		}
 		if(livro.getAno() != null && livro.getAno().length() > 0) {
@@ -181,30 +195,68 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst = connection.prepareStatement(sb.toString());
 			ResultSet rs = pst.executeQuery();
 			List<EntidadeDominio> livros = new ArrayList<>();
+			int atual = 0;
+			Livro l = new Livro();
+			Categoria c;
 			while(rs.next()){
-				Livro l = new Livro();
-				l.setId(rs.getInt("ID_Livro"));
-				l.setAutor(rs.getString("autor"));
-				l.setCategoria(rs.getString("categoria"));
-				l.setSubcategoria(rs.getString("subcategoria"));
-				l.setAno(rs.getString("ano"));
-				l.setTitulo(rs.getString("titulo"));
-				l.setEditora(rs.getString("editora"));
-				l.setEdicao(rs.getString("edicao"));
-				l.setISBN(rs.getString("isbn"));
-				l.setNpaginas(rs.getString("npaginas"));
-				l.setSinopse(rs.getString("sinopse"));
-				l.setStatus(rs.getBoolean("status"));
-				l.setAltura(rs.getDouble("altura"));
-				l.setLargura(rs.getDouble("largura"));
-				l.setPeso(rs.getDouble("peso"));
-				l.setProfundidade(rs.getDouble("profundidade"));
-				l.setAlterador(rs.getString("alterador"));
-				l.setPreco(rs.getDouble("preco"));
-				l.setValor(rs.getDouble("valor"));
-				l.setPrecificacao(rs.getString("precificacao"));
-				l.setEstoque(rs.getInt("estoque"));
-				livros.add(l);
+				if(rs.getInt("ID_Livro") != atual)
+				{
+					atual = rs.getInt("ID_Livro");
+					l = new Livro();
+					Precificacao p = new Precificacao();
+					Autor a = new Autor();
+					Editora e = new Editora();
+					c = new Categoria();
+					Alterador alt = new Alterador();
+					
+					l.setId(rs.getInt("ID_Livro"));
+					l.setAno(rs.getString("ano"));
+					l.setTitulo(rs.getString("titulo"));
+					l.setEdicao(rs.getString("edicao"));
+					l.setISBN(rs.getString("isbn"));
+					l.setNpaginas(rs.getString("npaginas"));
+					l.setSinopse(rs.getString("sinopse"));
+					l.setStatus(rs.getBoolean("status"));
+					l.setAltura(rs.getDouble("altura"));
+					l.setLargura(rs.getDouble("largura"));
+					l.setPeso(rs.getDouble("peso"));
+					l.setProfundidade(rs.getDouble("profundidade"));
+					l.setPreco(rs.getDouble("preco"));
+					l.setValor(rs.getDouble("valor"));
+					l.setEstoque(rs.getInt("estoque"));
+					
+					p.setId(rs.getInt("ID_Precificacao"));
+					p.setNome(rs.getString("Nome_Precificacao"));
+					p.setMargem(rs.getInt("margem"));
+					
+					a.setId(rs.getInt("ID_Autor"));
+					a.setNome(rs.getString("Nome_Autor"));
+					
+					e.setId(rs.getInt("ID_Editora"));
+					e.setNome(rs.getString("Nome_Editora"));
+					
+					alt.setId(rs.getInt("alterador"));
+					alt.setEmail(rs.getString("Email"));
+					
+					c.setId(rs.getInt("ID_Categoria"));
+					c.setNome(rs.getString("Nome_Categoria"));
+					
+					l.setPrecificacao(p);
+					l.setAutor(a);
+					l.setEditora(e);
+					l.setAlterador(alt);
+					l.getCategorias().add(c);
+					
+					livros.add(l);
+				}
+				else
+				{
+					c = new Categoria();
+					c.setId(rs.getInt("ID_Categoria"));
+					c.setNome(rs.getString("Nome_Categoria"));
+					
+					l.getCategorias().add(c);
+				}
 			}
 			return livros;
 		}catch(SQLException e){
@@ -222,12 +274,13 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE livros SET status = ?, motivo = ?, alterador = ? WHERE ID_Livro = ?");		
+			sql.append("UPDATE livros SET status = ?, motivo = ?, alterador = ? WHERE ID_Livro = ?");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setBoolean(1, livro.getStatus());
 			pst.setString(2, livro.getMotivo());
-			pst.setString(3, livro.getAlterador());
+			pst.setInt(3, livro.getAlterador().getId());
+			pst.setInt(4, livro.getId());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {

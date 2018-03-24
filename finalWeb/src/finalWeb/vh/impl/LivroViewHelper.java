@@ -33,7 +33,29 @@ public class LivroViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Livro livro = null;
 
-		if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
+		if(operacao.equals("EXCLUIR"))
+		{
+			livro = new Livro();
+			int id = Integer.parseInt(request.getParameter("txtId"));
+			String motivo = request.getParameter("txtMotivo");
+			
+			HttpSession session = request.getSession();
+			Cliente usuario = (Cliente)session.getAttribute("usuario");
+			
+			Alterador alterador = new Alterador();
+			alterador.setId(usuario.getId());
+			alterador.setEmail(usuario.getEmail());
+			
+			if(request.getParameter("txtAcao").equals("true"))
+				livro.setStatus(true);
+			else
+				livro.setStatus(false);
+			
+			livro.setAlterador(alterador);
+			livro.setId(id);
+			livro.setMotivo(motivo);
+		}
+		else if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
 			String ano = request.getParameter("txtAno");
 			String titulo = request.getParameter("txtTitulo");
@@ -72,45 +94,48 @@ public class LivroViewHelper implements IViewHelper{
 			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
 			status = request.getParameter("rdStatus").equals("todos") ? null : status;
 			
-
-			String hdcategoria = request.getParameter("hdCategorias");
-			System.out.println(hdcategoria);
-			String[] categorias = hdcategoria.split(" ");
 			Resultado resultado = (Resultado) session.getAttribute("dados");
 			List<EntidadeDominio> entidades = resultado.getEntidades();
 			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			
 			try {
-			for(String c : categorias)
-			{
-				for(Categoria cat:dados.getCategorias())
+				String hdcategoria = request.getParameter("hdCategorias");
+				String[] categorias = hdcategoria.split(" ");
+				for(String c : categorias)
 				{
-					if(cat.getId() == Integer.parseInt(c))
-						livro.getCategorias().add(cat);
+					for(Categoria cat:dados.getCategorias())
+					{
+						if(cat.getId() == Integer.parseInt(c))
+							livro.getCategorias().add(cat);
+					}
 				}
-			}
 			}catch (Exception e) {
-				// TODO: handle exception
+				// Não há valores
 			}
 			
-			String autor = request.getParameter("ddlAutor");
-			for(Autor a:dados.getAutores())
-			{
-				if(a.getId() == Integer.parseInt(autor))
-					livro.setAutor(a);
-			}
-
-			String editora = request.getParameter("ddlEditora");
-			for(Editora e:dados.getEditoras())
-			{
-				if(e.getId() == Integer.parseInt(editora))
-					livro.setEditora(e);
-			}
-
-			String precificacao = request.getParameter("ddlPrecificacao");
-			for(Precificacao p:dados.getPrecificacoes())
-			{
-				if(p.getId() == Integer.parseInt(precificacao))
-					livro.setPrecificacao(p);
+			try {
+				String autor = request.getParameter("ddlAutor");
+				for(Autor a:dados.getAutores())
+				{
+					if(a.getId() == Integer.parseInt(autor))
+						livro.setAutor(a);
+				}
+	
+				String editora = request.getParameter("ddlEditora");
+				for(Editora e:dados.getEditoras())
+				{
+					if(e.getId() == Integer.parseInt(editora))
+						livro.setEditora(e);
+				}
+	
+				String precificacao = request.getParameter("ddlPrecificacao");
+				for(Precificacao p:dados.getPrecificacoes())
+				{
+					if(p.getId() == Integer.parseInt(precificacao))
+						livro.setPrecificacao(p);
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
 			
 			try {

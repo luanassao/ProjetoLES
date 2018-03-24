@@ -13,10 +13,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Consultar livro</title>
 <script type="text/javascript">
- function IdLivroExcluir(id) {
-	 	alert(id);
+ function IdLivroExcluir(id, status) {
 	 	document.getElementById("txtId").value = id;
-	 	document.getElementById("lblId").innerHTML=id;
+	 	document.getElementById("lblId").innerHTML = id;
+	 	document.getElementById("txtAcao").value = status;
 	}
 </script>
 </head>
@@ -87,18 +87,10 @@
       <TH>Titulo</TH>
       <TH>Autor</TH>
       <TH>Status</TH>
-      <TH>Categoria</TH>
-      <TH>Subcategoria</TH>
       <TH>Ano</TH>
       <TH>Editora</TH>
       <TH>Edicao</TH>
       <TH>ISBN</TH>
-      <TH>Paginas</TH>
-      <TH>Sinopse</TH>
-      <TH>Altura</TH>
-      <TH>largura</TH>
-      <TH>Peso</TH>
-      <TH>Profundidade</TH>
       <TH>Alterador</TH>
       <TH>-</TH>
    </TR>
@@ -145,7 +137,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getAutor());
+				sbRegistro.append(l.getAutor().getNome());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
@@ -157,25 +149,13 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getCategoria());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getSubcategoria());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getAno());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getEditora());
+				sbRegistro.append(l.getEditora().getNome());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
@@ -193,49 +173,13 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getNpaginas());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getSinopse());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getAltura());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getLargura());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getPeso());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getProfundidade());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(l.getAlterador());
+				sbRegistro.append(l.getAlterador().getEmail());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 
 				sbRegistro.append("<TD>");
 				sbRegistro.append("<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#MotivoModal'" +
-					"onclick='IdLivroExcluir(" + l.getId() + ")'>Exibir modal</button>");
+					"onclick='IdLivroExcluir(" + l.getId() + "," + !l.getStatus() + ")'>" + (l.getStatus() ? "Inativar" : "Ativar") + "</button>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");
@@ -263,17 +207,16 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
-			Livro a ser excluido:
+			Código do livro:
 			<label id="lblId"></label>
 			<input type="hidden" id="txtId" name="txtId" value="0">
+			<input type="hidden" id="txtAcao" name="txtAcao" value=false>
 			<br>
-			Motivo de inativação:
+			Motivo:
 			<input type="text" id="txtMotivo" name="txtMotivo"/>
 	      </div>
 	      <div class="modal-footer">
-	      	<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Confirmar</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	      	<button type="submit" class="btn btn-primary" name="operacao" value="EXCLUIR">Inativar</button>
 	      </div>
 	    </div>
 	  </div>

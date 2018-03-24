@@ -443,7 +443,7 @@ public class Fachada implements IFachada{
 	@Override
 	public Resultado excluir(EntidadeDominio entidade) {
 		resultado = new Resultado();
-		String nmClasse = entidade.getClass().getName();	
+		String nmClasse = entidade.getClass().getName();
 		System.out.println("Classe no alterar: " + nmClasse);
 		String msg = executarRegras(entidade, "EXCLUIR");
 	

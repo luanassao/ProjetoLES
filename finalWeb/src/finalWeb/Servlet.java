@@ -16,6 +16,7 @@ import finalWeb.command.impl.AddCarrinhoCommand;
 import finalWeb.command.impl.AlterarCommand;
 import finalWeb.command.impl.AtualizarCarrinhoCommand;
 import finalWeb.command.impl.ConsultarCommand;
+import finalWeb.command.impl.ExcluirCommand;
 import finalWeb.command.impl.LogarCommand;
 import finalWeb.command.impl.SalvarCommand;
 import finalWeb.command.impl.SelecionarEnderecoCommand;
@@ -62,6 +63,7 @@ public class Servlet extends HttpServlet {
     	commands.put("COMPRAR", new AddCarrinhoCommand());
     	commands.put("SELECIONAR", new SelecionarEnderecoCommand());
     	commands.put("ATUALIZAR", new AtualizarCarrinhoCommand());
+    	commands.put("EXCLUIR", new ExcluirCommand());
     	
     	/* Utilizando o ViewHelper para tratar especificações de qualquer tela e indexando 
     	 * cada viewhelper pela url em que esta servlet é chamada no form
@@ -108,7 +110,7 @@ public class Servlet extends HttpServlet {
 	
 	protected void doProcessRequest(HttpServletRequest request, 
 			HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		//Obtêm a uri que invocou esta servlet (O que foi definido no methdo do form html)
 		String uri = request.getRequestURI();
 		
