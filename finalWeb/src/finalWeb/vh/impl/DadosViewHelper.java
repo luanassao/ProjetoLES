@@ -37,6 +37,7 @@ public class DadosViewHelper implements IViewHelper{
 	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		request.getSession().setAttribute("livro", null);
 		String operacao = request.getParameter("target");
 			EntidadeDominio e = resultado.getEntidades().get(0);
 			DadosCadLivro dados = (DadosCadLivro)e;

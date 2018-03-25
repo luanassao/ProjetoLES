@@ -100,34 +100,34 @@ public class LivroDAO extends AbstractJdbcDAO{
 		openConnection();
 		PreparedStatement pst = null;
 		Livro livro = (Livro)entidade;
+		System.out.println(livro.getId());
 		
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE livros SET autor = ?, categoria = ?, subcategoria = ?, ano = ?, titulo = ?, editora = ?,");
+			Livro l = livro;
+			sql.append("UPDATE livros SET id_autor = ?, ano = ?, titulo = ?, id_editora = ?,");
 			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, status = ?, altura = ?, largura = ?, peso = ?, ");
 			sql.append("profundidade = ?, alterador = ?, estoque=? WHERE ID_Livro = ?");		
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, livro.getAutor());
-			pst.setString(2, livro.getCategoria());
-			pst.setString(3, livro.getSubcategoria());
-			pst.setString(4, livro.getAno());
-			pst.setString(5, livro.getTitulo());
-			pst.setString(6, livro.getEditora());
-			pst.setString(7, livro.getEdicao());
-			pst.setString(8, livro.getISBN());
-			pst.setString(9, livro.getNpaginas());
-			pst.setString(10, livro.getSinopse());
-			pst.setBoolean(11, livro.getStatus());
-			pst.setDouble(12, livro.getAltura());
-			pst.setDouble(13, livro.getLargura());
-			pst.setDouble(14, livro.getPeso());
-			pst.setDouble(15, livro.getProfundidade());
-			pst.setString(16, livro.getAlterador());
-			pst.setInt(17, livro.getEstoque());
-			pst.setInt(18, livro.getId());
-			pst.executeUpdate();			
+			pst.setInt(1, livro.getAutor().getId());
+			pst.setString(2, livro.getAno());
+			pst.setString(3, livro.getTitulo());
+			pst.setInt(4, livro.getEditora().getId());
+			pst.setString(5, livro.getEdicao());
+			pst.setString(6, livro.getISBN());
+			pst.setString(7, livro.getNpaginas());
+			pst.setString(8, livro.getSinopse());
+			pst.setBoolean(9, livro.getStatus());
+			pst.setDouble(10, livro.getAltura());
+			pst.setDouble(11, livro.getLargura());
+			pst.setDouble(12, livro.getPeso());
+			pst.setDouble(13, livro.getProfundidade());
+			pst.setInt(14, livro.getAlterador().getId());
+			pst.setInt(15, livro.getEstoque());
+			pst.setInt(16, livro.getId());
+			pst.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
 			try {

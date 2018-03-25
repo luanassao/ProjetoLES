@@ -72,11 +72,17 @@
 						<br>
 						<select class="btn btn-outline-dark" id="ddlAutor" name="ddlAutor">
 							<%
+								boolean testes = false;
 								sbRegistro = new StringBuilder();
 								for(Autor autor:dados.getAutores())
 								{
+									try{
+										testes = (livro.getAutor().getId() == autor.getId() ? true : false);
+									}catch(Exception e){
+										
+									}
 									sbRegistro.append("<option value='");
-									sbRegistro.append(autor.getId() + "'${empty livro?  : (livro.getAutor().getId() == " + autor.getId() + " ? selected : )}" + ">");
+									sbRegistro.append(autor.getId() + "'" + (testes ? "selected" : "") + ">");
 									sbRegistro.append(autor.getNome());
 									sbRegistro.append("</option>");
 								}
@@ -94,7 +100,7 @@
 						    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off" checked> Ativo
 						  </label>
 						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off" ${livro.getStatus() == false ? 'checked' : ''}> Inativo
+						    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off"> Inativo
 						  </label>
 						</div>
 					</td>
@@ -109,12 +115,55 @@
 					</td>
 					<td>
 						<div class="input-group mb-3">
-						  <input type="text" class="form-control" id="txtCategorias" name="txtCategorias" placeholder="Adicione alguma categoria">
+						  <input type="text" class="form-control" id="txtCategorias" name="txtCategorias" placeholder="Adicione alguma categoria"
+						  <%
+								sbRegistro = new StringBuilder();
+						  	int ultimo;
+						  	try{
+								ultimo = livro.getCategorias().size();
+								for(Categoria c:livro.getCategorias())
+								{
+									if(!c.equals(livro.getCategorias().get(ultimo-1)))
+									{
+										sbRegistro.append(c.getNome() + ", ");
+									}
+									else
+									{
+										sbRegistro.append(c.getNome());
+									}
+								}
+								out.print("value='" + sbRegistro.toString() + "'");
+						  	}catch(Exception e){
+						  		
+						  	}
+							%>
+							>
 						  <div class="input-group-append">
 						    <button class="btn btn-outline-secondary" type="button" data-toggle='modal' data-target='#CategoriaModal'>Adicionar</button>
 						  </div>
 						</div>
-						<input type="hidden" id="hdCategorias" name="hdCategorias">
+						<input type="hidden" id="hdCategorias" name="hdCategorias"
+						<%
+							try{
+								sbRegistro = new StringBuilder();
+								ultimo = livro.getCategorias().size();
+								for(Categoria c:livro.getCategorias())
+								{
+									if(!c.equals(livro.getCategorias().get(ultimo-1)))
+									{
+										sbRegistro.append(c.getId() + " ");
+									}
+									else
+									{
+										sbRegistro.append(c.getId());
+									}
+								}
+								out.print("value='" + sbRegistro.toString() + "'");
+							}catch(Exception e){
+								
+							}
+							%>
+							>
 					</td>
 				</tr>
 				<tr>
@@ -123,11 +172,17 @@
 					<br>
 						<select class="btn btn-outline-dark" id="ddlEditora" name="ddlEditora">
 							<%
+								testes = false;
 								sbRegistro = new StringBuilder();
 								for(Editora editora:dados.getEditoras())
 								{
+									try{
+										testes = (livro.getEditora().getId() == editora.getId() ? true : false);
+									}catch(Exception e){
+										
+									}
 									sbRegistro.append("<option value='");
-									sbRegistro.append(editora.getId() + "'>");
+									sbRegistro.append(editora.getId() + "'" + (testes ? "selected" : "") + ">");
 									sbRegistro.append(editora.getNome());
 									sbRegistro.append("</option>");
 								}
@@ -199,11 +254,17 @@
 					<br>
 						<select class="btn btn-outline-dark" id="ddlPrecificacao" name="ddlPrecificacao">
 							<%
+								testes = false;
 								sbRegistro = new StringBuilder();
 								for(Precificacao precificacao:dados.getPrecificacoes())
 								{
+									try{
+										testes = (livro.getPrecificacao().getId() == precificacao.getId() ? true : false);
+									}catch(Exception e){
+										
+									}
 									sbRegistro.append("<option value='");
-									sbRegistro.append(precificacao.getId() + "'>");
+									sbRegistro.append(precificacao.getId() + "'" + (testes ? "selected" : "") + ">");
 									sbRegistro.append(precificacao.getNome() + " - " + precificacao.getMargem() + "%");
 									sbRegistro.append("</option>");
 								}
@@ -241,18 +302,50 @@
 		      <div class="modal-body">
 				Clique no + para adicionar uma categoria
 				<br>
-				<input type="text" class="form-control" id="txtCatAtuais" placeholder="Adicione alguma categoria">
+				<input type="text" class="form-control" id="txtCatAtuais" placeholder="Adicione alguma categoria"
+				<%
+					try{
+					sbRegistro = new StringBuilder();
+					ultimo = livro.getCategorias().size();
+					for(Categoria c:livro.getCategorias())
+					{
+						if(!c.equals(livro.getCategorias().get(ultimo-1)))
+						{
+							sbRegistro.append(c.getNome() + ", ");
+						}
+						else
+						{
+							sbRegistro.append(c.getNome());
+						}
+					}
+					out.print("value='" + sbRegistro.toString() + "'");
+					}catch(Exception e){
+						
+					}
+				%>
+				>
 		      <br>
 		      <table class="table" align="center">
 		      	<%
 					sbRegistro = new StringBuilder();
 					for(Categoria categoria:dados.getCategorias())
 					{
+						testes = false;
+						try{
+							for(Categoria c:livro.getCategorias())
+							{
+								if(categoria.getId() == c.getId())
+									testes = true;
+							}
+						}catch(Exception e){
+							
+						}
 						sbRegistro.append("<tr><td>");
 						sbRegistro.append(categoria.getNome());
 						sbRegistro.append("</td><td>");
 						sbRegistro.append("<button type='button' class='btn btn-primary' onclick='adcCategoria(`");
-						sbRegistro.append(categoria.getId() + "`,`" + categoria.getNome() + "`)' id='btn" + categoria.getId() + "'>");
+						sbRegistro.append(categoria.getId() + "`,`" + categoria.getNome() + "`)' id='btn" + categoria.getId() + "'"
+								+ (testes ? "disabled" : "") + ">");
 						sbRegistro.append("+");
 						sbRegistro.append("</button>");
 						sbRegistro.append("</td>");

@@ -193,7 +193,8 @@ public class LivroViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		
 		if(resultado.getMsg() == null){
-			if(operacao.equals("SALVAR")){
+			if(operacao.equals("SALVAR"))
+			{
 				resultado.setMsg("Livro cadastrado com sucesso!");
 			}
 			
