@@ -1,3 +1,5 @@
+<%@page import="auxiliar.Categoria"%>
+<%@page import="auxiliar.Editora"%>
 <%@page import="auxiliar.CategoriaInativacao"%>
 <%@page import="auxiliar.CategoriaAtivacao"%>
 <%@page import="auxiliar.Autor"%>
@@ -24,11 +26,13 @@
 	 	
 	 	if(status == true)
 	 	{
+	 		document.getElementById("lblAcao").innerHTML = "Ativar";
 	 		document.getElementById("ddlCategoriaAtiv").style = "";
 	 		document.getElementById("ddlCategoriaInativ").style = "display:none";
 	 	}
 	 	else
 	 	{
+	 		document.getElementById("lblAcao").innerHTML = "Inativar";
 	 		document.getElementById("ddlCategoriaAtiv").style = "display:none";
 	 		document.getElementById("ddlCategoriaInativ").style = "";
 	 	}
@@ -97,11 +101,51 @@
 				</td>
 				<td>
 				Editora <br>
-				<input type="text" class="form-control" id="txtEditora" name="txtEditora">
+				<select class="btn btn-outline-dark" id="ddlEditora" name="ddlEditora">
+					<option>Todos</option>
+							<%
+								sbRegistro = new StringBuilder();
+								for(Editora editora:dados.getEditoras())
+								{
+									sbRegistro.append("<option value='");
+									sbRegistro.append(editora.getId() + "'>");
+									sbRegistro.append(editora.getNome());
+									sbRegistro.append("</option>");
+								}
+								out.print(sbRegistro.toString());
+							%>
+						</select>
 				</td>
 				<td>
 				ISBN <br>
 				<input type="text" class="form-control" id="txtISBN" name="txtISBN">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				Categoria <br>
+				<select class="btn btn-outline-dark" id="hdCategorias" name="hdCategorias">
+					<option>Todos</option>
+					<%
+						sbRegistro = new StringBuilder();
+						for(Categoria categoria:dados.getCategorias())
+						{
+							sbRegistro.append("<option value='");
+							sbRegistro.append(categoria.getId() + "'>");
+							sbRegistro.append(categoria.getNome());
+							sbRegistro.append("</option>");
+						}
+						out.print(sbRegistro.toString());
+					%>
+				</select>
+				</td>
+				<td>
+				Preço mínimo: <br>
+				<input type="text" class="form-control" id="txtPreco" name="txtPreco" />
+				</td>
+				<td>
+				Preço máximo: <br>
+				<input type="text" class="form-control" id="txtValor" name="txtValor" />
 				</td>
 			</tr>
 		</table>
@@ -130,6 +174,7 @@
       <TH>Codigo</TH>
       <TH>Titulo</TH>
       <TH>Autor</TH>
+      <TH>Valor</TH>
       <TH>Status</TH>
       <TH>Ano</TH>
       <TH>Editora</TH>
@@ -174,7 +219,7 @@
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(sbLink.toString());			
 				sbRegistro.append(l.getTitulo());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
@@ -182,6 +227,12 @@
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getAutor().getNome());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(l.getValor());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				
@@ -287,7 +338,7 @@
 			<input type="text" id="txtMotivo" name="txtMotivo"/>
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="submit" class="btn btn-primary" name="operacao" value="EXCLUIR">Inativar</button>
+	      	<button type="submit" class="btn btn-primary" name="operacao" value="EXCLUIR"><label id="lblAcao"></label> </button>
 	      </div>
 	    </div>
 	  </div>

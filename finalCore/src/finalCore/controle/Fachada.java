@@ -23,6 +23,7 @@ import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
 import finalCore.impl.negocio.AtualizadorPrecoCarrinho;
 import finalCore.impl.negocio.ValidadorCpf;
+import finalCore.impl.negocio.ValidadorDadosAtivInativ;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCartao;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCliente;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosEndereco;
@@ -88,6 +89,7 @@ public class Fachada implements IFachada{
 		/* Criando instâncias de regras de negócio a serem utilizados*/
 		ValidadorDadosObrigatoriosLivro vrDadosObrigatoriosLivro = new ValidadorDadosObrigatoriosLivro();
 		ValidadorValorLivro vrValidadorValorLivro = new ValidadorValorLivro();
+		ValidadorDadosAtivInativ vrDadosAtivInativ = new ValidadorDadosAtivInativ();
 		ValidadorCpf vCpf = new ValidadorCpf();
 		ValidadorDadosObrigatoriosCliente vrDadosObrigatoriosCliente = new ValidadorDadosObrigatoriosCliente();
 		ValidadorDadosObrigatoriosEndereco vrDadosObrigatoriosEndereco = new ValidadorDadosObrigatoriosEndereco();
@@ -105,6 +107,10 @@ public class Fachada implements IFachada{
 		rnsSalvarLivro.add(vrDadosObrigatoriosLivro);
 		rnsSalvarLivro.add(vrValidadorValorLivro);
 		
+		List<IStrategy> rnsAtivInativLivro = new ArrayList<IStrategy>();
+		/* Adicionando as regras a serem utilizadas na operação inativar ou inativar do livro*/
+		rnsAtivInativLivro.add(vrDadosAtivInativ);
+		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação  do livro
 		 */
@@ -114,6 +120,8 @@ public class Fachada implements IFachada{
 		 */
 		rnsLivro.put("SALVAR", rnsSalvarLivro);
 		rnsLivro.put("ALTERAR", rnsSalvarLivro);
+		rnsLivro.put("EXCLUIR", rnsAtivInativLivro);
+		
 		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
 		 * pelo nome da entidade
 		 */
@@ -417,8 +425,7 @@ public class Fachada implements IFachada{
 	@Override
 	public Resultado alterar(EntidadeDominio entidade) {
 		resultado = new Resultado();
-		String nmClasse = entidade.getClass().getName();	
-		System.out.println("Classe no alterar: " + nmClasse);
+		String nmClasse = entidade.getClass().getName();
 		String msg = executarRegras(entidade, "ALTERAR");
 	
 		if(msg == null){
@@ -444,7 +451,7 @@ public class Fachada implements IFachada{
 	public Resultado excluir(EntidadeDominio entidade) {
 		resultado = new Resultado();
 		String nmClasse = entidade.getClass().getName();
-		System.out.println("Classe no alterar: " + nmClasse);
+		
 		String msg = executarRegras(entidade, "EXCLUIR");
 	
 		if(msg == null){

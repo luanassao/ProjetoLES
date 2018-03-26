@@ -94,10 +94,15 @@ public class LivroViewHelper implements IViewHelper{
 			int estoque = 0, id = 0;
 			double preco = 0.0, valor = 0.0;
 			Double altura = 0.0, largura = 0.0, peso = 0.0, profundidade = 0.0;
+			
 			try {
-				estoque = Integer.parseInt(request.getParameter("txtEstoque"));
 				preco = Double.parseDouble(request.getParameter("txtPreco"));
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			try {
 				valor = Double.parseDouble(request.getParameter("txtValor"));
+				estoque = Integer.parseInt(request.getParameter("txtEstoque"));
 				altura = Double.parseDouble(request.getParameter("txtAltura"));
 				largura = Double.parseDouble(request.getParameter("txtLargura"));
 				peso = Double.parseDouble(request.getParameter("txtPeso"));
@@ -255,10 +260,10 @@ public class LivroViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() != null){
-			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
+			//if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
 				request.getSession().setAttribute("resultado", resultado);
 				d= request.getRequestDispatcher("FormConsultaLivro.jsp");  	
-			}
+			//}
 		}
 		d.forward(request,response);
 	}

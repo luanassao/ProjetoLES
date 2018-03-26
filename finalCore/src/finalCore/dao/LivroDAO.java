@@ -9,6 +9,8 @@ import java.util.List;
 import auxiliar.Alterador;
 import auxiliar.Autor;
 import auxiliar.Categoria;
+import auxiliar.CategoriaAtivacao;
+import auxiliar.CategoriaInativacao;
 import auxiliar.Editora;
 import auxiliar.Precificacao;
 import finalDominio.EntidadeDominio;
@@ -94,12 +96,12 @@ public class LivroDAO extends AbstractJdbcDAO{
 		}
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void alterar(EntidadeDominio entidade) throws SQLException {
 		openConnection();
 		PreparedStatement pst = null;
 		Livro livro = (Livro)entidade;
-		System.out.println(livro.getId());
 		
 		try {
 			connection.setAutoCommit(false);
@@ -126,6 +128,29 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setInt(15, livro.getId());
 			pst.executeUpdate();
 			connection.commit();
+			
+			if(livro.getCategorias() != null && livro.getCategorias().size() > 0)
+			{
+				sql = new StringBuilder();
+				sql.append("CALL Apagar_Categorias (?)");
+				
+				pst = connection.prepareStatement(sql.toString());
+				pst.setInt(1, livro.getId());
+				pst.executeUpdate();			
+				connection.commit();
+			}
+			
+			for(Categoria c:livro.getCategorias())
+			{
+				sql = new StringBuilder();
+				sql.append("CALL SALVAR_CATEGORIA_LIVRO (?,?)");
+				
+				pst = connection.prepareStatement(sql.toString());
+				pst.setInt(1, livro.getId());
+				pst.setInt(2, c.getId());
+				pst.executeUpdate();			
+				connection.commit();
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -157,6 +182,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 		sb.append("LEFT JOIN livro_possui_categoria using(ID_Livro)");
 		sb.append("LEFT JOIN categoria using(ID_Categoria)");
 		sb.append("LEFT JOIN (select ID_Cliente, Email from clientes) alterador on (alterador = alterador.ID_Cliente)");
+		sb.append("LEFT JOIN categoria_ativacao on(ID_CategoriaAtivInativ = ID_Cat_Ativacao)");
+		sb.append("LEFT JOIN categoria_inativacao on(ID_CategoriaAtivInativ = ID_Cat_Inativacao)");
 		sb.append("WHERE 1=1\n");
 		
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
@@ -174,8 +201,14 @@ public class LivroDAO extends AbstractJdbcDAO{
 		if(livro.getISBN() != null && livro.getISBN().length() > 0) {
 			sb.append(" and isbn = '" + livro.getISBN() + "'");
 		}
-		if(livro.getEstoque() == 1) {
-			sb.append(" and estoque > 0");
+		if(livro.getCategorias().size() > 0 && livro.getCategorias().get(0).getId() > 0) {
+			sb.append(" and ID_Categoria = '" + livro.getCategorias().get(0).getId() + "'");
+		}
+		if(livro.getPreco() > 0) {
+			sb.append(" and valor >= '" + livro.getPreco() + "'");
+		}
+		if(livro.getValor() > 0) {
+			sb.append(" and valor <= '" + livro.getValor() + "'");
 		}
 		try {
 			if(livro.getStatus()) {
@@ -185,7 +218,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 				sb.append(" and status = " + livro.getStatus());
 			}
 		}catch (NullPointerException e) {
-			// Status nulo, listar todos os status
+			// Status nulo, listar por todos os status
 		}
 		try{
 			openConnection();
@@ -204,6 +237,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 					Autor a = new Autor();
 					Editora e = new Editora();
 					c = new Categoria();
+					CategoriaAtivacao catA = new CategoriaAtivacao();
+					CategoriaInativacao catI = new CategoriaInativacao();
 					Alterador alt = new Alterador();
 					
 					l.setId(rs.getInt("ID_Livro"));
@@ -238,11 +273,19 @@ public class LivroDAO extends AbstractJdbcDAO{
 					c.setId(rs.getInt("ID_Categoria"));
 					c.setNome(rs.getString("Nome_Categoria"));
 					
+					catA.setId(rs.getInt("ID_CategoriaAtivInativ"));
+					catA.setNome(rs.getString("Nome_Cat_Ativacao"));
+					
+					catI.setId(rs.getInt("ID_CategoriaAtivInativ"));
+					catI.setNome(rs.getString("Nome_Cat_Ativacao"));
+					
 					l.setPrecificacao(p);
 					l.setAutor(a);
 					l.setEditora(e);
 					l.setAlterador(alt);
 					l.getCategorias().add(c);
+					l.setCatAtivacao(catA);
+					l.setCatInativacao(catI);
 					
 					livros.add(l);
 				}
@@ -271,13 +314,17 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE livros SET status = ?, motivo = ?, alterador = ? WHERE ID_Livro = ?");
+			sql.append("UPDATE livros SET status = ?, motivo = ?, ID_CategoriaAtivInativ = ?, alterador = ? WHERE ID_Livro = ?");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setBoolean(1, livro.getStatus());
 			pst.setString(2, livro.getMotivo());
-			pst.setInt(3, livro.getAlterador().getId());
-			pst.setInt(4, livro.getId());
+			if(livro.getStatus())
+				pst.setInt(3, livro.getCatAtivacao().getId());
+			else
+				pst.setInt(3, livro.getCatInativacao().getId());
+			pst.setInt(4, livro.getAlterador().getId());
+			pst.setInt(5, livro.getId());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {

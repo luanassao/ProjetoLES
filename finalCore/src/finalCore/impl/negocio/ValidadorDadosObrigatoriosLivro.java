@@ -34,6 +34,11 @@ public class ValidadorDadosObrigatoriosLivro implements IStrategy{
 				return "Todos os dados cadastrais de um livro são obrigatórios!";
 			}
 			
+			if(livro.getAutor() == null || livro.getEditora() == null || livro.getCategorias() == null 
+					|| livro.getCategorias().size() == 0 || livro.getPrecificacao() == null){
+				return "Todos os dados cadastrais de um livro são obrigatórios!";
+			}
+			
 		}else{
 			return "Deve ser registrado um Livro!";
 		}

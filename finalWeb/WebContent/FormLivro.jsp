@@ -19,7 +19,7 @@
 		<script type="text/javascript">
 			function adcCategoria(id, nome) {
 				document.getElementById("btn" + id).disabled = true;
-				if(document.getElementById("txtCategorias").value == "")
+				if(document.getElementById("txtCatAtuais").value == "")
 				{
 					document.getElementById("txtCategorias").value = nome;
 					document.getElementById("txtCatAtuais").value = nome;
@@ -39,6 +39,9 @@
 					alert("Todos os campos são de preenchimento obrigatório!");
 					window.location.reload();
 				}
+			}
+			function Confirmar() {
+				document.getElementById("txtCategorias").value = document.getElementById("txtCatAtuais").value;
 			}
 		</script>
 	</head>
@@ -109,6 +112,34 @@
 						<input type="text"class="form-control" id="txtAno" name="txtAno" value="${empty livro ? '' : livro.getAno()}" />
 					</td>
 				</tr>
+				<tr style="${empty livro ? 'display:none' : (livro.getStatus() ? '' : 'display:none')}">
+					<td>
+						Categoria de ativação
+						<br>
+						<input type="text" class="form-control" value="
+						<%
+							try{
+								if(livro.getStatus() && livro.getCatAtivacao() != null)
+								{
+									sbRegistro = new StringBuilder();
+									sbRegistro.append(livro.getCatAtivacao().getId());
+									sbRegistro.append(" - ");
+									sbRegistro.append(livro.getCatAtivacao().getNome());
+									
+									out.print(sbRegistro.toString());
+								}
+							}catch(Exception e){
+								//Livro nulo
+							}
+						%>
+						" readonly="readonly"/>
+					</td>
+					<td>
+						Motivo de ativação
+						<br>
+						
+					</td>
+				</tr>
 				<tr>
 					<td>
 						Categorias do livro
@@ -142,9 +173,9 @@
 						    <button class="btn btn-outline-secondary" type="button" data-toggle='modal' data-target='#CategoriaModal'>Adicionar</button>
 						  </div>
 						</div>
-						<input type="hidden" id="hdCategorias" name="hdCategorias"
+						<input type="hidden" id="hdCategorias" name="hdCategorias">
 						<%
-							try{
+							/*try{
 								sbRegistro = new StringBuilder();
 								ultimo = livro.getCategorias().size();
 								for(Categoria c:livro.getCategorias())
@@ -161,9 +192,9 @@
 								out.print("value='" + sbRegistro.toString() + "'");
 							}catch(Exception e){
 								
-							}
+							}*/
 							%>
-							>
+							
 					</td>
 				</tr>
 				<tr>
@@ -302,9 +333,9 @@
 		      <div class="modal-body">
 				Clique no + para adicionar uma categoria
 				<br>
-				<input type="text" class="form-control" id="txtCatAtuais" placeholder="Adicione alguma categoria"
+				<input type="text" class="form-control" id="txtCatAtuais" placeholder="Adicione alguma categoria">
 				<%
-					try{
+					/*try{
 					sbRegistro = new StringBuilder();
 					ultimo = livro.getCategorias().size();
 					for(Categoria c:livro.getCategorias())
@@ -321,9 +352,8 @@
 					out.print("value='" + sbRegistro.toString() + "'");
 					}catch(Exception e){
 						
-					}
+					}*/
 				%>
-				>
 		      <br>
 		      <table class="table" align="center">
 		      	<%
@@ -344,8 +374,8 @@
 						sbRegistro.append(categoria.getNome());
 						sbRegistro.append("</td><td>");
 						sbRegistro.append("<button type='button' class='btn btn-primary' onclick='adcCategoria(`");
-						sbRegistro.append(categoria.getId() + "`,`" + categoria.getNome() + "`)' id='btn" + categoria.getId() + "'"
-								+ (testes ? "disabled" : "") + ">");
+						sbRegistro.append(categoria.getId() + "`,`" + categoria.getNome() + "`)' id='btn" + categoria.getId() + "'>");
+						//sbRegistro.append((testes ? "disabled" : "") + ">");
 						sbRegistro.append("+");
 						sbRegistro.append("</button>");
 						sbRegistro.append("</td>");
@@ -355,7 +385,7 @@
 				</table>
 		      </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
+		      	<button onclick="Confirmar()" type="button" class="btn btn-success" data-dismiss="modal">Confirmar</button>
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 		      </div>
 		    </div>
