@@ -39,9 +39,6 @@ public class DadosViewHelper implements IViewHelper{
 		// TODO Auto-generated method stub
 		request.getSession().setAttribute("livro", null);
 		String operacao = request.getParameter("target");
-			EntidadeDominio e = resultado.getEntidades().get(0);
-			DadosCadLivro dados = (DadosCadLivro)e;
-			request.getSession().setAttribute("autores", dados.getAutores());
 		request.getSession().setAttribute("dados", resultado);
 		RequestDispatcher d= request.getRequestDispatcher(operacao);
 		d.forward(request,response);

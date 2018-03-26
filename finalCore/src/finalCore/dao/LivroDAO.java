@@ -13,7 +13,6 @@ import auxiliar.Editora;
 import auxiliar.Precificacao;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
-import javafx.scene.media.AudioClip;
 
 public class LivroDAO extends AbstractJdbcDAO{
 	public LivroDAO() {
@@ -105,9 +104,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			Livro l = livro;
 			sql.append("UPDATE livros SET id_autor = ?, ano = ?, titulo = ?, id_editora = ?,");
-			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, status = ?, altura = ?, largura = ?, peso = ?, ");
+			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, altura = ?, largura = ?, peso = ?, ");
 			sql.append("profundidade = ?, alterador = ?, estoque=? WHERE ID_Livro = ?");		
 			
 			pst = connection.prepareStatement(sql.toString());
@@ -119,14 +117,13 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setString(6, livro.getISBN());
 			pst.setString(7, livro.getNpaginas());
 			pst.setString(8, livro.getSinopse());
-			pst.setBoolean(9, livro.getStatus());
-			pst.setDouble(10, livro.getAltura());
-			pst.setDouble(11, livro.getLargura());
-			pst.setDouble(12, livro.getPeso());
-			pst.setDouble(13, livro.getProfundidade());
-			pst.setInt(14, livro.getAlterador().getId());
-			pst.setInt(15, livro.getEstoque());
-			pst.setInt(16, livro.getId());
+			pst.setDouble(9, livro.getAltura());
+			pst.setDouble(10, livro.getLargura());
+			pst.setDouble(11, livro.getPeso());
+			pst.setDouble(12, livro.getProfundidade());
+			pst.setInt(13, livro.getAlterador().getId());
+			pst.setInt(14, livro.getEstoque());
+			pst.setInt(15, livro.getId());
 			pst.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
@@ -163,7 +160,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 		sb.append("WHERE 1=1\n");
 		
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
-			sb.append(" and titulo = '" + livro.getTitulo() + "'");
+			sb.append(" and titulo like '" + livro.getTitulo() + "%'");
 		}
 		if(livro.getAutor() != null && livro.getAutor().getId() != 0){
 			sb.append(" and id_autor = '" + livro.getAutor().getId() + "'");
@@ -188,7 +185,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 				sb.append(" and status = " + livro.getStatus());
 			}
 		}catch (NullPointerException e) {
-			// TODO: handle exception
+			// Status nulo, listar todos os status
 		}
 		try{
 			openConnection();

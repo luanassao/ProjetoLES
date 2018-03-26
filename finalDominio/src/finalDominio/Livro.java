@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import auxiliar.Alterador;
 import auxiliar.Autor;
 import auxiliar.Categoria;
+import auxiliar.CategoriaAtivacao;
+import auxiliar.CategoriaInativacao;
 import auxiliar.Editora;
 import auxiliar.Precificacao;
 
@@ -18,6 +20,8 @@ public class Livro extends EntidadeDominio{
 	private Editora editora;
 	private Precificacao precificacao;
 	private Alterador alterador;
+	private CategoriaAtivacao catAtivacao;
+	private CategoriaInativacao catInativacao;
 	private ArrayList<Categoria> categorias = new ArrayList<>();
 
 	public Alterador getAlterador() {
@@ -178,6 +182,22 @@ public class Livro extends EntidadeDominio{
 
 	public void setPrecificacao(Precificacao precificacao) {
 		this.precificacao = precificacao;
+	}
+
+	public CategoriaAtivacao getCatAtivacao() {
+		return catAtivacao;
+	}
+
+	public void setCatAtivacao(CategoriaAtivacao catAtivacao) {
+		this.catAtivacao = catAtivacao;
+	}
+
+	public CategoriaInativacao getCatInativacao() {
+		return catInativacao;
+	}
+
+	public void setCatInativacao(CategoriaInativacao catInativacao) {
+		this.catInativacao = catInativacao;
 	}
 	
 }

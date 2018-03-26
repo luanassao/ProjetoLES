@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import auxiliar.Alterador;
 import auxiliar.Autor;
 import auxiliar.Categoria;
+import auxiliar.CategoriaAtivacao;
+import auxiliar.CategoriaInativacao;
 import auxiliar.DadosCadLivro;
 import auxiliar.Editora;
 import auxiliar.Precificacao;
@@ -50,6 +52,29 @@ public class LivroViewHelper implements IViewHelper{
 				livro.setStatus(true);
 			else
 				livro.setStatus(false);
+			
+			Resultado resultado = (Resultado) session.getAttribute("dados");
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			
+			if(livro.getStatus())
+			{
+				int CatA = Integer.parseInt(request.getParameter("ddlCategoriaAtiv"));
+				for(CategoriaAtivacao c:dados.getCategoriasAtivacao())
+				{
+					if(c.getId() == CatA)
+						livro.setCatAtivacao(c);
+				}
+			}
+			else
+			{
+				int CatI = Integer.parseInt(request.getParameter("ddlCategoriaInativ"));
+				for(CategoriaInativacao c:dados.getCategoriasInativacao())
+				{
+					if(c.getId() == CatI)
+						livro.setCatInativacao(c);
+				}
+			}
 			
 			livro.setAlterador(alterador);
 			livro.setId(id);
@@ -91,8 +116,13 @@ public class LivroViewHelper implements IViewHelper{
 			alterador.setId(usuario.getId());
 			alterador.setEmail(usuario.getEmail());
 			
-			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
-			status = request.getParameter("rdStatus").equals("todos") ? null : status;
+			Boolean status;
+			try {
+				status = request.getParameter("rdStatus").equals("true") ? true : false;
+				status = request.getParameter("rdStatus").equals("todos") ? null : status;
+			}catch (Exception e) {
+				status = null;
+			}
 			
 			Resultado resultado = (Resultado) session.getAttribute("dados");
 			List<EntidadeDominio> entidades = resultado.getEntidades();

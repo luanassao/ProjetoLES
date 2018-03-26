@@ -1,3 +1,7 @@
+<%@page import="auxiliar.CategoriaInativacao"%>
+<%@page import="auxiliar.CategoriaAtivacao"%>
+<%@page import="auxiliar.Autor"%>
+<%@page import="auxiliar.DadosCadLivro"%>
 <%@page import="java.io.IOException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -17,6 +21,17 @@
 	 	document.getElementById("txtId").value = id;
 	 	document.getElementById("lblId").innerHTML = id;
 	 	document.getElementById("txtAcao").value = status;
+	 	
+	 	if(status == true)
+	 	{
+	 		document.getElementById("ddlCategoriaAtiv").style = "";
+	 		document.getElementById("ddlCategoriaInativ").style = "display:none";
+	 	}
+	 	else
+	 	{
+	 		document.getElementById("ddlCategoriaAtiv").style = "display:none";
+	 		document.getElementById("ddlCategoriaInativ").style = "";
+	 	}
 	}
 </script>
 </head>
@@ -27,7 +42,7 @@
 	%>
 
 	<form action="SalvarLivro" method="post">
-		<table class="table" bordercolor="blue" BORDER="5" >
+		<table class="table" bordercolor="black" BORDER="5" >
 		<TR>
 		      <TH COLSPAN="3"><BR>
 		      	<H3>FILTROS</H3>
@@ -35,29 +50,58 @@
    		</TR>
 			<tr>
 				<td>
-				TITULO: <input type="text" id="txtTitulo" name="txtTitulo" /> 
+				TITULO: <br>
+				<input type="text" class="form-control" id="txtTitulo" name="txtTitulo" /> 
 				</td>
 				<td>
-				AUTOR:<input type="text" id="txtAutor" name="txtAutor" />
+				AUTOR:<br>
+				<select class="btn btn-outline-dark" id="ddlAutor" name="ddlAutor">
+					<option>Todos</option>
+							<%
+								Resultado dado = (Resultado) session.getAttribute("dados");
+								List<EntidadeDominio> entidades = dado.getEntidades();
+							
+								DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+								StringBuilder sbRegistro;
+								sbRegistro = new StringBuilder();
+								for(Autor autor:dados.getAutores())
+								{
+									sbRegistro.append("<option value='");
+									sbRegistro.append(autor.getId() + "'>");
+									sbRegistro.append(autor.getNome());
+									sbRegistro.append("</option>");
+								}
+								out.print(sbRegistro.toString());
+							%>
+						</select>
 				</td>
 				<td>
-				Status 
-				<select id="rdStatus" name="rdStatus">
-					<option value="todos">Todos</option>
-					<option value="true">Ativos</option>
-					<option value="false">Inativos</option>
-				</select>
+				Status <br>
+				<div class="btn-group btn-group-toggle" data-toggle="buttons">
+				  <label class="btn btn-outline-dark">
+				    <input type="radio" name="rdStatus" id="rdStatus" value="todos" autocomplete="off"> Todos
+				  </label>
+				  <label class="btn btn-outline-dark">
+				    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off"> Ativos
+				  </label>
+				  <label class="btn btn-outline-dark">
+				    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off"> Inativos
+				  </label>
+				</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
-				Ano <input type="text" id="txtAno" name="txtAno"/>
+				Ano <br>
+				<input type="text" class="form-control" id="txtAno" name="txtAno"/>
 				</td>
 				<td>
-				Editora <input type="text" id="txtEditora" name="txtEditora">
+				Editora <br>
+				<input type="text" class="form-control" id="txtEditora" name="txtEditora">
 				</td>
 				<td>
-				ISBN <input type="text" id="txtISBN" name="txtISBN">
+				ISBN <br>
+				<input type="text" class="form-control" id="txtISBN" name="txtISBN">
 				</td>
 			</tr>
 		</table>
@@ -97,8 +141,8 @@
    
    <%
    if (resultado != null) {
-		List<EntidadeDominio> entidades = resultado.getEntidades();
-		StringBuilder sbRegistro = new StringBuilder();
+		entidades = resultado.getEntidades();
+		sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
 		
 		if(entidades != null){
@@ -211,7 +255,34 @@
 			<label id="lblId"></label>
 			<input type="hidden" id="txtId" name="txtId" value="0">
 			<input type="hidden" id="txtAcao" name="txtAcao" value=false>
-			<br>
+			<br><br>
+			<select class="btn btn-outline-dark" id="ddlCategoriaAtiv" name="ddlCategoriaAtiv">
+				<%
+					sbRegistro = new StringBuilder();
+					for(CategoriaAtivacao catA:dados.getCategoriasAtivacao())
+					{
+						sbRegistro.append("<option value='");
+						sbRegistro.append(catA.getId() + "'>");
+						sbRegistro.append(catA.getNome());
+						sbRegistro.append("</option>");
+					}
+					out.print(sbRegistro.toString());
+				%>
+			</select>
+			<select class="btn btn-outline-dark" id="ddlCategoriaInativ" name="ddlCategoriaInativ">
+				<%
+					sbRegistro = new StringBuilder();
+					for(CategoriaInativacao catI:dados.getCategoriasInativacao())
+					{
+						sbRegistro.append("<option value='");
+						sbRegistro.append(catI.getId() + "'>");
+						sbRegistro.append(catI.getNome());
+						sbRegistro.append("</option>");
+					}
+					out.print(sbRegistro.toString());
+				%>
+			</select>
+			<br><br>
 			Motivo:
 			<input type="text" id="txtMotivo" name="txtMotivo"/>
 	      </div>

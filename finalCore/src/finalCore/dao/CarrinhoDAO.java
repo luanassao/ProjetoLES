@@ -197,7 +197,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-		PreparedStatement pst = null;
+		/*PreparedStatement pst = null;
 		Carrinho carrinho = (Carrinho) entidade;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM carrinho WHERE 1=1\n");
@@ -330,7 +330,7 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 			return carrinhos;
 		}catch(SQLException e){
 			e.printStackTrace();
-		}
+		}*/
 		return null;
 	}
 
