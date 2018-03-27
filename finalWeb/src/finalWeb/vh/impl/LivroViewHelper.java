@@ -234,7 +234,7 @@ public class LivroViewHelper implements IViewHelper{
 			}
 			
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaLivro.jsp");  			
+			d= request.getRequestDispatcher("FormConsultaLivro.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("LISTAR")){
@@ -243,7 +243,7 @@ public class LivroViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
-			
+			request.getSession().setAttribute("livro", null);
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");  
 		}
 		

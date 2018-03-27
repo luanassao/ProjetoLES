@@ -1,6 +1,7 @@
 package finalDominio;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import auxiliar.Alterador;
 import auxiliar.Autor;
@@ -22,6 +23,7 @@ public class Livro extends EntidadeDominio{
 	private Alterador alterador;
 	private CategoriaAtivacao catAtivacao;
 	private CategoriaInativacao catInativacao;
+	private Calendar dtRegistro;
 	private ArrayList<Categoria> categorias = new ArrayList<>();
 
 	public Alterador getAlterador() {
@@ -199,5 +201,20 @@ public class Livro extends EntidadeDominio{
 	public void setCatInativacao(CategoriaInativacao catInativacao) {
 		this.catInativacao = catInativacao;
 	}
+
+	public Calendar getDtRegistro() {
+		return dtRegistro;
+	}
+
+	public void setDtRegistro(Calendar dtRegistro) {
+		this.dtRegistro = dtRegistro;
+	}
 	
+	public String getDtRegistroFormatado() {
+		String data = "";
+		data += dtRegistro.get(Calendar.DATE) < 10 ? "0" + dtRegistro.get(Calendar.DATE) : dtRegistro.get(Calendar.DATE);
+		data += "/" + (dtRegistro.get(Calendar.MONTH) < 10 ? "0" + (dtRegistro.get(Calendar.MONTH)+1) : (dtRegistro.get(Calendar.MONTH)+1));
+		data += "/" + dtRegistro.get(Calendar.YEAR);
+		return data;
+	}
 }

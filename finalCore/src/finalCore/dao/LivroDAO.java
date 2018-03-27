@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import auxiliar.Alterador;
@@ -21,6 +22,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 		super("livros", "id_livro");
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void salvar(EntidadeDominio entidade) {
 		openConnection();
@@ -54,14 +56,12 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setDouble(16, livro.getPeso());
 			pst.setDouble(17, livro.getProfundidade());
 			pst.setInt(18, livro.getAlterador().getId());
-			System.out.println(pst);
 			pst.executeUpdate();			
 			connection.commit();
 			
 			sql = new StringBuilder();
 			sql.append("CALL ID_Livro_Salvo()");
 			pst = connection.prepareStatement(sql.toString());
-			System.out.println(pst);
 			ResultSet rs = pst.executeQuery();
 			while(rs.next()){
 				livro.setId(rs.getInt("ID_Livro"));
@@ -75,7 +75,6 @@ public class LivroDAO extends AbstractJdbcDAO{
 				pst = connection.prepareStatement(sql.toString());
 				pst.setInt(1, livro.getId());
 				pst.setInt(2, c.getId());
-				System.out.println(pst);
 				pst.executeUpdate();			
 				connection.commit();
 			}
@@ -108,7 +107,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE livros SET id_autor = ?, ano = ?, titulo = ?, id_editora = ?,");
 			sql.append("edicao = ?, ISBN = ?, npaginas = ?, sinopse = ?, altura = ?, largura = ?, peso = ?, ");
-			sql.append("profundidade = ?, alterador = ?, estoque=? WHERE ID_Livro = ?");		
+			sql.append("profundidade = ?, alterador = ?, estoque=?, preco = ?, valor = ?, DT_Registro=sysdate() WHERE ID_Livro = ?");	
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setInt(1, livro.getAutor().getId());
@@ -125,7 +124,9 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setDouble(12, livro.getProfundidade());
 			pst.setInt(13, livro.getAlterador().getId());
 			pst.setInt(14, livro.getEstoque());
-			pst.setInt(15, livro.getId());
+			pst.setDouble(15, livro.getPreco());
+			pst.setDouble(16, livro.getValor());
+			pst.setInt(17, livro.getId());
 			pst.executeUpdate();
 			connection.commit();
 			
@@ -256,6 +257,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 					l.setPreco(rs.getDouble("preco"));
 					l.setValor(rs.getDouble("valor"));
 					l.setEstoque(rs.getInt("estoque"));
+					l.setMotivo(rs.getString("motivo"));
 					
 					p.setId(rs.getInt("ID_Precificacao"));
 					p.setNome(rs.getString("Nome_Precificacao"));
@@ -277,7 +279,11 @@ public class LivroDAO extends AbstractJdbcDAO{
 					catA.setNome(rs.getString("Nome_Cat_Ativacao"));
 					
 					catI.setId(rs.getInt("ID_CategoriaAtivInativ"));
-					catI.setNome(rs.getString("Nome_Cat_Ativacao"));
+					catI.setNome(rs.getString("Nome_Cat_Inativacao"));
+					
+					Calendar calendR = Calendar.getInstance();
+					calendR.setTime(rs.getDate("DT_Registro"));
+					l.setDtRegistro(calendR);
 					
 					l.setPrecificacao(p);
 					l.setAutor(a);

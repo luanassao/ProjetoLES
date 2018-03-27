@@ -112,7 +112,17 @@
 						<input type="text"class="form-control" id="txtAno" name="txtAno" value="${empty livro ? '' : livro.getAno()}" />
 					</td>
 				</tr>
-				<tr style="${empty livro ? 'display:none' : (livro.getStatus() ? '' : 'display:none')}">
+				<tr
+				<%
+					try{
+						if(livro.getMotivo() != null && livro.getMotivo().length() > 0 && livro.getStatus())
+							out.print("");
+						else
+							out.print("style='display:none'");
+					}catch(Exception e){
+						out.print("style='display:none'");
+					}
+				%>>
 					<td>
 						Categoria de ativação
 						<br>
@@ -137,7 +147,73 @@
 					<td>
 						Motivo de ativação
 						<br>
-						
+						<input type="text" class="form-control" value="
+						<%
+							try{
+								if(livro.getStatus() && livro.getCatAtivacao() != null)
+								{
+									sbRegistro = new StringBuilder();
+									sbRegistro.append(livro.getMotivo());
+									
+									out.print(sbRegistro.toString());
+								}
+							}catch(Exception e){
+								//Livro nulo
+							}
+						%>
+						" readonly="readonly"/>
+					</td>
+				</tr>
+				<tr
+				<%
+					try{
+						if(livro.getMotivo() != null && livro.getMotivo().length() > 0 && !livro.getStatus())
+							out.print("");
+						else
+							out.print("style='display:none'");
+					}catch(Exception e){
+						out.print("style='display:none'");
+					}
+				%>>
+					<td>
+						Categoria de inativação
+						<br>
+						<input type="text" class="form-control" value="
+						<%
+							try{
+								if(!livro.getStatus() && livro.getCatInativacao() != null)
+								{
+									sbRegistro = new StringBuilder();
+									sbRegistro.append(livro.getCatInativacao().getId());
+									sbRegistro.append(" - ");
+									sbRegistro.append(livro.getCatInativacao().getNome());
+									
+									out.print(sbRegistro.toString());
+								}
+							}catch(Exception e){
+								//Livro nulo
+							}
+						%>
+						" readonly="readonly"/>
+					</td>
+					<td>
+						Motivo de inativação
+						<br>
+						<input type="text" class="form-control" value="
+						<%
+							try{
+								if(!livro.getStatus() && livro.getCatInativacao() != null)
+								{
+									sbRegistro = new StringBuilder();
+									sbRegistro.append(livro.getMotivo());
+									
+									out.print(sbRegistro.toString());
+								}
+							}catch(Exception e){
+								//Livro nulo
+							}
+						%>
+						" readonly="readonly"/>
 					</td>
 				</tr>
 				<tr>
@@ -312,9 +388,13 @@
 				<tr>
 					<td>
 						Responsavel
+						<br>
+						<input type="text" class="form-control" id="txtResponsavel" name="txtResponsavel" value="${empty livro ? '' : livro.getAlterador().getId()}" readonly="readonly" />
 					</td>
 					<td>
-						<input type="text" class="form-control" id="txtResponsavel" name="txtResponsavel" value="${empty livro ? '' : livro.getAlterador().getId()}" />
+						Data de registo/alteração
+						<br>
+						<input type="text" class="form-control" id="txtData" name="txtData" value="${empty livro ? '' : livro.getDtRegistroFormatado()}" />
 					</td>
 				</tr>
 			</table>

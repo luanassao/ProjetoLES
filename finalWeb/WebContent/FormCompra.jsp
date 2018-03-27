@@ -120,7 +120,7 @@
 				sbRegistro.append(l.getAutor());		
 				sbRegistro.append("</TD>");
 				
-				sbRegistro.append("<TD>");
+				/*sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getCategoria());
 				sbRegistro.append("</TD>");
@@ -128,7 +128,7 @@
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
 				sbRegistro.append(l.getSubcategoria());
-				sbRegistro.append("</TD>");
+				sbRegistro.append("</TD>");*/
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
