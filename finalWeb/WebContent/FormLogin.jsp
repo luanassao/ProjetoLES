@@ -7,31 +7,20 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="resources/signin.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login</title>
 </head>
-<body>
-	<form action="Logar" method="post" id="frmLogin">
-			<table class="table table-bordered">
-				<tr><TH COLSPAN="2">Login</TH></tr>
-				<tr>
-					<td>
-						Email
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtEmail" name="txtEmail"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Senha
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtSenha" name="txtSenha"/>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="LOGAR" class="btn btn-default" />
-		</form>
+<body class="text-center">
+	<form class="form-signin" action="Logar" method="post" id="frmLogin">
+      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Fazer login</h1>
+      <label for="inputEmail" class="sr-only">Email</label>
+      <input type="email" id="txtEmail" name="txtEmail" class="form-control" placeholder="Email" required autofocus>
+      <label for="inputPassword" class="sr-only">Senha</label>
+      <input type="password" id="txtSenha" name="txtSenha" class="form-control" placeholder="Senha" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" id="operacao" name="operacao" value="LOGAR">Entrar</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
 </body>
 </html>
