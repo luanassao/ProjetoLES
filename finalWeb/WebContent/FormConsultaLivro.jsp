@@ -1,9 +1,4 @@
-<%@page import="auxiliar.Categoria"%>
-<%@page import="auxiliar.Editora"%>
-<%@page import="auxiliar.CategoriaInativacao"%>
-<%@page import="auxiliar.CategoriaAtivacao"%>
-<%@page import="auxiliar.Autor"%>
-<%@page import="auxiliar.DadosCadLivro"%>
+<%@page import="auxiliar.*"%>
 <%@page import="java.io.IOException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -211,12 +206,11 @@
 				
 				
 				sbLink.append("<a href=SalvarLivro?");
-					sbLink.append("txtId=");
-					sbLink.append(l.getId());						
-					sbLink.append("&");
-					sbLink.append("operacao=");
-					sbLink.append("VISUALIZAR");
-					
+				sbLink.append("txtId=");
+				sbLink.append(l.getId());						
+				sbLink.append("&");
+				sbLink.append("operacao=");
+				sbLink.append("VISUALIZAR");
 				sbLink.append(">");
 				
 				sbRegistro.append("<TD>");

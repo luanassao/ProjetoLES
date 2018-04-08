@@ -47,7 +47,7 @@
 		</script>
 	<script>
    $(document).ready(function(){
-	   $("#divNavBar").load("NavBar.html");
+	   $("#divNavBar").load("NavBar.jsp");
    });
 </script>
 </head>

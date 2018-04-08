@@ -1,6 +1,7 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -200,10 +201,11 @@ public class LivroViewHelper implements IViewHelper{
 		else{
 			
 			HttpSession session = request.getSession();
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
+			@SuppressWarnings("unchecked")
+			ArrayList<EntidadeDominio> livros = (ArrayList<EntidadeDominio>)session.getAttribute("livros");
 			int txtId = Integer.parseInt(request.getParameter("txtId"));
 			
-			for(EntidadeDominio l: resultado.getEntidades()){
+			for(EntidadeDominio l: livros){
 				if(l.getId() == txtId){
 					livro = (Livro)l;
 				}
@@ -223,6 +225,8 @@ public class LivroViewHelper implements IViewHelper{
 			HttpServletResponse response)  throws IOException, ServletException {
 		RequestDispatcher d=null;
 		request.getSession().setAttribute("resultado", null);
+		HttpSession session = request.getSession();
+		Cliente usuario = (Cliente)session.getAttribute("usuario");
 		//request.getSession().setAttribute("livro", null);
 		
 		String operacao = request.getParameter("operacao");
@@ -237,6 +241,12 @@ public class LivroViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("CONSULTAR"))
+		{
+			request.getSession().setAttribute("livros", resultado.getEntidades());
+			d = request.getRequestDispatcher(usuario.getAdministrador() ? "FormConsultaLivro.jsp" : "FormCompra.jsp");
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("LISTAR")){
 			
 			d= request.getRequestDispatcher("FormCompra.jsp");
@@ -247,10 +257,10 @@ public class LivroViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");  
 		}
 		
-		if(resultado.getMsg() == null && (operacao.equals("VISUALIZAR") || operacao.equals("CHECAR"))){
+		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			
 			request.getSession().setAttribute("livro", resultado.getEntidades().get(0));
-			d= request.getRequestDispatcher(operacao.equals("VISUALIZAR") ? "FormLivro.jsp" : "FormChecarLivro.jsp");
+			d= request.getRequestDispatcher(usuario.getAdministrador() ? "FormLivro.jsp" : "FormChecarLivro.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
