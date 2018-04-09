@@ -161,6 +161,20 @@ public class Livro extends EntidadeDominio{
 	public void setCategorias(ArrayList<Categoria> categorias) {
 		this.categorias = categorias;
 	}
+	
+	public String getCategoriasFormatado() {
+		String cats = "";
+		
+		for(Categoria c:categorias)
+		{
+			if(c.equals(categorias.get(categorias.size()-1)))
+				cats += c.getNome();
+			else
+				cats += c.getNome() + ", ";
+		}
+		
+		return cats;
+	}
 
 	public Autor getAutor() {
 		return autor;

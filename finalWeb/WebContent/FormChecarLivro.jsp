@@ -35,9 +35,7 @@
           <h1 class="my-4">lesFinal</h1>
           <div class="list-group">
             <a href="FormCompra.jsp" class="btn btn-outline-primary">Voltar ao catálogo</a>
-            <a href="#" class="btn btn-outline-primary">Category 2</a>
-            <button href="#" class="btn btn-outline-primary">Category 3</button>
-            <button class="btn btn-outline-primary" type="button" data-toggle='modal' data-target='#CategoriaModal'>Adicionar</button>
+            <button class="btn btn-outline-primary" type="button" data-toggle='modal' data-target='#NomeModal'>Exibir detalhes</button>
           </div>
         </div>
         <!-- /.col-lg-3 -->
@@ -56,29 +54,35 @@
 
           <div class="card card-outline-secondary my-4">
             <div class="card-header">
-              Dados do livro
+              <h5>Dados do livro</h5>
             </div>
             <div class="card-body">
-              <table>
-              	<tr>
-              		<td>Autor: ${empty livro ? '' : livro.getAutor()}</td>
-              		<td>Ano: ${empty livro ? '' : livro.getAno()}</td>
-              	</tr>
-              	<tr>
-              		<td>Editora: ${empty livro ? '' : livro.getEditora().getNome()}</td>
-              		<td>Edição: ${empty livro ? '' : livro.getEdicao()}</td>
-              	</tr>
-              </table>
-              <p>Autor: ${empty livro ? '' : livro.getAutor()}</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <h6>Dados gerais</h6>
               <hr>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <div class="row">
+	              <div class="col-lg-5">Autor: ${empty livro ? '' : livro.getAutor().getNome()}</div>
+	              <div class="col-lg-5">Ano: ${empty livro ? '' : livro.getAno()}</div>
+              </div>
+              <div class="row">
+	              <div class="col-lg-5">Editora: ${empty livro ? '' : livro.getEditora().getNome()}</div>
+	              <div class="col-lg-5">Edição: ${empty livro ? '' : livro.getEdicao()}</div>
+              </div>
               <hr>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <h6>Dados Físicos</h6>
               <hr>
-              <a href="#" class="btn btn-success">Leave a Review</a>
+              <div class="row">
+	              <div class="col-lg-4">Altura: ${empty livro ? '' : livro.getAltura()}</div>
+	              <div class="col-lg-4">Largura: ${empty livro ? '' : livro.getLargura()}</div>
+	              <div class="col-lg-4">Profundidade: ${empty livro ? '' : livro.getAltura()}</div>
+              </div>
+              <div class="row">
+	              <div class="col-lg-4">Peso: ${empty livro ? '' : livro.getPeso()}</div>
+	              <div class="col-lg-4">N. Páginas: ${empty livro ? '' : livro.getNpaginas()}</div>
+              </div>
+              <hr>
+              Quantidade: <input type="number" class="btn btn-outline-dark" max="${empty livro ? '' : livro.getEstoque()}" min="0">
+              <hr>
+              <a href="#" class="btn btn-success">Adicionar ao carrinho</a>
             </div>
           </div>
           <!-- /.card -->
@@ -102,7 +106,54 @@
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+	
+	<!-- Modal -->
+	<div class="modal fade" id="NomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Dados do livro</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+              <h6>Dados gerais</h6>
+              <hr>
+              <div class="row">
+	              <div class="col-lg-6">Autor: ${empty livro ? '' : livro.getAutor().getNome()}</div>
+	              <div class="col-lg-3">Ano: ${empty livro ? '' : livro.getAno()}</div>
+	              <div class="col-lg-3">Classe: ${empty livro ? '' : livro.getPrecificacao().getNome()}</div>
+              </div>
+              <div class="row">
+	              <div class="col-lg-5">ISBN/C.Barras: ${empty livro ? '' : livro.getISBN()}</div>
+	              <div class="col-lg-4">Editora: ${empty livro ? '' : livro.getEditora().getNome()}</div>
+	              <div class="col-lg-3">Edição: ${empty livro ? '' : livro.getEdicao()}</div>
+              </div>
+              <div class="row">
+	              <div class="col-lg-12">Categorias: ${empty livro ? '' : livro.getCategoriasFormatado()}</div>
+              </div>
+              <hr>
+              <h6>Dados Físicos</h6>
+              <hr>
+              <div class="row">
+	              <div class="col-lg-4">Altura: ${empty livro ? '' : livro.getAltura()}</div>
+	              <div class="col-lg-4">Largura: ${empty livro ? '' : livro.getLargura()}</div>
+	              <div class="col-lg-4">Profundidade: ${empty livro ? '' : livro.getAltura()}</div>
+              </div>
+              <div class="row">
+	              <div class="col-lg-4">Peso: ${empty livro ? '' : livro.getPeso()}</div>
+	              <div class="col-lg-4">N. Páginas: ${empty livro ? '' : livro.getNpaginas()}</div>
+	              <div class="col-lg-4">Qtde. estoque: ${empty livro ? '' : livro.getEstoque()}</div>
+              </div>
+	      </div>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
   </body>
 
 </html>
