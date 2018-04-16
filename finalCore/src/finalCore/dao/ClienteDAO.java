@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import auxiliar.Alterador;
 import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 
@@ -38,7 +39,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			pst.setString(7, cliente.getEmail());
 			pst.setString(8, cliente.getSenha());
 			pst.setBoolean(9, cliente.getStatus());
-			pst.setString(10, cliente.getAlterador());
+			pst.setInt(10, cliente.getAlterador().getId());
 			pst.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
@@ -80,7 +81,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			pst.setString(6, cliente.getEmail());
 			pst.setString(7, cliente.getSenha());
 			pst.setBoolean(8, cliente.getStatus());
-			pst.setString(9, cliente.getAlterador());
+			pst.setInt(9, cliente.getAlterador().getId());
 			pst.setInt(10, cliente.getId());
 			pst.executeUpdate();			
 			connection.commit();
@@ -107,7 +108,8 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		PreparedStatement pst = null;
 		//Cliente cliente = (Cliente) entidade;
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM clientes WHERE 1=1\n");
+		sb.append("SELECT * FROM clientes JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
+				"using (alterador)WHERE 1=1\n");
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -115,6 +117,8 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			List<EntidadeDominio> clientes = new ArrayList<>();
 			while(rs.next()){
 				Cliente c = new Cliente();
+				Alterador alt = new Alterador();
+				
 				c.setId(rs.getInt("ID_Cliente"));
 				c.setNome(rs.getString("nome"));
 				c.setCpf(rs.getString("cpf"));
@@ -124,7 +128,6 @@ public class ClienteDAO extends AbstractJdbcDAO{
 				c.setTelefone(rs.getString("telefone"));
 				c.setEmail(rs.getString("email"));
 				c.setSenha(rs.getString("senha"));
-				c.setAlterador(rs.getString("alterador"));
 				Calendar calendN = Calendar.getInstance();
 				calendN.setTime(rs.getDate("dt_nasc"));
 				c.setDtnascimento(calendN);
@@ -132,6 +135,12 @@ public class ClienteDAO extends AbstractJdbcDAO{
 				calendC.setTime(rs.getDate("dt_cadastro"));
 				c.setDtCadastro(calendC);
 				c.setAdministrador(rs.getBoolean("administrador"));
+				
+				alt.setId(rs.getInt("alterador"));
+				alt.setEmail(rs.getString("email_alt"));
+				
+				c.setAlterador(alt);
+				
 				clientes.add(c);
 			}
 			return clientes;

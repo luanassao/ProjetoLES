@@ -3,6 +3,7 @@ package finalCore.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -37,7 +38,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 			sql.append("estoque, preco, id_precificacao, valor)");
 			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");*/
 			
-			pst = connection.prepareStatement(sql.toString());
+			pst = connection.prepareStatement(sql.toString(), 
+					Statement.RETURN_GENERATED_KEYS);
 			pst.setInt(1, livro.getAutor().getId());
 			pst.setString(2, livro.getAno());
 			pst.setString(3, livro.getTitulo());
@@ -56,7 +58,17 @@ public class LivroDAO extends AbstractJdbcDAO{
 			pst.setDouble(16, livro.getPeso());
 			pst.setDouble(17, livro.getProfundidade());
 			pst.setInt(18, livro.getAlterador().getId());
-			pst.executeUpdate();			
+			
+			pst.executeUpdate();
+			/*ResultSet rs = pst.getGeneratedKeys();
+			int id=0;
+			if(rs.next())
+			{
+				System.out.println();
+				id = rs.getInt("ID_Livro");
+			}
+			livro.setId(id);
+			System.out.println(livro.getId());*/
 			connection.commit();
 			
 			sql = new StringBuilder();

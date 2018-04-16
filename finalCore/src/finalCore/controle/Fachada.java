@@ -191,23 +191,21 @@ public class Fachada implements IFachada{
 		 */
 		rns.put(Cartao.class.getName(), rnsCartao);
 		
-		/* Criando uma lista para conter as regras de negócio de produto
-		 * quando a operação for salvar
+		/* Criando uma lista para conter as regras de negócio de cliente
+		 * quando a operação for logar
 		 */
 		List<IStrategy> rnsLogar = new ArrayList<IStrategy>();
-		/* Adicionando as regras a serem utilizadas na operação salvar do carrinho*/
+		/* Adicionando as regras a serem utilizadas na operação de login*/
 		rnsLogar.add(vrUsuario);
 		
-		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
-		 * por operação  do livro
-		 */
+		/* Cria o mapa que poderá conter todas as listas de regras de negócio de login*/
 		Map<String, List<IStrategy>> rnsLogin = new HashMap<String, List<IStrategy>>();
 		/*
-		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
+		 * Adiciona a listra de regras na operação logar
 		 */
 		rnsLogin.put("LOGAR", rnsLogar);
 		
-		/* Adiciona o mapa(criado na linha 73) com as regras indexadas pelas operações no mapa geral indexado 
+		/* Adiciona o mapa com as regras indexadas pela operação no mapa geral indexado 
 		 * pelo nome da entidade
 		 */
 		rns.put(Cliente.class.getName(), rnsLogin);

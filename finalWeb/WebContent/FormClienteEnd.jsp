@@ -10,10 +10,10 @@
   	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
+	<meta charset="UTF-8" />
   <title>
     Cadastro de clientes
   </title>
-  <meta charset="UTF-8" />
  <script type="text/javascript">
  function Sumir1() {
 		document.getElementById("frmSalvarCliente").style='';
@@ -33,7 +33,7 @@
 </script>
 <script>
    $(document).ready(function(){
-	   $("#divNavBar").load("NavBar.html");
+	   $("#divNavBar").load("NavBar.jsp");
    });
 </script>
 </head>
@@ -147,8 +147,236 @@
 					</td>
 				</tr>
 			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty cliente ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
-			<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaCliente.jsp">Consultar clientes</a>
+			<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" style="${empty cliente ? 'display:none' : ''}">ALTERAR</button>
+			
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EndCobModal"style="${empty cliente ? '' : 'display:none'}">
+			  SALVAR
+			</button>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="EndCobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Endereço de cobrança</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+					<table class="table table-bordered">
+						<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
+						<tr>
+							<td>
+								Tipo do endereço
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEndereco">
+									<option>Cobrança</option>
+								</select>
+							</td>
+							<td>
+								Tipo da residencia
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidencia">
+									<option >Casa</option>
+									<option >Apartamento</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Tipo do logradouro
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+									<option>Avenida</option>
+									<option>Rua</option>
+									<option>Travessa</option>
+								</select>
+							</td>
+							<td>
+								Logradouro
+								<br>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Preferencial
+								<br>
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+								  <label class="btn btn-outline-dark">
+								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
+								  </label>
+								  <label class="btn btn-outline-dark">
+								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="false" autocomplete="off"> Comum
+								  </label>
+								</div>
+							</td>
+							<td>
+								Número
+								<br>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumero"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Bairro
+								<br>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairro"/>
+							</td>
+							<td>
+								CEP
+								<br>
+								<input type="text"class="form-control" id="txtCep" name="txtCep"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Estado
+								<br>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
+							</td>
+							<td>
+								Cidade
+								<br>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidade"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								País
+								<br>
+								<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
+							</td>
+							<td>
+								Observação
+								<br>
+								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+							</td>
+						</tr>
+					</table>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EndEntModal">
+					  Continuar
+					</button>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="EndEntModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Endereço de cobrança</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+					<table class="table table-bordered">
+						<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
+						<tr>
+							<td>
+								Tipo do endereço
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEndereco">
+									<option>Entrega</option>
+								</select>
+							</td>
+							<td>
+								Tipo da residencia
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidencia">
+									<option >Casa</option>
+									<option >Apartamento</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Tipo do logradouro
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+									<option>Avenida</option>
+									<option>Rua</option>
+									<option>Travessa</option>
+								</select>
+							</td>
+							<td>
+								Logradouro
+								<br>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Preferencial
+								<br>
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+								  <label class="btn btn-outline-dark">
+								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
+								  </label>
+								  <label class="btn btn-outline-dark">
+								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="false" autocomplete="off"> Comum
+								  </label>
+								</div>
+							</td>
+							<td>
+								Número
+								<br>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumero"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Bairro
+								<br>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairro"/>
+							</td>
+							<td>
+								CEP
+								<br>
+								<input type="text"class="form-control" id="txtCep" name="txtCep"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Estado
+								<br>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
+							</td>
+							<td>
+								Cidade
+								<br>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidade"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								País
+								<br>
+								<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
+							</td>
+							<td>
+								Observação
+								<br>
+								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+							</td>
+						</tr>
+					</table>
+					<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR">SALVAR</button>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
 		</form>
 </section></li>
 <!-- Aqui, criação da segunda aba -->

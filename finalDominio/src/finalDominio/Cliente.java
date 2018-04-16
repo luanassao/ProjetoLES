@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import auxiliar.Alterador;
+
 public class Cliente extends EntidadeDominio{
-	private String nome, cpf, tipoTelefone, telefone, email, senha, genero, alterador;
+	private String nome, cpf, tipoTelefone, telefone, email, senha, genero;
 	private Boolean status, administrador;
 	private Calendar dtnascimento, dtCadastro;
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -13,6 +15,7 @@ public class Cliente extends EntidadeDominio{
 	private List<Carrinho> pedidos = new ArrayList<>();
 	private List<CupomTroca> cupons = new ArrayList<>();
 	private Cartao cartao;
+	private Alterador alterador;
 	
 	public String getNome() {
 		return nome;
@@ -129,10 +132,10 @@ public class Cliente extends EntidadeDominio{
 	public void setCupons(List<CupomTroca> cupons) {
 		this.cupons = cupons;
 	}
-	public String getAlterador() {
+	public Alterador getAlterador() {
 		return alterador;
 	}
-	public void setAlterador(String alterador) {
+	public void setAlterador(Alterador alterador) {
 		this.alterador = alterador;
 	}
 	

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import auxiliar.Alterador;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
 import finalDominio.Cliente;
@@ -26,79 +27,86 @@ public class ClienteViewHelper implements IViewHelper{
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		String operacao = request.getParameter("operacao");
 		Cliente cliente = null;
-
-		if(operacao.equals("LOGAR"))
-		{
-			String email = request.getParameter("txtEmail");
-			String senha = request.getParameter("txtSenha");
-			
-			cliente = new Cliente();
-			
-			cliente.setEmail(email);
-			cliente.setSenha(senha);
-		}
-		else if(!operacao.equals("VISUALIZAR"))
-		{
-			String nome = request.getParameter("txtNome");
-			String cpf = request.getParameter("txtCpf");
-			String tipotel = request.getParameter("ddlTipoTel");
-			String telefone = request.getParameter("txtTelefone");
-			String genero = request.getParameter("rdGenero");
-			String email = request.getParameter("txtEmail");
-			String senha = request.getParameter("txtSenha");
-			String alterador = request.getParameter("txtAlterador");
-			Calendar nasc = Calendar.getInstance();
-			System.out.println(request.getParameter("txtDtNasc"));
-			try
-			{
-				String[] dtNasc = request.getParameter("txtDtNasc").split("-");
-				int dia = Integer.parseInt(dtNasc[2]);
-				int mes = Integer.parseInt(dtNasc[1]);
-				int ano = Integer.parseInt(dtNasc[0]);
-				nasc.set(ano, mes, dia);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			Boolean status = request.getParameter("rdStatus").equals("true") ? true : false;
-			status = request.getParameter("rdStatus").equals("todos") ? null : status;
-			
-			cliente = new Cliente();
-			try {
-				int id = Integer.parseInt(request.getParameter("txtId"));
-				HttpSession session = request.getSession();
-				Cliente usuario = (Cliente)session.getAttribute("usuario");
-				if(usuario.getAdministrador())
-					id = Integer.parseInt(request.getParameter("txtIdCliente"));
-				else
-					id = usuario.getId();
-				cliente.setId(id);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			cliente.setNome(nome);
-			cliente.setCpf(cpf);
-			cliente.setGenero(genero);
-			cliente.setTipoTelefone(tipotel);
-			cliente.setTelefone(telefone);
-			cliente.setEmail(email);
-			cliente.setSenha(senha);
-			cliente.setStatus(status);
-			cliente.setDtnascimento(nasc);
-			cliente.setAlterador(alterador);
-		}
-		else{
-			
-			HttpSession session = request.getSession();
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
-			int txtId = Integer.parseInt(request.getParameter("txtId"));
-			
-			for(EntidadeDominio c: resultado.getEntidades()){
-				if(c.getId() == txtId){
-					cliente = (Cliente)c;
+		String nome, cpf, tipotel, telefone, genero, email, senha;
+		String[] dtNasc;
+		Calendar nasc = Calendar.getInstance();
+		HttpSession session = request.getSession();
+		Boolean status;
+		Alterador alterador;
+		
+		switch (operacao) {
+			case "LOGAR":
+				email = request.getParameter("txtEmail");
+				senha = request.getParameter("txtSenha");
+				
+				cliente = new Cliente();
+				
+				cliente.setEmail(email);
+				cliente.setSenha(senha);
+			break;
+			case "VISUALIZAR":
+				Resultado resultado = (Resultado) session.getAttribute("resultado");
+				int txtId = Integer.parseInt(request.getParameter("txtId"));
+				
+				for(EntidadeDominio c: resultado.getEntidades()){
+					if(c.getId() == txtId){
+						cliente = (Cliente)c;
+					}
 				}
-			}
+			break;
+			default:
+				nome = request.getParameter("txtNome");
+				cpf = request.getParameter("txtCpf");
+				tipotel = request.getParameter("ddlTipoTel");
+				telefone = request.getParameter("txtTelefone");
+				genero = request.getParameter("rdGenero");
+				email = request.getParameter("txtEmail");
+				senha = request.getParameter("txtSenha");
+				nasc = Calendar.getInstance();
+				System.out.println(request.getParameter("txtDtNasc"));
+				try
+				{
+					dtNasc = request.getParameter("txtDtNasc").split("-");
+					int dia = Integer.parseInt(dtNasc[2]);
+					int mes = Integer.parseInt(dtNasc[1]);
+					int ano = Integer.parseInt(dtNasc[0]);
+					nasc.set(ano, mes, dia);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				status = request.getParameter("rdStatus").equals("true") ? true : false;
+				status = request.getParameter("rdStatus").equals("todos") ? null : status;
+				
+				cliente = new Cliente();
+				Cliente usuario = new Cliente();
+				alterador = new Alterador();
+				try {
+					int id = Integer.parseInt(request.getParameter("txtId"));
+					usuario = (Cliente)session.getAttribute("usuario");
+					alterador.setId(usuario.getId());
+					alterador.setEmail(usuario.getEmail());
+					if(usuario.getAdministrador())
+						id = Integer.parseInt(request.getParameter("txtIdCliente"));
+					else
+						id = usuario.getId();
+					cliente.setId(id);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				cliente.setNome(nome);
+				cliente.setCpf(cpf);
+				cliente.setGenero(genero);
+				cliente.setTipoTelefone(tipotel);
+				cliente.setTelefone(telefone);
+				cliente.setEmail(email);
+				cliente.setSenha(senha);
+				cliente.setStatus(status);
+				cliente.setDtnascimento(nasc);
+				cliente.setAlterador(alterador);
+			break;
 		}
+
 		return cliente;
 	}
 
