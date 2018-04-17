@@ -13,6 +13,7 @@ import auxiliar.Alterador;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
 import finalDominio.Cliente;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -27,6 +28,7 @@ public class ClienteViewHelper implements IViewHelper{
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		String operacao = request.getParameter("operacao");
 		Cliente cliente = null;
+		Cliente usuario;
 		String nome, cpf, tipotel, telefone, genero, email, senha;
 		String[] dtNasc;
 		Calendar nasc = Calendar.getInstance();
@@ -35,6 +37,93 @@ public class ClienteViewHelper implements IViewHelper{
 		Alterador alterador;
 		
 		switch (operacao) {
+			case "SALVAR":
+				nome = request.getParameter("txtNome");
+				cpf = request.getParameter("txtCpf");
+				tipotel = request.getParameter("ddlTipoTel");
+				telefone = request.getParameter("txtTelefone");
+				genero = request.getParameter("rdGenero");
+				email = request.getParameter("txtEmail");
+				senha = request.getParameter("txtSenha");
+				nasc = Calendar.getInstance();
+				System.out.println(request.getParameter("txtDtNasc"));
+				try
+				{
+					dtNasc = request.getParameter("txtDtNasc").split("-");
+					int dia = Integer.parseInt(dtNasc[2]);
+					int mes = Integer.parseInt(dtNasc[1]);
+					int ano = Integer.parseInt(dtNasc[0]);
+					nasc.set(ano, mes, dia);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				status = request.getParameter("rdStatus").equals("true") ? true : false;
+				status = request.getParameter("rdStatus").equals("todos") ? null : status;
+				
+				cliente = new Cliente();
+				usuario = new Cliente();
+				alterador = new Alterador();
+				try {
+					int id = Integer.parseInt(request.getParameter("txtId"));
+					usuario = (Cliente)session.getAttribute("usuario");
+					alterador.setId(usuario.getId());
+					alterador.setEmail(usuario.getEmail());
+					if(usuario.getAdministrador())
+						id = Integer.parseInt(request.getParameter("txtIdCliente"));
+					else
+						id = usuario.getId();
+					cliente.setId(id);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				cliente.setNome(nome);
+				cliente.setCpf(cpf);
+				cliente.setGenero(genero);
+				cliente.setTipoTelefone(tipotel);
+				cliente.setTelefone(telefone);
+				cliente.setEmail(email);
+				cliente.setSenha(senha);
+				cliente.setStatus(status);
+				cliente.setDtnascimento(nasc);
+				cliente.setAlterador(alterador);
+				
+				String tipoRes = request.getParameter("ddlTipoResidencia");
+				String tipoLog = request.getParameter("ddlTipoLogradouro");
+				String logradouro = request.getParameter("txtLogradouro");
+				String numero = request.getParameter("txtNumero");
+				String bairro = request.getParameter("txtBairro");
+				String cep = request.getParameter("txtCep");
+				String estado = request.getParameter("txtEstado");
+				String cidade = request.getParameter("txtCidade");
+				String pais = request.getParameter("txtPais");
+				String observacao = request.getParameter("txtObservacao");
+				String responsavel = request.getParameter("txtResponsavel");
+				String tipo = request.getParameter("ddlTipoEndereco");
+
+				Endereco endereco = new Endereco();
+				try {
+					Boolean preferencial = request.getParameter("rdPreferencial").equals("true") ? true : false;
+					preferencial = request.getParameter("rdPreferencial").equals("todos") ? null : preferencial;
+					endereco.setPreferencial(preferencial);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				endereco.setTipo(tipo);
+				endereco.setTipoResidencia(tipoRes);
+				endereco.setTipoLogradouro(tipoLog);
+				endereco.setLogradouro(logradouro);
+				endereco.setNumero(numero);
+				endereco.setBairro(bairro);
+				endereco.setCep(cep);
+				endereco.setEstado(estado);
+				endereco.setCidade(cidade);
+				endereco.setPais(pais);
+				endereco.setObservacao(observacao);
+				endereco.setAlterador(responsavel);
+				
+			break;
 			case "LOGAR":
 				email = request.getParameter("txtEmail");
 				senha = request.getParameter("txtSenha");
@@ -79,7 +168,7 @@ public class ClienteViewHelper implements IViewHelper{
 				status = request.getParameter("rdStatus").equals("todos") ? null : status;
 				
 				cliente = new Cliente();
-				Cliente usuario = new Cliente();
+				usuario = new Cliente();
 				alterador = new Alterador();
 				try {
 					int id = Integer.parseInt(request.getParameter("txtId"));

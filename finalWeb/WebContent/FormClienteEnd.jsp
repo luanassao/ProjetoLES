@@ -170,14 +170,14 @@
 							<td>
 								Tipo do endereço
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEndereco">
+								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEnderecoC">
 									<option>Cobrança</option>
 								</select>
 							</td>
 							<td>
 								Tipo da residencia
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidencia">
+								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidenciaC">
 									<option >Casa</option>
 									<option >Apartamento</option>
 								</select>
@@ -187,7 +187,7 @@
 							<td>
 								Tipo do logradouro
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouroC">
 									<option>Avenida</option>
 									<option>Rua</option>
 									<option>Travessa</option>
@@ -196,7 +196,7 @@
 							<td>
 								Logradouro
 								<br>
-								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroC"/>
 							</td>
 						</tr>
 						<tr>
@@ -205,53 +205,53 @@
 								<br>
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
 								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
+								    <input type="radio" name="rdPreferencialC" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
 								  </label>
 								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="false" autocomplete="off"> Comum
+								    <input type="radio" name="rdPreferencialC" id="rdPreferencial" value="false" autocomplete="off"> Comum
 								  </label>
 								</div>
 							</td>
 							<td>
 								Número
 								<br>
-								<input type="text"class="form-control" id="txtNumero" name="txtNumero"/>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumeroC"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Bairro
 								<br>
-								<input type="text"class="form-control" id="txtBairro" name="txtBairro"/>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairroC"/>
 							</td>
 							<td>
 								CEP
 								<br>
-								<input type="text"class="form-control" id="txtCep" name="txtCep"/>
+								<input type="text"class="form-control" id="txtCep" name="txtCepC"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Estado
 								<br>
-								<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstadoC"/>
 							</td>
 							<td>
 								Cidade
 								<br>
-								<input type="text"class="form-control" id="txtCidade" name="txtCidade"/>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidadeC"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								País
 								<br>
-								<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
+								<input type="text" class="form-control"  id="txtPais" name="txtPaisC"/>
 							</td>
 							<td>
 								Observação
 								<br>
-								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacaoC"/>
 							</td>
 						</tr>
 					</table>
@@ -264,7 +264,7 @@
 			      </div>
 			    </div>
 			  </div>
-			</div>
+			</div>E
 			
 			<!-- Modal -->
 			<div class="modal fade" id="EndEntModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -283,14 +283,14 @@
 							<td>
 								Tipo do endereço
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEndereco">
+								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEnderecoE">
 									<option>Entrega</option>
 								</select>
 							</td>
 							<td>
 								Tipo da residencia
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidencia">
+								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidenciaE">
 									<option >Casa</option>
 									<option >Apartamento</option>
 								</select>
@@ -300,7 +300,7 @@
 							<td>
 								Tipo do logradouro
 								<br>
-								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouroE">
 									<option>Avenida</option>
 									<option>Rua</option>
 									<option>Travessa</option>
@@ -309,7 +309,7 @@
 							<td>
 								Logradouro
 								<br>
-								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroE"/>
 							</td>
 						</tr>
 						<tr>
@@ -318,53 +318,53 @@
 								<br>
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
 								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
+								    <input type="radio" name="rdPreferencialE" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
 								  </label>
 								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="false" autocomplete="off"> Comum
+								    <input type="radio" name="rdPreferencialE" id="rdPreferencial" value="false" autocomplete="off"> Comum
 								  </label>
 								</div>
 							</td>
 							<td>
 								Número
 								<br>
-								<input type="text"class="form-control" id="txtNumero" name="txtNumero"/>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumeroE"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Bairro
 								<br>
-								<input type="text"class="form-control" id="txtBairro" name="txtBairro"/>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairroE"/>
 							</td>
 							<td>
 								CEP
 								<br>
-								<input type="text"class="form-control" id="txtCep" name="txtCep"/>
+								<input type="text"class="form-control" id="txtCep" name="txtCepE"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Estado
 								<br>
-								<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstadoE"/>
 							</td>
 							<td>
 								Cidade
 								<br>
-								<input type="text"class="form-control" id="txtCidade" name="txtCidade"/>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidadeE"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								País
 								<br>
-								<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
+								<input type="text" class="form-control"  id="txtPais" name="txtPaisE"/>
 							</td>
 							<td>
 								Observação
 								<br>
-								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacaoE"/>
 							</td>
 						</tr>
 					</table>
