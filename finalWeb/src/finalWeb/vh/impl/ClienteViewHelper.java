@@ -65,10 +65,10 @@ public class ClienteViewHelper implements IViewHelper{
 				usuario = new Cliente();
 				alterador = new Alterador();
 				try {
-					int id = Integer.parseInt(request.getParameter("txtId"));
 					usuario = (Cliente)session.getAttribute("usuario");
 					alterador.setId(usuario.getId());
 					alterador.setEmail(usuario.getEmail());
+					int id = Integer.parseInt(request.getParameter("txtId"));
 					if(usuario.getAdministrador())
 						id = Integer.parseInt(request.getParameter("txtIdCliente"));
 					else
@@ -88,40 +88,70 @@ public class ClienteViewHelper implements IViewHelper{
 				cliente.setDtnascimento(nasc);
 				cliente.setAlterador(alterador);
 				
-				String tipoRes = request.getParameter("ddlTipoResidencia");
-				String tipoLog = request.getParameter("ddlTipoLogradouro");
-				String logradouro = request.getParameter("txtLogradouro");
-				String numero = request.getParameter("txtNumero");
-				String bairro = request.getParameter("txtBairro");
-				String cep = request.getParameter("txtCep");
-				String estado = request.getParameter("txtEstado");
-				String cidade = request.getParameter("txtCidade");
-				String pais = request.getParameter("txtPais");
-				String observacao = request.getParameter("txtObservacao");
-				String responsavel = request.getParameter("txtResponsavel");
-				String tipo = request.getParameter("ddlTipoEndereco");
+				String nomeEndereco = request.getParameter("txtNomeEnderecoE");
+				String tipoRes = request.getParameter("ddlTipoResidenciaE");
+				String tipoLog = request.getParameter("ddlTipoLogradouroE");
+				String logradouro = request.getParameter("txtLogradouroE");
+				String numero = request.getParameter("txtNumeroE");
+				String bairro = request.getParameter("txtBairroE");
+				String cep = request.getParameter("txtCepE");
+				String estado = request.getParameter("txtEstadoE");
+				String cidade = request.getParameter("txtCidadeE");
+				String pais = request.getParameter("txtPaisE");
+				String observacao = request.getParameter("txtObservacaoE");
+				String responsavel = request.getParameter("txtResponsavelE");
+				String tipo = request.getParameter("ddlTipoEnderecoE");
 
-				Endereco endereco = new Endereco();
-				try {
-					Boolean preferencial = request.getParameter("rdPreferencial").equals("true") ? true : false;
-					preferencial = request.getParameter("rdPreferencial").equals("todos") ? null : preferencial;
-					endereco.setPreferencial(preferencial);
-				}catch (Exception e) {
-					// TODO: handle exception
-				}
+				Endereco enderecoE = new Endereco();
+
+				enderecoE.setNomeEndereco(nomeEndereco);
+				enderecoE.setTipo(tipo);
+				enderecoE.setTipoResidencia(tipoRes);
+				enderecoE.setTipoLogradouro(tipoLog);
+				enderecoE.setLogradouro(logradouro);
+				enderecoE.setNumero(numero);
+				enderecoE.setBairro(bairro);
+				enderecoE.setCep(cep);
+				enderecoE.setEstado(estado);
+				enderecoE.setCidade(cidade);
+				enderecoE.setPais(pais);
+				enderecoE.setPreferencial(true);
+				enderecoE.setObservacao(observacao);
+				enderecoE.setAlterador(responsavel);
 				
-				endereco.setTipo(tipo);
-				endereco.setTipoResidencia(tipoRes);
-				endereco.setTipoLogradouro(tipoLog);
-				endereco.setLogradouro(logradouro);
-				endereco.setNumero(numero);
-				endereco.setBairro(bairro);
-				endereco.setCep(cep);
-				endereco.setEstado(estado);
-				endereco.setCidade(cidade);
-				endereco.setPais(pais);
-				endereco.setObservacao(observacao);
-				endereco.setAlterador(responsavel);
+				nomeEndereco = request.getParameter("txtNomeEnderecoC");
+				tipoRes = request.getParameter("ddlTipoResidenciaC");
+				tipoLog = request.getParameter("ddlTipoLogradouroC");
+				logradouro = request.getParameter("txtLogradouroC");
+				numero = request.getParameter("txtNumeroC");
+				bairro = request.getParameter("txtBairroC");
+				cep = request.getParameter("txtCepC");
+				estado = request.getParameter("txtEstadoC");
+				cidade = request.getParameter("txtCidadeC");
+				pais = request.getParameter("txtPaisC");
+				observacao = request.getParameter("txtObservacaoC");
+				responsavel = request.getParameter("txtResponsavelC");
+				tipo = request.getParameter("ddlTipoEnderecoC");
+				
+				Endereco enderecoC = new Endereco();
+
+				enderecoC.setNomeEndereco(nomeEndereco);
+				enderecoC.setTipo(tipo);
+				enderecoC.setTipoResidencia(tipoRes);
+				enderecoC.setTipoLogradouro(tipoLog);
+				enderecoC.setLogradouro(logradouro);
+				enderecoC.setNumero(numero);
+				enderecoC.setBairro(bairro);
+				enderecoC.setCep(cep);
+				enderecoC.setEstado(estado);
+				enderecoC.setCidade(cidade);
+				enderecoC.setPais(pais);
+				enderecoC.setPreferencial(true);
+				enderecoC.setObservacao(observacao);
+				enderecoC.setAlterador(responsavel);
+				
+				cliente.getEnderecos().add(enderecoE);
+				cliente.getEnderecos().add(enderecoC);
 				
 			break;
 			case "LOGAR":
@@ -235,6 +265,8 @@ public class ClienteViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("LOGAR")){
+			request.getSession().setAttribute("endereco", null);
+			request.getSession().setAttribute("enderecos", null);
 			request.getSession().setAttribute("carrinho", new Carrinho());
 			request.getSession().setAttribute("usuario", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("Index.jsp");  

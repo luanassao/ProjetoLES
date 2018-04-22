@@ -11,7 +11,7 @@ import finalDominio.EntidadeDominio;
 
 public class EnderecoDAO extends AbstractJdbcDAO{
 	public EnderecoDAO() {
-		super("clientes", "id_cliente");
+		super("endereco", "id_endereco");
 	}
 	
 	@SuppressWarnings("resource")
@@ -24,8 +24,10 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO endereco(preferencial, tipo_Residencia, tipo_Logradouro, logradouro, numero, bairro, CEP, cidade, estado, pais, obs, ID_Cliente, alterador, tipo)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			sql.append("INSERT INTO endereco(preferencial, tipo_Residencia, tipo_Logradouro, "
+					+ "logradouro, numero, bairro, CEP, cidade, estado, pais, obs, ID_Cliente, "
+					+ "alterador, tipo, descricao)");
+			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setBoolean(1, endereco.getPreferencial());
@@ -42,6 +44,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			pst.setInt(12, endereco.getID_Cliente());
 			pst.setString(13, endereco.getAlterador());
 			pst.setString(14, endereco.getTipo());
+			pst.setString(15, endereco.getNomeEndereco());
 			pst.executeUpdate();
 			connection.commit();
 			
@@ -173,6 +176,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 				e.setID_Cliente(rs.getInt("ID_Cliente"));
 				e.setAlterador(rs.getString("alterador"));
 				e.setTipo(rs.getString("tipo"));
+				e.setNomeEndereco(rs.getString("descricao"));
 				enderecos.add(e);
 			}
 			return enderecos;

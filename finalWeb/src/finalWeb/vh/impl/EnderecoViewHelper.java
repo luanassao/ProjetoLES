@@ -24,6 +24,7 @@ public class EnderecoViewHelper implements IViewHelper{
 		if(!operacao.equals("VISUALIZAR"))
 		{
 			//String idc = request.getParameter("txtIdCliente");
+			String nomeEndereco = request.getParameter("txtNomeEndereco");
 			String tipoRes = request.getParameter("ddlTipoResidencia");
 			String tipoLog = request.getParameter("ddlTipoLogradouro");
 			String logradouro = request.getParameter("txtLogradouro");
@@ -54,13 +55,12 @@ public class EnderecoViewHelper implements IViewHelper{
 			}
 			
 			try {
-				int idc;
+				int idc = 0;
 				HttpSession session = request.getSession();
 				Cliente cliente = (Cliente)session.getAttribute("usuario");
 				if(cliente.getAdministrador())
 				{
 					System.out.println("Administrador logado");
-					idc = Integer.parseInt(request.getParameter("txtIdCliente"));
 				}
 				else
 					idc = cliente.getId();
@@ -69,6 +69,7 @@ public class EnderecoViewHelper implements IViewHelper{
 				System.out.println("Erro ao pegar ID DO CLIENTE");
 			}
 			
+			endereco.setNomeEndereco(nomeEndereco);
 			endereco.setTipo(tipo);
 			endereco.setTipoResidencia(tipoRes);
 			endereco.setTipoLogradouro(tipoLog);
@@ -119,6 +120,14 @@ public class EnderecoViewHelper implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  			
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")) {
+			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+			request.getSession().setAttribute("aba","abaConsultarEnderecos");
+			//d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
+			request.getSession().setAttribute("enderecos", resultado.getEntidades());
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
 			
 			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
@@ -132,7 +141,7 @@ public class EnderecoViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
-			
+			request.getSession().setAttribute("aba","abaEndereco");
 			request.setAttribute("endereco", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("FormClienteEnd.jsp");			
 		}

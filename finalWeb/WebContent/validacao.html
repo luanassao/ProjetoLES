@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Cadastro de fornecedor</title>
+	<script type="text/javascript">
+		function validarSenha(){
+		   senha = document.getElementById('senha').value;
+		   senha2 = document.getElementById('senha2').value;
+
+		   if(senha!= senha2) {
+			   document.getElementById('senha2').setCustomValidity("Senhas diferentes!");
+			   return false; 
+		   }
+		   else{
+			   return true; 
+		   }
+		}
+	</script>
+    
+  </head>
+  <body>
+    <form class="pure-form">
+    <fieldset>
+        <legend>Confirmação de Senha </legend>
+
+        <input type="password" placeholder="Senha" name="senha" id="senha" required>
+        <input type="password" placeholder="Confirme Senha" name="senha2" id="senha2" required>
+
+        <!--<button type="submit" class="pure-button pure-button-primary">Confirmar</button>-->
+		<input type="submit" value="Login" onclick="return validarSenha()">
+    </fieldset>
+</form>
+  </body>
+</html>

@@ -171,7 +171,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getAlterador());
+				sbRegistro.append(c.getAlterador().getEmail());
 				sbRegistro.append("</a>");				
 				sbRegistro.append("</TD>");
 				

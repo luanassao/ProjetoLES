@@ -1,5 +1,8 @@
+<%@page import="jdk.nashorn.internal.runtime.ListAdapter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page
+	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,20 +18,29 @@
     Cadastro de clientes
   </title>
  <script type="text/javascript">
- function Sumir1() {
-		document.getElementById("frmSalvarCliente").style='';
-		document.getElementById("frmSalvarEndereco").style='display:none';
-		document.getElementById("frmSalvarCartao").style='display:none';
+ function Cliente() {
+		document.getElementById("sectionCliente").style='';
+		document.getElementById("sectionEndereco").style='display:none';
+		document.getElementById("sectionCartao").style='display:none';
+		document.getElementById("sectionConsultaEndereco").style='display:none';
 	}
- function Sumir2() {
-		document.getElementById("frmSalvarCliente").style='display:none';
-		document.getElementById("frmSalvarEndereco").style='';
-		document.getElementById("frmSalvarCartao").style='display:none';
+ function Endereco() {
+		document.getElementById("sectionCliente").style='display:none';
+		document.getElementById("sectionEndereco").style='';
+		document.getElementById("sectionCartao").style='display:none';
+		document.getElementById("sectionConsultaEndereco").style='display:none';
 	}
- function Sumir3() {
-		document.getElementById("frmSalvarCliente").style='display:none';
-		document.getElementById("frmSalvarEndereco").style='display:none';
-		document.getElementById("frmSalvarCartao").style='';
+ function Cartao() {
+		document.getElementById("sectionCliente").style='display:none';
+		document.getElementById("sectionEndereco").style='display:none';
+		document.getElementById("sectionCartao").style='';
+		document.getElementById("sectionConsultaEndereco").style='display:none';
+	}
+ function ConsultarEndereco() {
+		document.getElementById("sectionCliente").style='display:none';
+		document.getElementById("sectionEndereco").style='display:none';
+		document.getElementById("sectionCartao").style='display:none';
+		document.getElementById("sectionConsultaEndereco").style='';
 	}
 </script>
 <script>
@@ -42,12 +54,14 @@
   <!-- Criando a listagem -->
 <ul class="abas">
     <!-- Aqui, criação da primeira aba -->
-    <li class="aba" id="aba-1">
-     <a onclick="Sumir1()" href="#aba-1">${empty cliente ? "Cadastrar cliente" : "Alterar cliente"}</a>
-     <a onclick="Sumir2()" href="#aba-2">Cadastrar Endereço</a>
-     <a onclick="Sumir3()" href="#aba-3">Cadastrar Cartao</a>
-<section class="conteudo">
-	<form style='' action="SalvarCliente" method="post" id="frmSalvarCliente">
+    <li class="aba" id="abaCliente">
+     <a onclick="Cliente()" href="#abaCliente">${empty cliente ? "Cadastrar cliente" : "Alterar cliente"}</a>
+     <a onclick="Endereco()" href="#abaEndereco">Cadastrar Endereço</a>
+     <a onclick="Cartao()" href="#abaCartao">Cadastrar Cartao</a>
+     <a onclick="ConsultarEndereco()" href="#abaConsultaEndereco">Cadastrar Cartao</a>
+<section class="conteudo" style="${aba == 'abaCliente' ? '' : 'display:none'}" id="sectionCliente">
+	<form action="SalvarCliente" method="post" >
+	<!-- <form style="${aba == abaCliente ? '' : 'display:none'}" action="SalvarCliente" method="post" id="frmSalvarCliente"> -->
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de clientes</TH></tr>
 				<tr style="${empty cliente ? 'display:none' : ''}">
@@ -167,6 +181,12 @@
 					<table class="table table-bordered">
 						<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
 						<tr>
+						<td COLSPAN="2">
+							Nome do endereço
+							<input type="text" class="form-control" id="txtNomeEnderecoC" name="txtNomeEnderecoC" placeholder="ex:Minha casa"/>
+							</td>
+						</tr>
+						<tr>
 							<td>
 								Tipo do endereço
 								<br>
@@ -264,14 +284,14 @@
 			      </div>
 			    </div>
 			  </div>
-			</div>E
+			</div>
 			
 			<!-- Modal -->
 			<div class="modal fade" id="EndEntModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Endereço de cobrança</h5>
+			        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Endereço de entrega</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
@@ -279,6 +299,12 @@
 			      <div class="modal-body">
 					<table class="table table-bordered">
 						<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
+						<tr>
+							<td COLSPAN="2">
+								Nome do endereço
+								<input type="text" class="form-control" id="txtNomeEnderecoE" name="txtNomeEnderecoE" placeholder="ex:Minha casa"/>
+							</td>
+						</tr>
 						<tr>
 							<td>
 								Tipo do endereço
@@ -380,10 +406,11 @@
 		</form>
 </section></li>
 <!-- Aqui, criação da segunda aba -->
-    <li class="aba" id="aba-2">
+    <li class="aba" id="abaEndereco">
       
-<section class="conteudo">
-	<form style='display:none' action="SalvarEndereco" method="post" id="frmSalvarEndereco">
+<section class="conteudo" id="sectionEndereco" style="${aba == 'abaEndereco' ? '' : 'display:none'}">
+	<form  action="SalvarEndereco" method="post">
+	<!-- <form style='display:none' action="SalvarEndereco" method="post" id="frmSalvarEndereco"> -->
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
 				<tr style="${empty cliente ? 'display:none' : ''}">
@@ -400,6 +427,12 @@
 					</td>
 					<td>
 						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty cliente ? '' : cliente.getId()}" readonly="readonly"/>
+					</td>
+				</tr>
+				<tr>
+					<td COLSPAN="2">
+						Nome do endereço
+						<input type="text" class="form-control" id="txtNomeEndereco" name="txtNomeEndereco" placeholder="ex:Minha casa" value="${empty endereco ? '' : endereco.getNomeEndereco()}"/>
 					</td>
 				</tr>
 				<tr>
@@ -506,8 +539,8 @@
 <!-- Aqui, criação da segunda aba -->
     <li class="aba" id="aba-3">
       
-<section class="conteudo">
-	<form style='display:none' action="SalvarCartao" method="post" id="frmSalvarCartao">
+<section class="conteudo" id="sectionCartao" style='display:none'>
+	<form action="SalvarCartao" method="post" >
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de cartão</TH></tr>
 				<tr style="${empty cliente ? 'display:none' : ''}">
@@ -584,6 +617,168 @@
 			</table>
 			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty cartao ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
 		</form>
+</section></li>
+<!-- Aqui, criação da segunda aba -->
+    <li class="aba" id="aba-3">
+      
+<section class="conteudo" id="sectionConsultaEndereco" style="${aba == 'abaConsultarEnderecos' ? '' : 'display:none'}">
+	<form action="SalvarEndereco" method="post">
+		<table class="table table-bordered">
+			<TR>
+		      <TH COLSPAN="3"><BR>
+		      	<H3>CONSULTAR MEUS ENDEREÇOS</H3>
+		      </TH>
+	   		
+			</table>
+			<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
+		</form>
+		<table class="table table-bordered">
+		   <TR>
+		      <TH COLSPAN="17"><BR>
+		      	<H3>ENDERECOS</H3>
+		      </TH>
+		   </TR>
+		   <TR>
+		      <TH>Codigo</TH>
+		      <TH>Nome do endereço</TH>
+		      <TH>Tipo da residencia</TH>
+		      <TH>Tipo do logradouro</TH>
+		      <TH>logradouro</TH>
+		      <TH>Numero</TH>
+		      <TH>Bairro</TH>
+		      <TH>CEP</TH>
+		      <TH>Estado</TH>
+		      <TH>Cidade</TH>
+		      <TH>Pais</TH>
+		      <TH>Observação</TH>
+		      <TH>Preferencial</TH>
+		      <TH>Alterador</TH>
+		   </TR>
+		   
+		   <%
+		   List<EntidadeDominio> enderecos = (ArrayList<EntidadeDominio>) session.getAttribute("enderecos");
+		   if (enderecos != null) {
+				StringBuilder sbRegistro = new StringBuilder();
+				StringBuilder sbLink = new StringBuilder();
+				
+				if(enderecos != null){
+					try{
+					for (EntidadeDominio endereco:enderecos) {
+						Endereco e = (Endereco) endereco;
+						sbRegistro.setLength(0);
+						sbLink.setLength(0);
+						
+					//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
+						
+						sbRegistro.append("<TR ALIGN='CENTER'>");
+						
+						
+						sbLink.append("<a href=SalvarEndereco?");
+							sbLink.append("txtId=");
+							sbLink.append(e.getId());						
+							sbLink.append("&");
+							sbLink.append("operacao=");
+							sbLink.append("VISUALIZAR");
+							
+						sbLink.append(">");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());	
+						sbRegistro.append(e.getId() == 0 ? ' ' : e.getId());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());	
+						sbRegistro.append(e.getNomeEndereco());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getTipoResidencia());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getTipoLogradouro());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getLogradouro());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getNumero());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getBairro());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getCep());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getEstado());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getCidade());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getPais());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getObservacao());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getPreferencial() == true ? "Ativo" : "Inativo");
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());				
+						sbRegistro.append(e.getAlterador());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("</TR>");
+						
+						out.print(sbRegistro.toString());
+						
+					}
+					}catch(Exception e){
+						
+					}
+				}
+			}
+		   
+		   %>
+		</TABLE>
 </section></li>
 </ul>
 </body>

@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import auxiliar.Alterador;
 import finalDominio.Cliente;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 
 public class ClienteDAO extends AbstractJdbcDAO{
@@ -29,7 +31,8 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			sql.append("INSERT INTO clientes(nome, dt_nasc, dt_cadastro, cpf, genero, tipo_tel, telefone, email, senha, status, alterador, administrador)");
 			sql.append("VALUES (?,?,sysdate(),?,?,?,?,?,?,?,?,false)");		
 			
-			pst = connection.prepareStatement(sql.toString());
+			pst = connection.prepareStatement(sql.toString(), 
+                    Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, cliente.getNome());
 			pst.setDate(2, new Date(cliente.getDtnascimento().getTimeInMillis()), cliente.getDtnascimento());
 			pst.setString(3, cliente.getCpf());
@@ -41,7 +44,24 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			pst.setBoolean(9, cliente.getStatus());
 			pst.setInt(10, cliente.getAlterador().getId());
 			pst.executeUpdate();
+			ResultSet rs = pst.getGeneratedKeys();
+            int id=0;
+            if(rs.next())
+            {
+                id = rs.getInt(1);
+            }
+            cliente.setId(id);
+            System.out.println(id);
 			connection.commit();
+			
+			EnderecoDAO endDAO = new EnderecoDAO();
+			for(Endereco endereco:cliente.getEnderecos())
+			{
+				endereco.setID_Cliente(cliente.getId());
+				endDAO.salvar(endereco);
+			}
+			sql = new StringBuilder();
+			
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
