@@ -36,7 +36,7 @@ public class ValidadorDadosObrigatoriosEndereco implements IStrategy{
 			}
 			
 		}else{
-			return "Deve ser registrado um Livro!";
+			return "Deve ser registrado um Endreço!";
 		}
 		
 		

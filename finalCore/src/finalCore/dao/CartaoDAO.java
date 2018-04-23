@@ -95,6 +95,17 @@ public class CartaoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
+			if(cartao.getTitular().equals("Alterar cartoes"))
+			{
+				sql.append("UPDATE cartao SET preferencial = ? WHERE ID_Cliente = ?");
+				
+				pst = connection.prepareStatement(sql.toString());
+				pst.setBoolean(1, false);
+				pst.setInt(2, cartao.getID_Cliente());
+				System.out.println(pst);
+				pst.executeUpdate();			
+				connection.commit();
+			}
 			sql.append("UPDATE cartao SET titular = ?, numero = ?, codigo = ?, validade = ?, alterador = ?, bandeira = ?, preferencial = ? WHERE ID_Cartao = ?");
 			
 			pst = connection.prepareStatement(sql.toString());

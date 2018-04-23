@@ -139,7 +139,7 @@
 				<td>
 					Confirme a senha
 					<br>
-					<input type="text"class="form-control" id="txtISBN" name="txtISBN" value="${empty usuario ? '' : usuario.getSenha()}" />
+					<input type="text"class="form-control" id="txtSenha2" name="txtSenha2" value="${empty usuario ? '' : usuario.getSenha()}" />
 				</td>
 			</tr>
 			<tr>
@@ -902,7 +902,7 @@
 			</table>
 			<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
 		</form>
-		<TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
+<table class="table table-bordered">
    <TR>
       <TH COLSPAN="16"><BR>
       	<H3>CARTOES</H3>

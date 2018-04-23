@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
+  	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
     <title>Cadastro de fornecedor</title>
 	<script type="text/javascript">
 		function validarSenha(){
@@ -8,17 +11,24 @@
 		   senha2 = document.getElementById('senha2').value;
 
 		   if(senha!= senha2) {
+			   //alert("mermão, que porra é essa?");
 			   document.getElementById('senha2').setCustomValidity("Senhas diferentes!");
-			   return false; 
+			   return true; 
 		   }
 		   else{
-			   return true; 
+			   return false; 
 		   }
 		}
 	</script>
     
-  </head>
-  <body>
+  <script>
+   $(document).ready(function(){
+	   $("#divNavBar").load("NavBar.jsp");
+   });
+</script>
+</head>
+<body>
+	<div id="divNavBar"></div>
     <form class="pure-form">
     <fieldset>
         <legend>Confirmação de Senha </legend>

@@ -58,7 +58,9 @@
           <a class="dropdown-item" href="SalvarEndereco?operacao=CONSULTAR">Meus Endereços</a>
           <a class="dropdown-item" href="SalvarCartao?operacao=CONSULTAR">Meus Cartões</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="SalvarCliente?operacao=EXCLUIR" data-toggle="modal" data-target="#NomeModal">Inativar meu cadastro</a>
+          <a class="dropdown-item" data-toggle="modal" href="" data-target="#ModalAlterarSenha">Alterar senha</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" data-toggle="modal" href="" data-target="#ModalInativar">Inativar meu cadastro</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="FormLogin.jsp">Deslogar</a>
         </div>
@@ -67,7 +69,7 @@
   </div>
 </nav>
 <!-- Modal -->
-<div class="modal fade" id="NomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalInativar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,6 +92,48 @@
       	<a class="btn btn-success" href="SalvarCliente?operacao=EXCLUIR">Confirmar</a>
       	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalAlterarSenha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ALTERAR SENHA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+		<script type="text/javascript">
+			function validarSenha(){
+			   senha = document.getElementById('txtSenha').value;
+			   senha2 = document.getElementById('txtSenha2').value;
+			
+			   if(senha!= senha2) {
+				   document.getElementById('txtSenha2').setCustomValidity("Senhas diferentes!");
+				   return true; 
+			   }
+			   else{
+				   return false; 
+			   }
+			}
+		</script>
+		<form action="SalvarCliente" method="post">
+	      <div class="modal-body">
+				Senha
+				<br>
+				<input type="password"class="form-control" id="txtSenha" name="txtSenha" required="required"/>
+				Confirme a senha
+				<br>
+				<input type="password"class="form-control" id="txtSenha2" name="txtSenha2" required="required"/>
+	      </div>
+	      <div class="modal-footer">
+				<button type="submit" class="btn btn-primary" value="ALTERAR" onclick="return validarSenha()">Alterar senha</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	      </div>
+		</form>
     </div>
   </div>
 </div>

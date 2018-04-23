@@ -22,12 +22,14 @@ import finalCore.dao.HelperDAO;
 import finalCore.dao.LivroDAO;
 import finalCore.impl.negocio.AdicionadorCustoFrete;
 import finalCore.impl.negocio.AtualizadorPrecoCarrinho;
+import finalCore.impl.negocio.ValidadorCartaoPreferencial;
 import finalCore.impl.negocio.ValidadorCpf;
 import finalCore.impl.negocio.ValidadorDadosAtivInativ;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCartao;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosCliente;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosEndereco;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosLivro;
+import finalCore.impl.negocio.ValidadorEndCobranca;
 import finalCore.impl.negocio.ValidadorLivroEstoque;
 import finalCore.impl.negocio.ValidadorUsuario;
 import finalCore.impl.negocio.ValidadorValorLivro;
@@ -92,8 +94,13 @@ public class Fachada implements IFachada{
 		ValidadorDadosAtivInativ vrDadosAtivInativ = new ValidadorDadosAtivInativ();
 		ValidadorCpf vCpf = new ValidadorCpf();
 		ValidadorDadosObrigatoriosCliente vrDadosObrigatoriosCliente = new ValidadorDadosObrigatoriosCliente();
+		/*REGRAS DE ENDEREÇO*/
 		ValidadorDadosObrigatoriosEndereco vrDadosObrigatoriosEndereco = new ValidadorDadosObrigatoriosEndereco();
+		ValidadorEndCobranca vrEndCobranca = new ValidadorEndCobranca();
+		/*REGRAS DE CARTÃO*/
 		ValidadorDadosObrigatoriosCartao vrDadosObrigatoriosCartao = new ValidadorDadosObrigatoriosCartao();
+		ValidadorCartaoPreferencial vrCartaoPreferencial = new ValidadorCartaoPreferencial();
+		/**/
 		ValidadorUsuario vrUsuario = new ValidadorUsuario();
 		AdicionadorCustoFrete adcCustoFrete = new AdicionadorCustoFrete();
 		ValidadorLivroEstoque vrLivroEstoque = new ValidadorLivroEstoque();
@@ -155,6 +162,7 @@ public class Fachada implements IFachada{
 		List<IStrategy> rnsSalvarEndereco = new ArrayList<IStrategy>();
 		/* Adicionando as regras a serem utilizadas na operação salvar do cliente */
 		rnsSalvarEndereco.add(vrDadosObrigatoriosEndereco);
+		rnsSalvarEndereco.add(vrEndCobranca);
 		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação do cliente
@@ -176,6 +184,7 @@ public class Fachada implements IFachada{
 		List<IStrategy> rnsSalvarCartao = new ArrayList<IStrategy>();
 		/* Adicionando as regras a serem utilizadas na operação salvar do cliente */
 		rnsSalvarCartao.add(vrDadosObrigatoriosCartao);
+		rnsSalvarCartao.add(vrCartaoPreferencial);
 		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação do cliente
