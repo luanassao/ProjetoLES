@@ -23,24 +23,35 @@
 		document.getElementById("sectionEndereco").style='display:none';
 		document.getElementById("sectionCartao").style='display:none';
 		document.getElementById("sectionConsultaEndereco").style='display:none';
+		document.getElementById("sectionConsultaCartao").style='display:none';
 	}
  function Endereco() {
 		document.getElementById("sectionCliente").style='display:none';
 		document.getElementById("sectionEndereco").style='';
 		document.getElementById("sectionCartao").style='display:none';
 		document.getElementById("sectionConsultaEndereco").style='display:none';
+		document.getElementById("sectionConsultaCartao").style='display:none';
 	}
  function Cartao() {
 		document.getElementById("sectionCliente").style='display:none';
 		document.getElementById("sectionEndereco").style='display:none';
 		document.getElementById("sectionCartao").style='';
 		document.getElementById("sectionConsultaEndereco").style='display:none';
+		document.getElementById("sectionConsultaCartao").style='display:none';
 	}
  function ConsultarEndereco() {
 		document.getElementById("sectionCliente").style='display:none';
 		document.getElementById("sectionEndereco").style='display:none';
 		document.getElementById("sectionCartao").style='display:none';
 		document.getElementById("sectionConsultaEndereco").style='';
+		document.getElementById("sectionConsultaCartao").style='display:none';
+	}
+ function ConsultarCartao() {
+		document.getElementById("sectionCliente").style='display:none';
+		document.getElementById("sectionEndereco").style='display:none';
+		document.getElementById("sectionCartao").style='display:none';
+		document.getElementById("sectionConsultaEndereco").style='display:none';
+		document.getElementById("sectionConsultaCartao").style='';
 	}
 </script>
 <script>
@@ -58,10 +69,112 @@
      <a onclick="Cliente()" href="#abaCliente">${empty cliente ? "Cadastrar cliente" : "Alterar cliente"}</a>
      <a onclick="Endereco()" href="#abaEndereco">Cadastrar Endereço</a>
      <a onclick="Cartao()" href="#abaCartao">Cadastrar Cartao</a>
-     <a onclick="ConsultarEndereco()" href="#abaConsultaEndereco">Cadastrar Cartao</a>
+     <a onclick="ConsultarEndereco()" href="#abaConsultaEndereco">Cosultar endereços</a>
+     <a onclick="ConsultarCartao()" href="#abaConsultaCartao">Cosultar cartoes</a>
 <section class="conteudo" style="${aba == 'abaCliente' ? '' : 'display:none'}" id="sectionCliente">
-	<form action="SalvarCliente" method="post" >
-	<!-- <form style="${aba == abaCliente ? '' : 'display:none'}" action="SalvarCliente" method="post" id="frmSalvarCliente"> -->
+	<form action="SalvarCliente" method="post" style="${empty usuario ? 'display:none' : ''}">
+		<table class="table table-bordered">
+			<tr><TH COLSPAN="2">Cadastro de clientes</TH></tr>
+			<tr style="${empty cliente ? 'display:none' : ''}">
+				<td>
+					ID do cliente
+				</td>
+				<td>
+					<input type="text" class="form-control" id="txtId" name="txtId" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Nome do cliente
+					<br>
+					<input type="text"class="form-control" id="txtNome" name="txtNome" value="${empty usuario ? '' : usuario.getNome()}" />
+				</td>
+				<td>
+					CPF
+					<br>
+					<input type="text"class="form-control" id="txtCpf" name="txtCpf" value="${empty usuario ? '' : usuario.getCpf()}" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Status do Cliente
+					<br>
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+					  <label class="${usuario.getStatus() ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+					    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off" ${usuario.getStatus() ? 'checked' : ''}> Ativo
+					  </label>
+					  <label class="${usuario.getStatus() == false ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+					    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off" ${usuario.getStatus() ? '' : 'checked'}> Inativo
+					  </label>
+					</div>
+				</td>
+				<td>
+					Tipo de telefone
+					<br>
+					<select class="btn btn-outline-dark" id="ddlTipoTel" name="ddlTipoTel">
+						<option ${usuario.getTipoTelefone() == 'Residencial' ? 'selected' : '' }>Residencial</option>
+						<option ${usuario.getTipoTelefone() == 'Celular' ? 'selected' : '' }>Celular</option>
+						<option ${usuario.getTipoTelefone() == 'Empresarial' ? 'selected' : '' }>Empresarial</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Telefone
+					<br>
+					<input type="text"class="form-control" id="txtTelefone" name="txtTelefone" value="${empty usuario ? '' : usuario.getTelefone()}" />
+				</td>
+				<td>
+					Email
+					<br>
+					<input type="text"class="form-control" id="txtEmail" name="txtEmail" value="${empty usuario ? '' : usuario.getEmail()}" />
+				</td>
+			</tr>
+			<tr style="${empty usuario ? '' : 'display:none'}">
+				<td>
+					Senha
+					<br>
+					<input type="text"class="form-control" id="txtSenha" name="txtSenha" value="${empty usuario ? '' : usuario.getSenha()}" />
+				</td>
+				<td>
+					Confirme a senha
+					<br>
+					<input type="text"class="form-control" id="txtISBN" name="txtISBN" value="${empty usuario ? '' : usuario.getSenha()}" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Genero
+					<br>
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+					  <label class="${usuario.getGenero() == 'Masculino' ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+					    <input type="radio" name="rdGenero" id="rdGenero" value="Masculino" autocomplete="off" checked> Masculino
+					  </label>
+					  <label class="${usuario.getGenero() == 'Feminino' ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+					    <input type="radio" name="rdGenero" id="rdGenero" value="Feminino" autocomplete="off"> Feminino
+					  </label>
+					</div>
+				</td>
+				<td>
+					Data de nascimento
+					<br>
+					<input type="${empty usuario ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty usuario ? '' : usuario.getDtnascFormatado()}" />
+					<!--<input type="text" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />-->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Responsavel
+				</td>
+				<td>
+					<!-- <input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" /> -->
+					<input type="text" class="form-control"  id="txtAlterador" name="txtAlterador"/>
+				</td>
+			</tr>
+		</table>
+		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR">ALTERAR</button>
+	</form>
+	<form action="SalvarCliente" method="post" style="${empty usuario ? '' : 'display:none'}">
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de clientes</TH></tr>
 				<tr style="${empty cliente ? 'display:none' : ''}">
@@ -89,11 +202,11 @@
 						Status do Cliente
 						<br>
 						<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off" checked> Ativo
+						  <label class="${cliente.getStatus() ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+						    <input type="radio" name="rdStatus" id="rdStatus" value="true" autocomplete="off" ${cliente.getStatus() ? 'checked' : ''}> Ativo
 						  </label>
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off"> Inativo
+						  <label class="${cliente.getStatus() == false ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+						    <input type="radio" name="rdStatus" id="rdStatus" value="false" autocomplete="off" ${cliente.getStatus() ? '' : 'checked'}> Inativo
 						  </label>
 						</div>
 					</td>
@@ -136,10 +249,10 @@
 						Genero
 						<br>
 						<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-outline-dark">
+						  <label class="${cliente.getGenero() == 'Masculino' ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
 						    <input type="radio" name="rdGenero" id="rdGenero" value="Masculino" autocomplete="off" checked> Masculino
 						  </label>
-						  <label class="btn btn-outline-dark">
+						  <label class="${cliente.getGenero() == 'Feminino' ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
 						    <input type="radio" name="rdGenero" id="rdGenero" value="Feminino" autocomplete="off"> Feminino
 						  </label>
 						</div>
@@ -147,8 +260,8 @@
 					<td>
 						Data de nascimento
 						<br>
-						<!-- <input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" /> -->
-						<input type="text" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />
+						<input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />
+						<!--<input type="text" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />-->
 					</td>
 				</tr>
 				<tr>
@@ -432,7 +545,7 @@
 				<tr>
 					<td COLSPAN="2">
 						Nome do endereço
-						<input type="text" class="form-control" id="txtNomeEndereco" name="txtNomeEndereco" placeholder="ex:Minha casa" value="${empty endereco ? '' : endereco.getNomeEndereco()}"/>
+						<input type="text" class="form-control" id="txtNomeEndereco" name="txtNomeEndereco" placeholder="Ex: Minha casa" value="${empty endereco ? '' : endereco.getNomeEndereco()}"/>
 					</td>
 				</tr>
 				<tr>
@@ -539,7 +652,7 @@
 <!-- Aqui, criação da segunda aba -->
     <li class="aba" id="aba-3">
       
-<section class="conteudo" id="sectionCartao" style='display:none'>
+<section class="conteudo" id="sectionCartao" style="${aba == 'abaEndereco' ? '' : 'display:none'}">
 	<form action="SalvarCartao" method="post" >
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de cartão</TH></tr>
@@ -568,14 +681,14 @@
 					<td>
 						Numero
 						<br>
-						<input type="text" class="form-control" id="txtNumeroCartao" name="txtNumeroCartao" value="${empty cartao ? '' : cartao.getNumero()}"/>
+						<input type="text" class="form-control" id="txtNumeroCartao" maxlength="16" name="txtNumeroCartao" value="${empty cartao ? '' : cartao.getNumero()}"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						Codigo
 						<br>
-						<input type="text" class="form-control" id="txtCodigo" name="txtCodigo" value="${empty cartao ? '' : cartao.getCodigo()}"/>
+						<input type="text" class="form-control" id="txtCodigo" maxlength="3" name="txtCodigo" value="${empty cartao ? '' : cartao.getCodigo()}"/>
 					</td>
 					<td>
 						Bandeira
@@ -634,12 +747,11 @@
 		</form>
 		<table class="table table-bordered">
 		   <TR>
-		      <TH COLSPAN="17"><BR>
+		      <TH COLSPAN="16"><BR>
 		      	<H3>ENDERECOS</H3>
 		      </TH>
 		   </TR>
 		   <TR>
-		      <TH>Codigo</TH>
 		      <TH>Nome do endereço</TH>
 		      <TH>Tipo da residencia</TH>
 		      <TH>Tipo do logradouro</TH>
@@ -681,12 +793,6 @@
 							sbLink.append("VISUALIZAR");
 							
 						sbLink.append(">");
-						
-						sbRegistro.append("<TD>");
-						sbRegistro.append(sbLink.toString());	
-						sbRegistro.append(e.getId() == 0 ? ' ' : e.getId());
-						sbRegistro.append("</a>");				
-						sbRegistro.append("</TD>");
 						
 						sbRegistro.append("<TD>");
 						sbRegistro.append(sbLink.toString());	
@@ -779,6 +885,126 @@
 		   
 		   %>
 		</TABLE>
+</section></li>
+<!-- Aqui, criação da segunda aba -->
+    <li class="aba" id="aba-3">
+      
+<section class="conteudo" id="sectionConsultaCartao" style="${aba == 'abaConsultarCartoes' ? '' : 'display:none'}">
+	<form action="SalvarCartao" method="post">
+		<table class="table table-bordered">
+			<TR>
+		      <TH COLSPAN="3"><BR>
+		      	<H3>CONSULTAR Cartoes</H3>
+		      </TH>
+	   		
+			</table>
+			<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
+		</form>
+		<TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
+   <TR>
+      <TH COLSPAN="16"><BR>
+      	<H3>CARTÕES</H3>
+      </TH>
+   </TR>
+   <TR>
+      <TH>Titular</TH>
+      <TH>Bandeira</TH>
+      <TH>Numero</TH>
+      <TH>Codigo</TH>
+      <TH>ID do cliente</TH>
+      <TH>Nivel</TH>
+      <TH>Validade</TH>
+      <TH>Alterador</TH>
+   </TR>
+   
+   <%
+   List<EntidadeDominio> cartoes = (ArrayList<EntidadeDominio>) session.getAttribute("cartoes");
+   if (cartoes != null) {
+		StringBuilder sbRegistro = new StringBuilder();
+		StringBuilder sbLink = new StringBuilder();
+		
+		if(cartoes != null){
+			try{
+			for (EntidadeDominio cartao:cartoes) {
+				Cartao c = (Cartao) cartao;
+				sbRegistro.setLength(0);
+				sbLink.setLength(0);
+				
+			//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
+				
+				sbRegistro.append("<TR ALIGN='CENTER'>");
+				
+				
+				sbLink.append("<a href=SalvarCartao?");
+					sbLink.append("txtId=");
+					sbLink.append(c.getId());						
+					sbLink.append("&");
+					sbLink.append("operacao=");
+					sbLink.append("VISUALIZAR");
+					
+				sbLink.append(">");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getTitular());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getBandeira());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getNumero());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getCodigo());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getID_Cliente());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getPreferencial() == true ? "Preferencial" : "Comum");
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getValidadeFormatado());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append(sbLink.toString());				
+				sbRegistro.append(c.getAlterador());
+				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("</TR>");
+				
+				out.print(sbRegistro.toString());
+				
+			}
+			}catch(Exception e){
+				
+			}
+		}
+	}
+   
+   %>
+</TABLE>
 </section></li>
 </ul>
 </body>

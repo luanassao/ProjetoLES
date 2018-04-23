@@ -194,8 +194,13 @@ public class ClienteViewHelper implements IViewHelper{
 					// TODO: handle exception
 				}
 				
-				status = request.getParameter("rdStatus").equals("true") ? true : false;
-				status = request.getParameter("rdStatus").equals("todos") ? null : status;
+				try
+				{
+					status = request.getParameter("rdStatus").equals("true") ? true : false;
+					status = request.getParameter("rdStatus").equals("todos") ? null : status;
+				}catch (Exception e) {
+					status = null;
+				}
 				
 				cliente = new Cliente();
 				usuario = new Cliente();

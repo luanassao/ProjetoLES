@@ -85,12 +85,11 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		openConnection();
 		PreparedStatement pst = null;
 		Cliente cliente = (Cliente)entidade;
-		System.out.println("operação de alterar");
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE clientes SET nome = ?, cpf = ?, genero = ?, tipo_tel = ?, telefone = ?, email = ?, senha = ?,");
-			sql.append("status = ?, alterador = ? WHERE ID_Cliente = ?");		
+			sql.append("alterador = ? WHERE ID_Cliente = ?");		
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, cliente.getNome());
@@ -100,9 +99,8 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			pst.setString(5, cliente.getTelefone());
 			pst.setString(6, cliente.getEmail());
 			pst.setString(7, cliente.getSenha());
-			pst.setBoolean(8, cliente.getStatus());
-			pst.setInt(9, cliente.getAlterador().getId());
-			pst.setInt(10, cliente.getId());
+			pst.setInt(8, cliente.getAlterador().getId());
+			pst.setInt(9, cliente.getId());
 			pst.executeUpdate();			
 			connection.commit();
 		} catch (SQLException e) {
@@ -129,7 +127,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		//Cliente cliente = (Cliente) entidade;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM clientes JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
-				"using (alterador)WHERE 1=1\n");
+				"using (alterador)WHERE 1=1 order by id_cliente\n");
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

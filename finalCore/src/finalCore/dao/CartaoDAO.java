@@ -95,7 +95,7 @@ public class CartaoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE cartao SET titular = ?, numero = ?, codigo = ?, validade = ?, alterador = ? WHERE ID_Cliente = ?");
+			sql.append("UPDATE cartao SET titular = ?, numero = ?, codigo = ?, validade = ?, alterador = ?, bandeira = ?, preferencial = ? WHERE ID_Cartao = ?");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, cartao.getTitular());
@@ -103,7 +103,9 @@ public class CartaoDAO extends AbstractJdbcDAO{
 			pst.setString(3, cartao.getCodigo());
 			pst.setDate(4, new Date(cartao.getValidade().getTimeInMillis()), cartao.getValidade());
 			pst.setString(5, cartao.getAlterador());
-			pst.setInt(6, cartao.getID_Cliente());
+			pst.setString(6, cartao.getBandeira());
+			pst.setBoolean(7, cartao.getPreferencial());
+			pst.setInt(8, cartao.getId());
 			System.out.println(pst);
 			pst.executeUpdate();
 			connection.commit();

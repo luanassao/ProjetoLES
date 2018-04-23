@@ -108,7 +108,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE endereco SET preferencial = ?, tipo_Residencia = ?, tipo_Logradouro = ?, logradouro = ?, numero = ?, bairro = ?, CEP = ?,");
-			sql.append("cidade = ?, estado = ?, pais = ?, obs = ?, alterador = ? WHERE ID_Endereco = ?");
+			sql.append("cidade = ?, estado = ?, pais = ?, obs = ?, alterador = ?, descricao = ? WHERE ID_Endereco = ?");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setBoolean(1, endereco.getPreferencial());
@@ -123,7 +123,8 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			pst.setString(10, endereco.getPais());
 			pst.setString(11, endereco.getObservacao());
 			pst.setString(12, endereco.getAlterador());
-			pst.setInt(13, endereco.getId());
+			pst.setString(13, endereco.getNomeEndereco());
+			pst.setInt(14, endereco.getId());
 			System.out.println(pst);
 			pst.executeUpdate();			
 			connection.commit();

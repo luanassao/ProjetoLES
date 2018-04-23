@@ -2,6 +2,7 @@ package finalWeb.vh.impl;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -54,16 +55,25 @@ public class CartaoViewHelper  implements IViewHelper{
 			}
 			
 			try {
-				int idc;
+				int idc = 0;
 				HttpSession session = request.getSession();
 				Cliente cliente = (Cliente)session.getAttribute("usuario");
 				if(cliente.getAdministrador())
-					idc = Integer.parseInt(request.getParameter("txtIdCliente"));
+				{
+					System.out.println("Administrador logado");
+				}
 				else
 					idc = cliente.getId();
 				cartao.setID_Cliente(idc);
 			}catch (Exception e) {
-				// TODO: handle exception
+				System.out.println("Erro ao pegar ID DO CLIENTE");
+			}
+			
+			try {
+				String id = request.getParameter("txtId");
+				cartao.setId(Integer.parseInt(id));
+			}catch (Exception e) {
+				System.out.println("Erro ao pegar ID DO Cartao");
 			}
 			
 			cartao.setBandeira(bandeira);
@@ -76,10 +86,10 @@ public class CartaoViewHelper  implements IViewHelper{
 		else{
 			
 			HttpSession session = request.getSession();
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
+			List<EntidadeDominio> cartoes = (List<EntidadeDominio>) session.getAttribute("cartoes");
 			int txtId = Integer.parseInt(request.getParameter("txtId"));
 			
-			for(EntidadeDominio c: resultado.getEntidades()){
+			for(EntidadeDominio c: cartoes){
 				if(c.getId() == txtId){
 					cartao = (Cartao)c;
 				}
@@ -109,6 +119,14 @@ public class CartaoViewHelper  implements IViewHelper{
 			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  			
 		}
 		
+		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")) {
+			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
+			request.getSession().setAttribute("aba","abaConsultarCartoes");
+			//d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
+			request.getSession().setAttribute("cartoes", resultado.getEntidades());
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");
+		}
+		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
 			
 			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  
@@ -122,7 +140,7 @@ public class CartaoViewHelper  implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
-			
+			request.getSession().setAttribute("aba","abaCartao");
 			request.setAttribute("cartao", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("FormClienteEnd.jsp"); 
 			//d= request.getRequestDispatcher("FormCliente.jsp");  			

@@ -1,6 +1,7 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -87,10 +88,11 @@ public class EnderecoViewHelper implements IViewHelper{
 		else{
 			
 			HttpSession session = request.getSession();
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
+			List<EntidadeDominio> enderecos = (List<EntidadeDominio>) session.getAttribute("enderecos");
+			
 			int txtId = Integer.parseInt(request.getParameter("txtId"));
 			
-			for(EntidadeDominio e: resultado.getEntidades()){
+			for(EntidadeDominio e: enderecos){
 				if(e.getId() == txtId){
 					endereco = (Endereco)e;
 				}
