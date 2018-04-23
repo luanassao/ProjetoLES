@@ -47,12 +47,51 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="FormLogin.jsp">Deslogar</a>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          &nbsp
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="FormClienteEnd.jsp" onclick="<%session.setAttribute("aba", "abaCliente");%>">Meus Dados</a>
+          <a class="dropdown-item" href="SalvarEndereco?operacao=CONSULTAR">Meus Endereços</a>
+          <a class="dropdown-item" href="SalvarCartao?operacao=CONSULTAR">Meus Cartões</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="SalvarCliente?operacao=EXCLUIR" data-toggle="modal" data-target="#NomeModal">Inativar meu cadastro</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="FormLogin.jsp">Deslogar</a>
+        </div>
       </li>
     </ul>
   </div>
 </nav>
-
+<!-- Modal -->
+<div class="modal fade" id="NomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">EXCLUIR CADASTRO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		DESEJA REALMENTE EXCLUIR SEU CADASTRO?
+		<hr>
+		Esta é uma operação sem volta, caso você clique em confirmar sua conta será permanentemente inativada.
+		<hr>
+		Caso queira reativar a conta, será necessario entrar em contato com um administrador.
+		<hr>
+		Obs. O administrador nao terá obrigação nenhuma de reativar a conta
+      </div>
+      <div class="modal-footer">
+      	Confirmar exclusão de conta?
+      	<a class="btn btn-success" href="SalvarCliente?operacao=EXCLUIR">Confirmar</a>
+      	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

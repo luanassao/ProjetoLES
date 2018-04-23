@@ -27,10 +27,12 @@
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
+		session.setAttribute("aba", "abaCliente");
 	%>
 	<%
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
+		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
 	}
 	else if(usuario != null){
 		out.print("Bem vindo, " + usuario.getNome());
@@ -65,7 +67,7 @@
 		</tr>
 		<tr>
 			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormConsultaCliente.jsp">
+				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormClienteEnd.jsp">
 				${usuario.getAdministrador() ==  true ? 'Consultar cliente' : 'Meus dados'}</a>
 			</td>
 		</tr>

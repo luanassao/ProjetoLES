@@ -69,13 +69,13 @@
      <a onclick="Cliente()" href="#abaCliente">${empty cliente ? "Cadastrar cliente" : "Alterar cliente"}</a>
      <a onclick="Endereco()" href="#abaEndereco">Cadastrar Endereço</a>
      <a onclick="Cartao()" href="#abaCartao">Cadastrar Cartao</a>
-     <a onclick="ConsultarEndereco()" href="#abaConsultaEndereco">Cosultar endereços</a>
-     <a onclick="ConsultarCartao()" href="#abaConsultaCartao">Cosultar cartoes</a>
+     <a onclick="ConsultarEndereco()" href="SalvarEndereco?operacao=CONSULTAR">Cosultar endereços</a>
+     <a onclick="ConsultarCartao()" href="SalvarCartao?operacao=CONSULTAR">Cosultar cartoes</a>
 <section class="conteudo" style="${aba == 'abaCliente' ? '' : 'display:none'}" id="sectionCliente">
 	<form action="SalvarCliente" method="post" style="${empty usuario ? 'display:none' : ''}">
 		<table class="table table-bordered">
 			<tr><TH COLSPAN="2">Cadastro de clientes</TH></tr>
-			<tr style="${empty cliente ? 'display:none' : ''}">
+			<tr style="${empty usuario ? 'display:none' : ''}">
 				<td>
 					ID do cliente
 				</td>
@@ -172,7 +172,9 @@
 				</td>
 			</tr>
 		</table>
-		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR">ALTERAR</button>
+		&nbsp&nbsp
+		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR">ALTERAR DADOS</button>
+		<br><br>
 	</form>
 	<form action="SalvarCliente" method="post" style="${empty usuario ? '' : 'display:none'}">
 			<table class="table table-bordered">
@@ -652,7 +654,7 @@
 <!-- Aqui, criação da segunda aba -->
     <li class="aba" id="aba-3">
       
-<section class="conteudo" id="sectionCartao" style="${aba == 'abaEndereco' ? '' : 'display:none'}">
+<section class="conteudo" id="sectionCartao" style="${aba == 'abaCartao' ? '' : 'display:none'}">
 	<form action="SalvarCartao" method="post" >
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de cartão</TH></tr>
@@ -894,7 +896,7 @@
 		<table class="table table-bordered">
 			<TR>
 		      <TH COLSPAN="3"><BR>
-		      	<H3>CONSULTAR Cartoes</H3>
+		      	<H3>CONSULTAR CARTOS</H3>
 		      </TH>
 	   		
 			</table>
@@ -903,7 +905,7 @@
 		<TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="16"><BR>
-      	<H3>CARTÕES</H3>
+      	<H3>CARTOES</H3>
       </TH>
    </TR>
    <TR>

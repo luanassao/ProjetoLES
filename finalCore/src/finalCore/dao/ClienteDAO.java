@@ -170,7 +170,34 @@ public class ClienteDAO extends AbstractJdbcDAO{
 
 	@Override
 	public void excluir(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		PreparedStatement pst = null;
+		Cliente cliente = (Cliente)entidade;
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE clientes SET status = ? WHERE ID_Cliente = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setBoolean(1, !cliente.getStatus());
+			pst.setInt(2, cliente.getId());
+			pst.executeUpdate();
+			System.out.println(pst);
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}finally{
+			try {
+				pst.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

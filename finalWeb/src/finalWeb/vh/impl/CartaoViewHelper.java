@@ -116,11 +116,11 @@ public class CartaoViewHelper  implements IViewHelper{
 			}
 			
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  			
+			request.getSession().setAttribute("aba","abaConsultarCartoes");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");  			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")) {
-			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
 			request.getSession().setAttribute("aba","abaConsultarCartoes");
 			//d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
 			request.getSession().setAttribute("cartoes", resultado.getEntidades());
@@ -128,8 +128,8 @@ public class CartaoViewHelper  implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
-			
-			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  
+			request.getSession().setAttribute("aba","abaConsultarCartoes");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");  
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("SALVAR NOVO")){

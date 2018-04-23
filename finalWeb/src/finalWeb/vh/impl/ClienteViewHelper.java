@@ -173,6 +173,10 @@ public class ClienteViewHelper implements IViewHelper{
 					}
 				}
 			break;
+			case "EXCLUIR":
+				cliente = (Cliente)session.getAttribute("usuario");
+				System.out.println("Id do cliente" + cliente.getId());
+			break;
 			default:
 				nome = request.getParameter("txtNome");
 				cpf = request.getParameter("txtCpf");
@@ -270,9 +274,7 @@ public class ClienteViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("LOGAR")){
-			request.getSession().setAttribute("endereco", null);
-			request.getSession().setAttribute("enderecos", null);
-			request.getSession().setAttribute("carrinho", new Carrinho());
+			request.getSession().setAttribute("resultado", resultado);
 			request.getSession().setAttribute("usuario", resultado.getEntidades().get(0));
 			d= request.getRequestDispatcher("Index.jsp");  
 		}

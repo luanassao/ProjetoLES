@@ -54,6 +54,8 @@ public class ValidadorUsuario implements IStrategy{
 				cli = (Cliente)c;
 				if(cli.getEmail().equals(email) && cli.getSenha().equals(senha))
 				{
+					if(!cli.getStatus())
+						return "Conta inativa, cadastre uma nova ou contate um administrador!";
 					cliente.setNome(cli.getNome());
 					cliente.setId(cli.getId());
 					cliente.setCpf(cli.getCpf());

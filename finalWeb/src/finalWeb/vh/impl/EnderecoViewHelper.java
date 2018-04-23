@@ -117,15 +117,14 @@ public class EnderecoViewHelper implements IViewHelper{
 				request.getSession().setAttribute("usuario",usuario);
 				resultado.setMsg("Endereço cadastrado com sucesso!");
 			}
-			
+
+			request.getSession().setAttribute("aba","abaConsultarEnderecos");
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  			
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");			
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")) {
-			Cliente usuario = (Cliente)request.getSession().getAttribute("usuario");
 			request.getSession().setAttribute("aba","abaConsultarEnderecos");
-			//d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
 			request.getSession().setAttribute("enderecos", resultado.getEntidades());
 			d= request.getRequestDispatcher("FormClienteEnd.jsp");
 		}
@@ -145,6 +144,7 @@ public class EnderecoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("VISUALIZAR")){
 			request.getSession().setAttribute("aba","abaEndereco");
 			request.setAttribute("endereco", resultado.getEntidades().get(0));
+			request.getSession().setAttribute("aba","abaEndereco");
 			d= request.getRequestDispatcher("FormClienteEnd.jsp");			
 		}
 		
