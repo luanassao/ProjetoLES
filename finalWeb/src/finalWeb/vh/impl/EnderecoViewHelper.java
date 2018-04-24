@@ -40,13 +40,6 @@ public class EnderecoViewHelper implements IViewHelper{
 			String tipo = request.getParameter("ddlTipoEndereco");
 
 			endereco = new Endereco();
-			try {
-				Boolean preferencial = request.getParameter("rdPreferencial").equals("true") ? true : false;
-				preferencial = request.getParameter("rdPreferencial").equals("todos") ? null : preferencial;
-				endereco.setPreferencial(preferencial);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
 			
 			try {
 				int id = Integer.parseInt(request.getParameter("txtId"));

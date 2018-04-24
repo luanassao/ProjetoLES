@@ -2,8 +2,8 @@ package finalDominio;
 
 public class Endereco extends EntidadeDominio{
 	private String nomeEndereco, tipoResidencia, tipoLogradouro, logradouro, numero, bairro, cep, estado, cidade, pais, observacao, tipo, alterador;
-	private Boolean preferencial;
-	int ID_Cliente;
+	private Boolean status;
+	private int ID_Cliente;
 
 	public String getNomeEndereco() {
 		return nomeEndereco;
@@ -11,6 +11,14 @@ public class Endereco extends EntidadeDominio{
 
 	public void setNomeEndereco(String nomeEndereco) {
 		this.nomeEndereco = nomeEndereco;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	public String getTipoResidencia() {
@@ -91,14 +99,6 @@ public class Endereco extends EntidadeDominio{
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
-	}
-
-	public Boolean getPreferencial() {
-		return preferencial;
-	}
-
-	public void setPreferencial(Boolean preferencial) {
-		this.preferencial = preferencial;
 	}
 
 	public int getID_Cliente() {

@@ -106,20 +106,23 @@ public class CartaoDAO extends AbstractJdbcDAO{
 				pst.executeUpdate();			
 				connection.commit();
 			}
-			sql.append("UPDATE cartao SET titular = ?, numero = ?, codigo = ?, validade = ?, alterador = ?, bandeira = ?, preferencial = ? WHERE ID_Cartao = ?");
-			
-			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, cartao.getTitular());
-			pst.setString(2, cartao.getNumero());
-			pst.setString(3, cartao.getCodigo());
-			pst.setDate(4, new Date(cartao.getValidade().getTimeInMillis()), cartao.getValidade());
-			pst.setString(5, cartao.getAlterador());
-			pst.setString(6, cartao.getBandeira());
-			pst.setBoolean(7, cartao.getPreferencial());
-			pst.setInt(8, cartao.getId());
-			System.out.println(pst);
-			pst.executeUpdate();
-			connection.commit();
+			else
+			{
+				sql.append("UPDATE cartao SET titular = ?, numero = ?, codigo = ?, validade = ?, alterador = ?, bandeira = ?, preferencial = ? WHERE ID_Cartao = ?");
+				
+				pst = connection.prepareStatement(sql.toString());
+				pst.setString(1, cartao.getTitular());
+				pst.setString(2, cartao.getNumero());
+				pst.setString(3, cartao.getCodigo());
+				pst.setDate(4, new Date(cartao.getValidade().getTimeInMillis()), cartao.getValidade());
+				pst.setString(5, cartao.getAlterador());
+				pst.setString(6, cartao.getBandeira());
+				pst.setBoolean(7, cartao.getPreferencial());
+				pst.setInt(8, cartao.getId());
+				System.out.println(pst);
+				pst.executeUpdate();
+				connection.commit();
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();

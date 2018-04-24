@@ -126,7 +126,7 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		PreparedStatement pst = null;
 		//Cliente cliente = (Cliente) entidade;
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM clientes JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
+		sb.append("SELECT * FROM clientes LEFT JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
 				"using (alterador)WHERE 1=1 order by id_cliente\n");
 		try{
 			openConnection();

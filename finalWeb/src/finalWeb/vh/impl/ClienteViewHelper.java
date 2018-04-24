@@ -115,7 +115,6 @@ public class ClienteViewHelper implements IViewHelper{
 				enderecoE.setEstado(estado);
 				enderecoE.setCidade(cidade);
 				enderecoE.setPais(pais);
-				enderecoE.setPreferencial(true);
 				enderecoE.setObservacao(observacao);
 				enderecoE.setAlterador(responsavel);
 				
@@ -146,7 +145,6 @@ public class ClienteViewHelper implements IViewHelper{
 				enderecoC.setEstado(estado);
 				enderecoC.setCidade(cidade);
 				enderecoC.setPais(pais);
-				enderecoC.setPreferencial(true);
 				enderecoC.setObservacao(observacao);
 				enderecoC.setAlterador(responsavel);
 				

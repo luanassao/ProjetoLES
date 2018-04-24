@@ -864,7 +864,7 @@
 						
 						sbRegistro.append("<TD>");
 						sbRegistro.append(sbLink.toString());				
-						sbRegistro.append(e.getPreferencial() == true ? "Ativo" : "Inativo");
+						sbRegistro.append(e.getStatus() == true ? "Ativo" : "Inativo");
 						sbRegistro.append("</a>");				
 						sbRegistro.append("</TD>");
 						
