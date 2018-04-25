@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Cartao;
 import finalDominio.Cliente;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
 
@@ -23,7 +24,20 @@ public class CartaoViewHelper  implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Cartao cartao = null;
 
-		if(!operacao.equals("VISUALIZAR"))
+		if(operacao.equals("EXCLUIR"))
+		{
+			cartao = new Cartao();
+			int id = Integer.parseInt(request.getParameter("txtId"));
+			int idc = 0;
+			Boolean status = Boolean.parseBoolean(request.getParameter("txtStatus"));
+			HttpSession session = request.getSession();
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			idc = cliente.getId();
+			cartao.setId(id);
+			cartao.setStatus(status);
+			cartao.setID_Cliente(idc);
+		}
+		else if(!operacao.equals("VISUALIZAR"))
 		{
 			String titular = request.getParameter("txtTitular");
 			String numero = request.getParameter("txtNumeroCartao");
@@ -32,7 +46,6 @@ public class CartaoViewHelper  implements IViewHelper{
 			String bandeira = request.getParameter("ddlBandeira");
 			
 			Calendar validade = Calendar.getInstance();
-			System.out.println(request.getParameter("txtDtNasc"));
 			try
 			{
 				String[] dtNasc = request.getParameter("txtValidade").split("-");
@@ -48,7 +61,6 @@ public class CartaoViewHelper  implements IViewHelper{
 			
 			try {
 				Boolean preferencial = request.getParameter("rdCPreferencial").equals("true") ? true : false;
-				preferencial = request.getParameter("rdCPreferencial").equals("todos") ? null : preferencial;
 				cartao.setPreferencial(preferencial);
 			}catch (Exception e) {
 				// TODO: handle exception
@@ -147,9 +159,18 @@ public class CartaoViewHelper  implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
-			
-			request.getSession().setAttribute("resultado", null);
-			d= request.getRequestDispatcher("FormConsultaCartao.jsp");  
+			List<EntidadeDominio> cartoes = (List<EntidadeDominio>) request.getSession().getAttribute("cartoes");
+			Cartao cartao = (Cartao)resultado.getEntidades().get(0);
+			for(EntidadeDominio e:cartoes) {
+				if(e.getId() == cartao.getId())
+				{
+					((Cartao)e).setStatus(cartao.getStatus());
+					break;
+				}
+			}
+			request.getSession().setAttribute("cartoes", cartoes);
+			request.getSession().setAttribute("aba","abaConsultarCartoes");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");  
 		}
 		
 		if(resultado.getMsg() != null){

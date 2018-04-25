@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import finalDominio.Cliente;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 
@@ -30,7 +31,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 			pst = connection.prepareStatement(sql.toString());
-			pst.setBoolean(1, endereco.getPreferencial());
+			pst.setBoolean(1, true);
 			pst.setString(2, endereco.getTipoResidencia());
 			pst.setString(3, endereco.getTipoLogradouro());
 			pst.setString(4, endereco.getLogradouro());
@@ -60,7 +61,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 					{
 					Endereco e = new Endereco();
 					e.setId(rs.getInt("ID_Endereco"));
-					e.setPreferencial(rs.getBoolean("preferencial"));
+					e.setStatus(rs.getBoolean("preferencial"));
 					e.setTipoResidencia(rs.getString("tipo_residencia"));
 					e.setTipoLogradouro(rs.getString("tipo_logradouro"));
 					e.setLogradouro(rs.getString("logradouro"));
@@ -122,7 +123,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 				sql.append("cidade = ?, estado = ?, pais = ?, obs = ?, alterador = ?, descricao = ? WHERE ID_Endereco = ?");
 				
 				pst = connection.prepareStatement(sql.toString());
-				pst.setBoolean(1, endereco.getPreferencial());
+				pst.setBoolean(1, endereco.getStatus());
 				pst.setString(2, endereco.getTipoResidencia());
 				pst.setString(3, endereco.getTipoLogradouro());
 				pst.setString(4, endereco.getLogradouro());
@@ -175,7 +176,7 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 			while(rs.next()){
 				Endereco e = new Endereco();
 				e.setId(rs.getInt("ID_Endereco"));
-				e.setPreferencial(rs.getBoolean("preferencial"));
+				e.setStatus(rs.getBoolean("preferencial"));
 				e.setTipoResidencia(rs.getString("tipo_residencia"));
 				e.setTipoLogradouro(rs.getString("tipo_logradouro"));
 				e.setLogradouro(rs.getString("logradouro"));
@@ -201,7 +202,33 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 
 	@Override
 	public void excluir(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		PreparedStatement pst = null;
+		Endereco endereco = (Endereco) entidade;
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE endereco SET preferencial = ? WHERE ID_Endereco = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setBoolean(1, endereco.getStatus());
+			pst.setInt(2, endereco.getId());
+			pst.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}finally{
+			try {
+				pst.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

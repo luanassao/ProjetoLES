@@ -30,7 +30,7 @@ public class ValidadorCartaoPreferencial implements IStrategy{
 			}
 			
 		}else{
-			return "Deve ser registrado um Endereço!";
+			return "Deve ser registrado um Cartao!";
 		}
 		
 		

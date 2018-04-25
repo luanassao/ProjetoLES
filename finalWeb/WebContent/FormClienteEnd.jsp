@@ -71,7 +71,7 @@
      <a onclick="Cartao()" href="#abaCartao">Cadastrar Cartao</a>
      <a onclick="ConsultarEndereco()" href="SalvarEndereco?operacao=CONSULTAR">Cosultar endereços</a>
      <a onclick="ConsultarCartao()" href="SalvarCartao?operacao=CONSULTAR">Cosultar cartoes</a>
-<section class="conteudo" style="${aba == 'abaCliente' ? '' : 'display:none'}" id="sectionCliente">
+<section class="conteudo" style="${aba == 'abaCliente' ? '' : (aba == null ? '' : 'display:none')}" id="sectionCliente">
 	<form action="SalvarCliente" method="post" style="${empty usuario ? 'display:none' : ''}">
 		<table class="table table-bordered">
 			<tr><TH COLSPAN="2">Cadastro de clientes</TH></tr>
@@ -162,15 +162,6 @@
 					<!--<input type="text" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />-->
 				</td>
 			</tr>
-			<tr>
-				<td>
-					Responsavel
-				</td>
-				<td>
-					<!-- <input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" /> -->
-					<input type="text" class="form-control"  id="txtAlterador" name="txtAlterador"/>
-				</td>
-			</tr>
 		</table>
 		&nbsp&nbsp
 		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR">ALTERAR DADOS</button>
@@ -191,12 +182,12 @@
 					<td>
 						Nome do cliente
 						<br>
-						<input type="text"class="form-control" id="txtNome" name="txtNome" value="${empty cliente ? '' : cliente.getNome()}" />
+						<input type="text"class="form-control" id="txtNome" name="txtNome" value="${empty cliente ? '' : cliente.getNome()}" required="required"/>
 					</td>
 					<td>
 						CPF
 						<br>
-						<input type="text"class="form-control" id="txtCpf" name="txtCpf" value="${empty cliente ? '' : cliente.getCpf()}" />
+						<input type="text"class="form-control" id="txtCpf" name="txtCpf" maxlength="11" value="${empty cliente ? '' : cliente.getCpf()}" required="required"/>
 					</td>
 				</tr>
 				<tr>
@@ -226,24 +217,24 @@
 					<td>
 						Telefone
 						<br>
-						<input type="text"class="form-control" id="txtTelefone" name="txtTelefone" value="${empty cliente ? '' : cliente.getTelefone()}" />
+						<input type="text"class="form-control" id="txtTelefone" name="txtTelefone" value="${empty cliente ? '' : cliente.getTelefone()}" required="required"/>
 					</td>
 					<td>
 						Email
 						<br>
-						<input type="text"class="form-control" id="txtEmail" name="txtEmail" value="${empty cliente ? '' : cliente.getEmail()}" />
+						<input type="text"class="form-control" id="txtEmail" name="txtEmail" value="${empty cliente ? '' : cliente.getEmail()}" required="required"/>
 					</td>
 				</tr>
 				<tr style="${empty cliente ? '' : 'display:none'}">
 					<td>
 						Senha
 						<br>
-						<input type="text"class="form-control" id="txtSenha" name="txtSenha" value="${empty cliente ? '' : cliente.getSenha()}" />
+						<input type="password"class="form-control" id="txtSenha" name="txtSenha" value="${empty cliente ? '' : cliente.getSenha()}" required="required"/>
 					</td>
 					<td>
 						Confirme a senha
 						<br>
-						<input type="text"class="form-control" id="txtISBN" name="txtISBN" value="${empty cliente ? '' : cliente.getSenha()}" />
+						<input type="password"class="form-control" id="txtISBN" name="txtISBN" value="${empty cliente ? '' : cliente.getSenha()}" required="required"/>
 					</td>
 				</tr>
 				<tr>
@@ -264,15 +255,6 @@
 						<br>
 						<input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />
 						<!--<input type="text" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" />-->
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Responsavel
-					</td>
-					<td>
-						<!-- <input type="${empty cliente ? 'date' : 'text'}" class="form-control"  id="txtDtNasc" name="txtDtNasc" value="${empty cliente ? '' : cliente.getDtnascFormatado()}" /> -->
-						<input type="text" class="form-control"  id="txtAlterador" name="txtAlterador"/>
 					</td>
 				</tr>
 			</table>
@@ -298,7 +280,7 @@
 						<tr>
 						<td COLSPAN="2">
 							Nome do endereço
-							<input type="text" class="form-control" id="txtNomeEnderecoC" name="txtNomeEnderecoC" placeholder="ex:Minha casa"/>
+							<input type="text" class="form-control" id="txtNomeEnderecoC" name="txtNomeEnderecoC" placeholder="ex:Minha casa" required="required"/>
 							</td>
 						</tr>
 						<tr>
@@ -331,57 +313,45 @@
 							<td>
 								Logradouro
 								<br>
-								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroC"/>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroC" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								Preferencial
-								<br>
-								<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencialC" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
-								  </label>
-								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencialC" id="rdPreferencial" value="false" autocomplete="off"> Comum
-								  </label>
-								</div>
-							</td>
-							<td>
 								Número
 								<br>
-								<input type="text"class="form-control" id="txtNumero" name="txtNumeroC"/>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumeroC" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Bairro
 								<br>
-								<input type="text"class="form-control" id="txtBairro" name="txtBairroC"/>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairroC" required="required"/>
 							</td>
 							<td>
 								CEP
 								<br>
-								<input type="text"class="form-control" id="txtCep" name="txtCepC"/>
+								<input type="text"class="form-control" id="txtCep" name="txtCepC" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Estado
 								<br>
-								<input type="text"class="form-control" id="txtEstado" name="txtEstadoC"/>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstadoC" required="required"/>
 							</td>
 							<td>
 								Cidade
 								<br>
-								<input type="text"class="form-control" id="txtCidade" name="txtCidadeC"/>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidadeC" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								País
 								<br>
-								<input type="text" class="form-control"  id="txtPais" name="txtPaisC"/>
+								<input type="text" class="form-control"  id="txtPais" name="txtPaisC" required="required"/>
 							</td>
 							<td>
 								Observação
@@ -417,7 +387,7 @@
 						<tr>
 							<td COLSPAN="2">
 								Nome do endereço
-								<input type="text" class="form-control" id="txtNomeEnderecoE" name="txtNomeEnderecoE" placeholder="ex:Minha casa"/>
+								<input type="text" class="form-control" id="txtNomeEnderecoE" name="txtNomeEnderecoE" placeholder="ex:Minha casa" required="required"/>
 							</td>
 						</tr>
 						<tr>
@@ -450,57 +420,45 @@
 							<td>
 								Logradouro
 								<br>
-								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroE"/>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouroE" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								Preferencial
-								<br>
-								<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencialE" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
-								  </label>
-								  <label class="btn btn-outline-dark">
-								    <input type="radio" name="rdPreferencialE" id="rdPreferencial" value="false" autocomplete="off"> Comum
-								  </label>
-								</div>
-							</td>
-							<td>
 								Número
 								<br>
-								<input type="text"class="form-control" id="txtNumero" name="txtNumeroE"/>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumeroE" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Bairro
 								<br>
-								<input type="text"class="form-control" id="txtBairro" name="txtBairroE"/>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairroE" required="required"/>
 							</td>
 							<td>
 								CEP
 								<br>
-								<input type="text"class="form-control" id="txtCep" name="txtCepE"/>
+								<input type="text"class="form-control" id="txtCep" name="txtCepE" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								Estado
 								<br>
-								<input type="text"class="form-control" id="txtEstado" name="txtEstadoE"/>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstadoE" required="required"/>
 							</td>
 							<td>
 								Cidade
 								<br>
-								<input type="text"class="form-control" id="txtCidade" name="txtCidadeE"/>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidadeE" required="required"/>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								País
 								<br>
-								<input type="text" class="form-control"  id="txtPais" name="txtPaisE"/>
+								<input type="text" class="form-control"  id="txtPais" name="txtPaisE" required="required"/>
 							</td>
 							<td>
 								Observação
@@ -586,18 +544,6 @@
 				</tr>
 				<tr>
 					<td>
-						Preferencial
-						<br>
-						<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="true" autocomplete="off" checked> Preferencial
-						  </label>
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdPreferencial" id="rdPreferencial" value="false" autocomplete="off"> Comum
-						  </label>
-						</div>
-					</td>
-					<td>
 						Número
 						<br>
 						<input type="text"class="form-control" id="txtNumero" name="txtNumero" value="${empty endereco ? '' : endereco.getNumero()}" />
@@ -639,14 +585,6 @@
 						<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao" value="${empty endereco ? '' : endereco.getObservacao()}" />
 					</td>
 				</tr>
-				<tr>
-					<td>
-						Responsavel
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty endereco ? '' : ''}" />
-					</td>
-				</tr>
 			</table>
 			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty endereco ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
 		</form>
@@ -658,7 +596,7 @@
 	<form action="SalvarCartao" method="post" >
 			<table class="table table-bordered">
 				<tr><TH COLSPAN="2">Cadastro de cartão</TH></tr>
-				<tr style="${empty cliente ? 'display:none' : ''}">
+				<tr style="display:none">
 					<td>
 						ID
 					</td>
@@ -666,7 +604,7 @@
 						<input type="text" class="form-control" id="txtId" name="txtId" value="${empty cartao ? '' : cartao.getId()}" readonly="readonly"/>
 					</td>
 				</tr>
-				<tr style="${empty cliente ? 'display:none' : ''}">
+				<tr style="display:none">
 					<td>
 						ID do cliente
 					</td>
@@ -696,37 +634,29 @@
 						Bandeira
 						<br>
 						<select class="btn btn-outline-dark" id="ddlBandeira" name="ddlBandeira">
-							<option ${endereco.getTipoLogradouro() == 'Visa' ? 'selected' : '' }>Visa</option>
-							<option ${endereco.getTipoLogradouro() == 'Caixa' ? 'selected' : '' }>Caixa</option>
-							<option ${endereco.getTipoLogradouro() == 'Itau' ? 'selected' : '' }>Itau</option>
+							<option ${cartao.getBandeira() == 'Visa' ? 'selected' : '' }>Visa</option>
+							<option ${cartao.getBandeira() == 'Caixa' ? 'selected' : '' }>Caixa</option>
+							<option ${cartao.getBandeira() == 'Itau' ? 'selected' : '' }>Itau</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						preferencial
+						Preferencial
 						<br>
-					    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdCPreferencial" id="rdCPreferencial" value="true" autocomplete="off" checked> Preferencial
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						  <label class="${cartao.getPreferencial() ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+						    <input type="radio" name="rdCPreferencial" id="rdCPreferencial" value="true" autocomplete="off" ${cartao.getPreferencial() ? 'checked' : ''}> Preferencial
 						  </label>
-						  <label class="btn btn-outline-dark">
-						    <input type="radio" name="rdCPreferencial" id="rdCPreferencial" value="false" autocomplete="off"> Comum
+						  <label class="${!cartao.getPreferencial() ? 'btn btn-outline-dark active' : 'btn btn-outline-dark'}">
+						    <input type="radio" name="rdCPreferencial" id="rdCPreferencial" value="false" autocomplete="off" ${!cartao.getPreferencial() ? 'checked' : ''}> Comum
 						  </label>
 						</div>
 					</td>
 					<td>
 						validade
 						<br>
-						<input type="text"class="form-control" id="txtValidade" name="txtValidade" value="${empty cartao ? '' : cartao.getValidadeFormatado()}" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Responsavel
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty cartao ? '' : cartao.getAlterador()}" />
+						<input type="${empty cartao ? 'date' : 'text'}" class="form-control" id="txtValidade" name="txtValidade" value="${empty cartao ? '' : cartao.getValidadeFormatado()}" />
 					</td>
 				</tr>
 			</table>
@@ -755,6 +685,7 @@
 		   </TR>
 		   <TR>
 		      <TH>Nome do endereço</TH>
+		      <th>Tipo do endereço</th>
 		      <TH>Tipo da residencia</TH>
 		      <TH>Tipo do logradouro</TH>
 		      <TH>logradouro</TH>
@@ -765,8 +696,9 @@
 		      <TH>Cidade</TH>
 		      <TH>Pais</TH>
 		      <TH>Observação</TH>
-		      <TH>Preferencial</TH>
-		      <TH>Alterador</TH>
+		      <TH>Status</TH>
+		      <th>#</th>
+		      
 		   </TR>
 		   
 		   <%
@@ -788,17 +720,22 @@
 						
 						
 						sbLink.append("<a href=SalvarEndereco?");
-							sbLink.append("txtId=");
-							sbLink.append(e.getId());						
-							sbLink.append("&");
-							sbLink.append("operacao=");
-							sbLink.append("VISUALIZAR");
-							
+						sbLink.append("txtId=");
+						sbLink.append(e.getId());						
+						sbLink.append("&");
+						sbLink.append("operacao=");
+						sbLink.append("VISUALIZAR");
 						sbLink.append(">");
 						
 						sbRegistro.append("<TD>");
-						sbRegistro.append(sbLink.toString());	
+						sbRegistro.append(sbLink.toString());
 						sbRegistro.append(e.getNomeEndereco());
+						sbRegistro.append("</a>");				
+						sbRegistro.append("</TD>");
+						
+						sbRegistro.append("<TD>");
+						sbRegistro.append(sbLink.toString());
+						sbRegistro.append(e.getTipo());
 						sbRegistro.append("</a>");				
 						sbRegistro.append("</TD>");
 						
@@ -869,9 +806,18 @@
 						sbRegistro.append("</TD>");
 						
 						sbRegistro.append("<TD>");
-						sbRegistro.append(sbLink.toString());				
-						sbRegistro.append(e.getAlterador());
-						sbRegistro.append("</a>");				
+						sbRegistro.append("<a class='btn btn-primary' href=SalvarEndereco?");
+						sbRegistro.append("txtId=");
+						sbRegistro.append(e.getId());						
+						sbRegistro.append("&");
+						sbRegistro.append("operacao=");
+						sbRegistro.append("EXCLUIR");
+						sbRegistro.append("&");
+						sbRegistro.append("txtStatus=");
+						sbRegistro.append(!e.getStatus());
+						sbRegistro.append(">");
+						sbRegistro.append(e.getStatus() ? "Inativar" : "Ativar");
+						sbRegistro.append("</a>");
 						sbRegistro.append("</TD>");
 						
 						sbRegistro.append("</TR>");
@@ -916,7 +862,8 @@
       <TH>ID do cliente</TH>
       <TH>Nivel</TH>
       <TH>Validade</TH>
-      <TH>Alterador</TH>
+      <th>Status</th>
+      <th>#</th>
    </TR>
    
    <%
@@ -938,12 +885,11 @@
 				
 				
 				sbLink.append("<a href=SalvarCartao?");
-					sbLink.append("txtId=");
-					sbLink.append(c.getId());						
-					sbLink.append("&");
-					sbLink.append("operacao=");
-					sbLink.append("VISUALIZAR");
-					
+				sbLink.append("txtId=");
+				sbLink.append(c.getId());						
+				sbLink.append("&");
+				sbLink.append("operacao=");
+				sbLink.append("VISUALIZAR");
 				sbLink.append(">");
 				
 				sbRegistro.append("<TD>");
@@ -990,8 +936,23 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getAlterador());
+				sbRegistro.append(c.getStatus() ? "Ativo" : "Inativo");
 				sbRegistro.append("</a>");				
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append("<a class='btn btn-primary' href=SalvarCartao?");
+				sbRegistro.append("txtId=");
+				sbRegistro.append(c.getId());						
+				sbRegistro.append("&");
+				sbRegistro.append("operacao=");
+				sbRegistro.append("EXCLUIR");
+				sbRegistro.append("&");
+				sbRegistro.append("txtStatus=");
+				sbRegistro.append(!c.getStatus());
+				sbRegistro.append(">");
+				sbRegistro.append(c.getStatus() ? "Inativar" : "Ativar");
+				sbRegistro.append("</a>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");

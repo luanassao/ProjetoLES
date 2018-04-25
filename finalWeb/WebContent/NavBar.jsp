@@ -51,7 +51,7 @@
     <ul class="navbar-nav ml-auto">
        <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          &nbsp
+          ${empty usuario ? '' : usuario.getNome()}
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="FormClienteEnd.jsp" onclick="<%session.setAttribute("aba", "abaCliente");%>">Meus Dados</a>
@@ -130,7 +130,7 @@
 				<input type="password"class="form-control" id="txtSenha2" name="txtSenha2" required="required"/>
 	      </div>
 	      <div class="modal-footer">
-				<button type="submit" class="btn btn-primary" value="ALTERAR" onclick="return validarSenha()">Alterar senha</button>
+				<button type="button" class="btn btn-primary" value="ALTERAR" onclick="return validarSenha()">Alterar senha</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 	      </div>
 		</form>

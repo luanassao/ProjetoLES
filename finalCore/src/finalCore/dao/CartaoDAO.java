@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import finalDominio.Cartao;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 
 public class CartaoDAO extends AbstractJdbcDAO{
@@ -26,8 +27,8 @@ public class CartaoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO cartao(titular, numero, codigo, validade, id_cliente, alterador, preferencial, bandeira)");
-			sql.append("VALUES (?,?,?,?,?,?,?,?)");
+			sql.append("INSERT INTO cartao(titular, numero, codigo, validade, id_cliente, alterador, preferencial, bandeira, status)");
+			sql.append("VALUES (?,?,?,?,?,?,?,?, true)");
 			
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, cartao.getTitular());
@@ -168,6 +169,7 @@ public class CartaoDAO extends AbstractJdbcDAO{
 				c.setAlterador(rs.getString("alterador"));
 				c.setPreferencial(rs.getBoolean("preferencial"));
 				c.setBandeira(rs.getString("bandeira"));
+				c.setStatus(rs.getBoolean("status"));
 				cartoes.add(c);
 			}
 			return cartoes;
@@ -179,7 +181,34 @@ public class CartaoDAO extends AbstractJdbcDAO{
 
 	@Override
 	public void excluir(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
+		openConnection();
+		PreparedStatement pst = null;
+		Cartao cartao = (Cartao)entidade;
 		
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE cartao SET status = ? WHERE ID_Cartao = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setBoolean(1, cartao.getStatus());
+			pst.setInt(2, cartao.getId());
+			pst.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}finally{
+			try {
+				pst.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

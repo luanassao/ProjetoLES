@@ -124,10 +124,28 @@ public class ClienteDAO extends AbstractJdbcDAO{
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		// TODO Auto-generated method stub
 		PreparedStatement pst = null;
-		//Cliente cliente = (Cliente) entidade;
+		Cliente cliente = (Cliente) entidade;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM clientes LEFT JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
-				"using (alterador)WHERE 1=1 order by id_cliente\n");
+				"using (alterador)WHERE 1=1\n");
+		System.out.println("Nome: " + cliente.getNome());
+		if(cliente.getNome() != null && cliente.getNome().length() > 0)
+			sb.append(" and nome = '" + cliente.getNome() + "'");
+		if(cliente.getId() != 0)
+			sb.append(" and id_cliente = " + cliente.getId());
+		if(cliente.getCpf() != null && cliente.getCpf().length() > 0)
+			sb.append(" and cpf = '" + cliente.getCpf() + "'");
+		if(cliente.getGenero() != null && cliente.getGenero().length() > 0)
+			sb.append(" and genero = '" + cliente.getGenero() + "'");
+		if(cliente.getTelefone() != null && cliente.getTelefone().length() > 0)
+			sb.append(" and Telefone = '" + cliente.getTelefone() + "'");
+		if(cliente.getStatus() != null)
+			sb.append(" and Status = " + cliente.getStatus());
+		if(cliente.getEmail() != null && cliente.getEmail().length() > 0)
+			sb.append(" and email = '" + cliente.getEmail() + "'");
+		
+		sb.append(" order by id_cliente");
+		System.out.println(sb.toString());
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -182,7 +200,6 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			pst.setBoolean(1, !cliente.getStatus());
 			pst.setInt(2, cliente.getId());
 			pst.executeUpdate();
-			System.out.println(pst);
 			connection.commit();
 		} catch (SQLException e) {
 			try {

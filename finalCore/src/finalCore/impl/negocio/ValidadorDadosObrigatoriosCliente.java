@@ -2,6 +2,7 @@ package finalCore.impl.negocio;
 
 import finalCore.IStrategy;
 import finalDominio.Cliente;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
 
 public class ValidadorDadosObrigatoriosCliente implements IStrategy{
@@ -10,7 +11,8 @@ public class ValidadorDadosObrigatoriosCliente implements IStrategy{
 		
 		if(entidade instanceof Cliente){
 			Cliente cliente = (Cliente)entidade;
-			
+			ValidadorDadosObrigatoriosEndereco vrDadosEnd = new ValidadorDadosObrigatoriosEndereco();
+			System.out.println("regra de salvar cliente");
 			String nome = cliente.getNome();
 			String cpf = cliente.getCpf();
 			String tipoTelefone = cliente.getTipoTelefone();
@@ -28,6 +30,11 @@ public class ValidadorDadosObrigatoriosCliente implements IStrategy{
 					cpf.trim().equals("")|| tipoTelefone.trim().equals("") || telefone.trim().equals("")
 					|| email.trim().equals("") || genero.trim().equals("")){
 				return "Todos os dados cadastrais de um cliente são obrigatórios!";
+			}
+			
+			for(Endereco e:cliente.getEnderecos()) {
+				if(vrDadosEnd.processar(e) != null)
+					return "Os dados cadastrais de endereço são obrigatorios";
 			}
 			
 		}else{

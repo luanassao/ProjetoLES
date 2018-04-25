@@ -1,3 +1,4 @@
+<%@page import="java.nio.channels.SeekableByteChannel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -23,7 +24,8 @@
       <label for="inputPassword" class="sr-only">Senha</label>
       <input type="password" id="txtSenha" name="txtSenha" class="form-control" placeholder="Senha" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit" id="operacao" name="operacao" value="LOGAR">Entrar</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+      <a class="btn btn-lg btn-primary btn-block" href="FormClienteEnd.jsp">Cadastrar</a>
+      <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
     </form>
 </body>
 </html>

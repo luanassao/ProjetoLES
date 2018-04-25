@@ -22,7 +22,20 @@ public class EnderecoViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Endereco endereco = null;
 
-		if(!operacao.equals("VISUALIZAR"))
+		if(operacao.equals("EXCLUIR"))
+		{
+			endereco = new Endereco();
+			int id = Integer.parseInt(request.getParameter("txtId"));
+			int idc = 0;
+			Boolean status = Boolean.parseBoolean(request.getParameter("txtStatus"));
+			HttpSession session = request.getSession();
+			Cliente cliente = (Cliente)session.getAttribute("usuario");
+			idc = cliente.getId();
+			endereco.setID_Cliente(idc);
+			endereco.setId(id);
+			endereco.setStatus(status);
+		}
+		else if(!operacao.equals("VISUALIZAR"))
 		{
 			//String idc = request.getParameter("txtIdCliente");
 			String nomeEndereco = request.getParameter("txtNomeEndereco");
@@ -123,8 +136,8 @@ public class EnderecoViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
-			
-			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
+			request.getSession().setAttribute("aba","abaConsultarEnderecos");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp"); 
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("SALVAR NOVO")){
@@ -142,14 +155,24 @@ public class EnderecoViewHelper implements IViewHelper{
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
-			
-			request.getSession().setAttribute("resultado", null);
-			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");  
+			List<EntidadeDominio> enderecos = (List<EntidadeDominio>) request.getSession().getAttribute("enderecos");
+			Endereco endereco = (Endereco)resultado.getEntidades().get(0);
+			for(EntidadeDominio e:enderecos) {
+				if(e.getId() == endereco.getId())
+				{
+					((Endereco)e).setStatus(endereco.getStatus());
+					break;
+				}
+			}
+			request.getSession().setAttribute("enderecos", enderecos);
+			request.getSession().setAttribute("aba","abaConsultarEnderecos");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp"); 
 		}
 		
 		if(resultado.getMsg() != null && (operacao.equals("SALVAR") || operacao.equals("ALTERAR"))){
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaEndereco.jsp");
+			request.getSession().setAttribute("aba","abaConsultarEnderecos");
+			d= request.getRequestDispatcher("FormClienteEnd.jsp");
 		}
 		d.forward(request,response);
 	}

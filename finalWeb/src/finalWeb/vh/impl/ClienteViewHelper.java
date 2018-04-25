@@ -172,8 +172,16 @@ public class ClienteViewHelper implements IViewHelper{
 				}
 			break;
 			case "EXCLUIR":
-				cliente = (Cliente)session.getAttribute("usuario");
-				System.out.println("Id do cliente" + cliente.getId());
+				usuario = (Cliente)session.getAttribute("usuario");
+				if(usuario.getAdministrador())
+				{
+					cliente = new Cliente();
+					int id = Integer.parseInt(request.getParameter("txtId"));
+					cliente.setId(id);
+					cliente.setStatus(Boolean.parseBoolean(request.getParameter("txtStatus")));
+				}
+				else
+					cliente = (Cliente)session.getAttribute("usuario");
 			break;
 			default:
 				nome = request.getParameter("txtNome");
@@ -213,7 +221,7 @@ public class ClienteViewHelper implements IViewHelper{
 					alterador.setId(usuario.getId());
 					alterador.setEmail(usuario.getEmail());
 					if(usuario.getAdministrador())
-						id = Integer.parseInt(request.getParameter("txtIdCliente"));
+						id = Integer.parseInt(request.getParameter("txtId"));
 					else
 						id = usuario.getId();
 					cliente.setId(id);
@@ -251,13 +259,25 @@ public class ClienteViewHelper implements IViewHelper{
 		
 		String operacao = request.getParameter("operacao");
 		
+		if(resultado.getMsg() != null){
+			request.getSession().setAttribute("resultado", resultado);
+			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
+				d= request.getRequestDispatcher("FormClienteEnd.jsp");  	
+			}
+			else if(operacao.equals("LOGAR")) {
+				d= request.getRequestDispatcher("Index.jsp");
+			}
+		}
+		
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
 				resultado.setMsg("Cliente cadastrado com sucesso!");
 			}
 			
 			request.getSession().setAttribute("resultado", resultado);
-			d= request.getRequestDispatcher("FormConsultaCliente.jsp");  			
+			d= request.getRequestDispatcher("FormLogin.jsp");
+			if(operacao.equals("CONSULTAR"))
+				d= request.getRequestDispatcher("FormConsultaCliente.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){
@@ -280,18 +300,9 @@ public class ClienteViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("EXCLUIR")){
 			
 			request.getSession().setAttribute("resultado", null);
-			d= request.getRequestDispatcher("FormConsultaCliente.jsp");  
+			d= request.getRequestDispatcher("FormLogin.jsp");  
 		}
 		
-		if(resultado.getMsg() != null){
-			request.getSession().setAttribute("resultado", resultado);
-			if(operacao.equals("SALVAR") || operacao.equals("ALTERAR")){
-				d= request.getRequestDispatcher("FormConsultaCliente.jsp");  	
-			}
-			else if(operacao.equals("LOGAR")) {
-				d= request.getRequestDispatcher("Index.jsp");
-			}
-		}
 		d.forward(request,response);
 	}
 }

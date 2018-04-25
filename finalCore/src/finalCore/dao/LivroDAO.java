@@ -200,7 +200,7 @@ public class LivroDAO extends AbstractJdbcDAO{
 		sb.append("WHERE 1=1\n");
 		
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
-			sb.append(" and titulo like '" + livro.getTitulo() + "%'");
+			sb.append(" and titulo like '%" + livro.getTitulo() + "%'");
 		}
 		if(livro.getAutor() != null && livro.getAutor().getId() != 0){
 			sb.append(" and id_autor = '" + livro.getAutor().getId() + "'");

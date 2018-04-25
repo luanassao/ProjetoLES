@@ -11,7 +11,7 @@ public class ValidadorCpf implements IStrategy {
 		if(entidade instanceof Cliente){
 			Cliente c = (Cliente)entidade;
 			
-			if(c.getCpf().length() < 9){
+			if(c.getCpf().length() < 1){
 				return "CPF deve conter 14 digitos!";
 			}
 			

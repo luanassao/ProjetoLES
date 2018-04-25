@@ -6,7 +6,7 @@ public class Cartao extends EntidadeDominio {
 	
 	private String titular, numero, codigo, bandeira, alterador;
 	private int ID_Cliente;
-	private Boolean preferencial;
+	private Boolean preferencial, status;
 	private Calendar validade;
 	
 	public String getTitular() {
@@ -63,5 +63,11 @@ public class Cartao extends EntidadeDominio {
 	}
 	public void setAlterador(String alterador) {
 		this.alterador = alterador;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 }

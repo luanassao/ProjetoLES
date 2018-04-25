@@ -20,10 +20,9 @@ public class ValidadorDadosObrigatoriosEndereco implements IStrategy{
 			String estado = endereco.getEstado();
 			String cidade = endereco.getCidade();
 			String pais = endereco.getPais();
-			String observacao = endereco.getObservacao();
-			
+			System.out.println("Numero: " + numero);
 			if(tipoResidencia == null || tipoLogradouro==null || logradouro == null   || numero == null  ||
-					bairro == null || cep == null || estado == null || cidade == null || pais == null   ||  observacao == null){
+					bairro == null || cep == null || estado == null || cidade == null || pais == null){
 				return "Todos os dados cadastrais de um endereço são obrigatórios!";
 				
 			}
@@ -31,7 +30,7 @@ public class ValidadorDadosObrigatoriosEndereco implements IStrategy{
 			if(tipoResidencia.trim().equals("") || 
 					tipoLogradouro.trim().equals("")|| logradouro.trim().equals("") || numero.trim().equals("")
 					|| bairro.trim().equals("") || cep.trim().equals("") || estado.trim().equals("") ||
-					cidade.trim().equals("") || pais.trim().equals("") || observacao.trim().equals("")){
+					cidade.trim().equals("") || pais.trim().equals("")){
 				return "Todos os dados cadastrais de um endereço são obrigatórios!";
 			}
 			

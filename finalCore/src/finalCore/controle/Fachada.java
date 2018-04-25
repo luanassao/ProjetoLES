@@ -410,7 +410,7 @@ public class Fachada implements IFachada{
 			List<IStrategy> regras = regrasOperacao.get(operacao);
 			
 			if(regras != null){
-				for(IStrategy s: regras){			
+				for(IStrategy s: regras){
 					String m = s.processar(entidade);			
 					
 					if(m != null){
