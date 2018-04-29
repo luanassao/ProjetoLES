@@ -25,20 +25,31 @@
 <body>
 	<div id="divNavBar"></div>
 	<%
+		Resultado dados = (Resultado) session.getAttribute("dados");
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		session.setAttribute("aba", "abaCliente");
-	%>
-	<%
-	if(resultado !=null && resultado.getMsg() != null){
-		out.print(resultado.getMsg());
-		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
-	}
-	else if(usuario != null){
-		out.print("Bem vindo, " + usuario.getNome());
-	}
-	else if(usuario == null)
-		out.print("<a href='http://localhost:8080/finalWeb/FormLogin.jsp'>Fazer Login</a>");
+		
+		if(dados == null)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("<script>");
+			sb.append("$(document).ready(function(){");
+			sb.append("window.location.href = 'DadosLivro?operacao=CONSULTAR&target=Index.jsp';");
+			sb.append("});");
+			sb.append("</script>");
+			out.print(sb.toString());
+		}
+		
+		if(resultado !=null && resultado.getMsg() != null){
+			out.print(resultado.getMsg());
+			out.print("<a href='FormLogin.jsp'>Fazer Login</a>");
+		}
+		else if(usuario != null){
+			out.print("Bem vindo, " + usuario.getNome());
+		}
+		else if(usuario == null)
+			out.print("<a href='FormLogin.jsp'>Fazer Login</a>");
 	%>
 	<table class="table table-bordered">
 		<tr><TH COLSPAN="2">Pagina principal</TH></tr>
@@ -83,7 +94,7 @@
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">
 			<td>
-				<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Comprar livro</a>
+				<a class="btn btn-primary" href="SalvarLivro?operacao=CONSULTAR">Comprar livro</a>
 			</td>
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? 'display:none' : ''}">

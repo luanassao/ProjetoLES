@@ -19,9 +19,11 @@ import auxiliar.DadosCadLivro;
 import auxiliar.Editora;
 import auxiliar.Precificacao;
 import finalCore.aplicacao.Resultado;
+import finalDominio.Carrinho;
 import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
+import finalDominio.Produto;
 import finalWeb.vh.IViewHelper;
 
 public class LivroViewHelper implements IViewHelper{
@@ -81,6 +83,13 @@ public class LivroViewHelper implements IViewHelper{
 			livro.setId(id);
 			livro.setMotivo(motivo);
 		}
+		else if(operacao.equals("ADICIONAR_AO_CARRINHO"))
+		{
+			HttpSession session = request.getSession();
+			livro = (Livro)session.getAttribute("livro");
+			int estoque = livro.getEstoque() - Integer.parseInt(request.getParameter("txtQuantidade"));
+			livro.setEstoque(estoque);
+		}
 		else if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
 			String ano = request.getParameter("txtAno");
@@ -129,12 +138,12 @@ public class LivroViewHelper implements IViewHelper{
 			}catch (Exception e) {
 				status = null;
 			}
-			
-			Resultado resultado = (Resultado) session.getAttribute("dados");
-			List<EntidadeDominio> entidades = resultado.getEntidades();
-			DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
-			
+
 			try {
+				Resultado resultado = (Resultado) session.getAttribute("dados");
+				List<EntidadeDominio> entidades = resultado.getEntidades();
+				DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
+			
 				String hdcategoria = request.getParameter("hdCategorias");
 				String[] categorias = hdcategoria.split(" ");
 				for(String c : categorias)
@@ -145,11 +154,6 @@ public class LivroViewHelper implements IViewHelper{
 							livro.getCategorias().add(cat);
 					}
 				}
-			}catch (Exception e) {
-				// Não há valores
-			}
-			
-			try {
 				String autor = request.getParameter("ddlAutor");
 				for(Autor a:dados.getAutores())
 				{
@@ -239,6 +243,32 @@ public class LivroViewHelper implements IViewHelper{
 			
 			request.getSession().setAttribute("resultado", resultado);
 			d= request.getRequestDispatcher("FormConsultaLivro.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("ADICIONAR_AO_CARRINHO")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			Livro livro = (Livro)resultado.getEntidades().get(0);
+			int quantidade = Integer.parseInt(request.getParameter("txtQuantidade"));
+			int i;
+			if(carrinho == null)
+				carrinho = new Carrinho();
+			for(i = 0; i < carrinho.getProdutos().size(); i++)
+			{
+				if(livro.getTitulo().equals(carrinho.getProdutos().get(i).getLivro().getTitulo()))
+				{
+					carrinho.getProdutos().get(i).setQuantidade(carrinho.getProdutos().get(i).getQuantidade()+quantidade);
+					break;
+				}
+			}
+			if(i >= carrinho.getProdutos().size())
+			{
+				Produto produto = new Produto();
+				produto.setLivro(livro);
+				produto.setQuantidade(quantidade);
+				carrinho.AdicionarLivro(produto);
+			}
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("CONSULTAR"))

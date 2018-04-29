@@ -80,9 +80,12 @@
 	              <div class="col-lg-4">N. Páginas: ${empty livro ? '' : livro.getNpaginas()}</div>
               </div>
               <hr>
-              Quantidade: <input type="number" class="btn btn-outline-dark" max="${empty livro ? '' : livro.getEstoque()}" min="0">
-              <hr>
-              <a href="#" class="btn btn-success">Adicionar ao carrinho</a>
+              <form action="SalvarLivro" method="post">
+                Quantidade: <input type="number" class="btn btn-outline-dark" name="txtQuantidade" max="${empty livro ? '' : livro.getEstoque()}" min="0">
+                <hr>
+                <!-- ADICIONAR_AO_CARRINHO -->
+              	<button type="submit"  class="btn btn-primary" id="operacao" name="operacao" value="ADICIONAR_AO_CARRINHO">Adicionar ao carrinho</button>
+              </form>
             </div>
           </div>
           <!-- /.card -->

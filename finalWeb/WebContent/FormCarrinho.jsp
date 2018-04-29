@@ -3,7 +3,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page
 	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
@@ -91,11 +91,11 @@
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
 				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='number' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
+				sbRegistro.append("<input type='number' class='btn btn-outline-dark' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
 				sbRegistro.append("value='" + p.getQuantidade() + "'");
 				sbRegistro.append("onchange='this.form.submit()'");
 				sbRegistro.append("onload='atualizar(" + p.getLivro().getId() + "," + p.getLivro().getValor() + "," + p.getLivro().getEstoque() + ")'");
-				sbRegistro.append("max='" + p.getLivro().getEstoque() + "'/>");
+				sbRegistro.append("max='" + p.getLivro().getEstoque() + "' min='0'/>");
 				sbRegistro.append("<input type='hidden' name='txtIdLivro' value='" + p.getLivro().getId() + "'>");
 				sbRegistro.append("<input type='hidden' name='operacao' value='ATUALIZAR'>");
 				sbRegistro.append("</form>");
@@ -265,8 +265,8 @@
 				{
 				int i = 0;
 				for (Endereco e : enderecos) {
-					if(e.getTipo().equals("Entrega"))
-					{
+					//if(e.getTipo().equals("Entrega"))
+					//{
 					sbRegistro.setLength(0);
 					sbLink.setLength(0);
 					
@@ -304,7 +304,7 @@
 					sbRegistro.append("</form>");
 					
 					out.print(sbRegistro.toString());
-					}
+					//}
 					i++;
 				}
 				}catch(Exception e){
