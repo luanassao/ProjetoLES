@@ -8,12 +8,93 @@
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="resources/estilo.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Comprar livro</title>
+<title>Carrinho de compra</title>
 <script>
+	function atualizarEndereco(id, endereco) {
+		if(document.getElementById("hdIdEndereco").value == 0)
+		{
+			if(id % 2 == 0)
+			{
+				var valor = document.getElementById("hdFrete").value * 1 + 20;
+				document.getElementById("hdFrete").value = valor;
+				document.getElementById("divFrete").innerHTML = valor;
+				var precoTotal = document.getElementById("hdTotal").value * 1 + 20;
+				document.getElementById("hdTotal").value = precoTotal;
+				document.getElementById("divTotal").innerHTML = precoTotal;
+			}
+			else
+			{
+				var valor = document.getElementById("hdFrete").value * 1 + 30;
+				document.getElementById("hdFrete").value = valor;
+				document.getElementById("divFrete").innerHTML = valor;
+				var precoTotal = document.getElementById("hdTotal").value * 1 + 30;
+				document.getElementById("hdTotal").value = precoTotal;
+				document.getElementById("divTotal").innerHTML = precoTotal;
+			}
+		}
+		else
+		{
+			if(document.getElementById("hdIdEndereco").value % 2 == 0)
+			{
+				if(id % 2 != 0)
+				{
+					var valor = document.getElementById("hdFrete").value * 1 + 10;
+					document.getElementById("hdFrete").value = valor;
+					document.getElementById("divFrete").innerHTML = valor;
+					var precoTotal = document.getElementById("hdTotal").value * 1 + 10;
+					document.getElementById("hdTotal").value = precoTotal;
+					document.getElementById("divTotal").innerHTML = precoTotal;
+				}
+			}
+			else
+			{
+				if(id % 2 == 0)
+				{
+					var valor = document.getElementById("hdFrete").value * 1 - 10;
+					document.getElementById("hdFrete").value = valor;
+					document.getElementById("divFrete").innerHTML = valor;
+					var precoTotal = document.getElementById("hdTotal").value * 1 - 10;
+					document.getElementById("hdTotal").value = precoTotal;
+					document.getElementById("divTotal").innerHTML = precoTotal;
+				}
+			}
+		}
+		document.getElementById("divEndereco").innerHTML = endereco;
+		document.getElementById("hdIdEndereco").value = id;
+		document.getElementById("btnCancelarEndereco").click();
+	}
+	function calcularFrete() {
+		var ids = (document.getElementById("txtIdLivros").value).split(" ");
+		var preco = 0;
+		var precoTotal = 0.0;
+		for (var id in ids) {
+			var peso = document.getElementById("txtPesoLivro" + ids[id]).value;
+			var quantidade = document.getElementById("txtQtde" + ids[id]).value;
+			preco += (peso * quantidade);
+			precoTotal += document.getElementById("txtPreco" + ids[id]).value * 1;
+		}
+		var frete = 0.0;
+		if(document.getElementById("hdIdEndereco").value > 0)
+			frete = preco * 1 + (document.getElementById("hdIdEndereco").value % 2 == 0 ? 20 : 30);
+		else
+			frete = preco * 1;
+		document.getElementById("hdFrete").value = frete;
+		document.getElementById("divFrete").innerHTML = frete;
+		precoTotal += frete;
+		document.getElementById("hdTotal").value = precoTotal;
+		document.getElementById("divTotal").innerHTML = precoTotal;
+	}
+	function adicionarCartao(id, dados) {
+		document.getElementById("hdIdCartao").value += id + " ";
+		document.getElementById("divCartao").innerHTML = dados;
+		
+	}
 	function atualizar(id, preco, maximo) {
 		var quantidade = document.getElementById("txtQtde" + id).value;
 		if(quantidade > maximo)
@@ -25,8 +106,14 @@
 		document.getElementById("txtPreco" + id).value = quantidade*preco;
 	}
 </script>
+<script>
+   $(document).ready(function(){
+	   $("#divNavBar").load("NavBar.jsp");
+   });
+</script>
 </head>
 <body>
+	<div id="divNavBar"></div>
 
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
@@ -72,7 +159,9 @@
 			for (Produto p : carrinho.getProdutos()) {
 				sbRegistro.setLength(0);
 				sbLink.setLength(0);
+				String js = "document.getElementById(`txtPreco" + p.getLivro().getId() + "`).value=document.getElementById(`txtQtde" + p.getLivro().getId() + "`).value*" + p.getLivro().getValor();
 				
+				//document.getElementById('txtNumero').value = document.getElementById('txtTeste').value*2;alert('teste')
 			//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
 				
 				sbRegistro.append("<TR ALIGN='CENTER'>");
@@ -84,27 +173,24 @@
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(p.getLivro().getValor());			
+				sbRegistro.append(sbLink.toString());
+				sbRegistro.append(p.getLivro().getValor());
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='number' class='btn btn-outline-dark' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
+				sbRegistro.append("\n<input type='number' class='btn btn-outline-dark' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
 				sbRegistro.append("value='" + p.getQuantidade() + "'");
-				sbRegistro.append("onchange='this.form.submit()'");
-				sbRegistro.append("onload='atualizar(" + p.getLivro().getId() + "," + p.getLivro().getValor() + "," + p.getLivro().getEstoque() + ")'");
+				sbRegistro.append("onchange='" + js + ";calcularFrete()'");
 				sbRegistro.append("max='" + p.getLivro().getEstoque() + "' min='0'/>");
-				sbRegistro.append("<input type='hidden' name='txtIdLivro' value='" + p.getLivro().getId() + "'>");
-				sbRegistro.append("<input type='hidden' name='operacao' value='ATUALIZAR'>");
-				sbRegistro.append("</form>");
+				sbRegistro.append("\n<input type='hidden' id='txtPesoLivro" + p.getLivro().getId() + "' value='" + p.getLivro().getPeso() + "'/>");
+				sbRegistro.append("\n<input type='hidden' name='txtIdLivro' value='" + p.getLivro().getId() + "'/>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<input type='number' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "' readonly='readonly'");
-				sbRegistro.append("value='" + (p.getLivro().getValor() * p.getQuantidade()) + "'");
+				sbRegistro.append("\n<input type='number' class='btn btn-outline-dark' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "' readonly='readonly'");
+				sbRegistro.append("value='" + (p.getLivro().getValor() * p.getQuantidade()) + "'/>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");
@@ -119,6 +205,26 @@
 	}
    %>
 </TABLE>
+<% 
+if (carrinho != null) {
+	StringBuilder sbRegistro = new StringBuilder();
+	sbRegistro.append("<input type='hidden' id='txtIdLivros' value='");
+			
+	if(carrinho.getProdutos().size() > 0){
+		try
+		{
+		for (Produto p : carrinho.getProdutos()) {
+			sbRegistro.append(p.equals(carrinho.getProdutos().get(0)) ? "" : " ");
+			sbRegistro.append(p.getLivro().getId());
+		}
+		}catch(Exception e){
+			
+		}
+	}
+	sbRegistro.append("'>");
+	out.print(sbRegistro.toString());
+}
+%>
 
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
@@ -137,19 +243,19 @@
 	</TR>
 	<TR>
 		<TD>
-		${empty enderecoEntrega ? '' : enderecoEntrega.getLogradouro()} , ${empty enderecoEntrega ? '' : enderecoEntrega.getNumero()}
-		<BR>
-		${empty enderecoEntrega ? '' : enderecoEntrega.getBairro()} - ${empty enderecoEntrega ? '' : enderecoEntrega.getCidade()} -
-		${empty enderecoEntrega ? '' : enderecoEntrega.getEstado()}
+		<div id="divEndereco"></div>
+		<input type="hidden" id="hdIdEndereco" name="hdIdEndereco" value="0"/>
 		</TD>
 		<TD>
-		${empty carrinho ? '' : carrinho.getFrete()}
+		<div id="divFrete"></div>
+		<input type="hidden" id="hdFrete" name="hdFrete" value="0"/>
 		</TD>
 		<TD>
 		${empty cupom ? '0' : cupom.getValor()}
 		</TD>
 		<TD>
-		${empty carrinho ? '' : carrinho.getValorLivros() + carrinho.getFrete() - (empty cupom ? 0 : cupom.getValor())}
+		<div id="divTotal"></div>
+		<input type="hidden" id="hdTotal" name="hdTotal" value="0.0"/>
 		</TD>
 	</TR>
 </TABLE>
@@ -160,13 +266,18 @@
 		<TH>
 		Cartão
 		</TH>
+		<TH>
+		Valor a pagar
+		</TH>
 	</TR>
 	<TR>
 		<TD>
-		${empty cartao ? '' : cartao.getBandeira()}
-		<BR>
-		${empty cartao ? '' : cartao.getTitular()} - ${empty cartao ? '' : cartao.getNumero()} -
-		${empty cartao ? '' : cartao.getValidadeFormatado()}
+		<div id="divCartao">
+		</div>
+		<input type="hidden" id="hdIdCartao">
+		</TD>
+		<TD>
+		<input type="number" id="hdIdPagarCartao" min="10">
 		</TD>
 	</TR>
 </TABLE>
@@ -258,54 +369,28 @@
   		if (usuario != null) {
 			List<Endereco> enderecos = usuario.getEnderecos();
 			StringBuilder sbRegistro = new StringBuilder();
-			StringBuilder sbLink = new StringBuilder();
 			
 			if(enderecos.size() > 0){
 				try
 				{
-				int i = 0;
 				for (Endereco e : enderecos) {
-					//if(e.getTipo().equals("Entrega"))
-					//{
+					if(e.getTipo().equals("Entrega"))
+					{
 					sbRegistro.setLength(0);
-					sbLink.setLength(0);
+					String js = "atualizarEndereco(" + e.getId() + ",`" + e.getLogradouro() + ", " + e.getNumero() + 
+							"<br>" + e.getBairro() + " - " + e.getCidade() + " - " + e.getEstado() + "`)";
 					
-					sbRegistro.append(sbLink.toString());	
 					sbRegistro.append(e.getLogradouro() + ", " + e.getNumero());
 					sbRegistro.append("<BR>");
 					sbRegistro.append(e.getBairro() + ", " + e.getCidade() + ", " + e.getEstado());			
 					sbRegistro.append("<BR>");
 					sbRegistro.append(e.getCep());
-					sbRegistro.append("<BR>");
-					sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-					if (carrinho != null) {
-						//sbRegistro = new StringBuilder();
-						sbLink = new StringBuilder();
-						
-						if(carrinho.getProdutos().size() > 0){
-							try
-							{
-							for (Produto p : carrinho.getProdutos()) {
-								//sbRegistro.setLength(0);
-								sbLink.setLength(0);
-											
-								sbRegistro.append("<input type='hidden' id='txtQtdeH" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'/>");
-								
-								//out.print(sbRegistro.toString());
-								
-							}
-							}catch(Exception ex){
-								
-							}
-						}
-					}
-					sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-					sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR'>");
-					sbRegistro.append("</form>");
+					sbRegistro.append("<BR>\n");
+					sbRegistro.append("<button type='button' class='btn btn-success' onclick='" + js + "'>Selecionar</button>");
+					sbRegistro.append("<br>\n\t");
 					
 					out.print(sbRegistro.toString());
-					//}
-					i++;
+					}
 				}
 				}catch(Exception e){
 					
@@ -315,7 +400,7 @@
 	   %>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" id="btnCancelarEndereco" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novoEnderecoModal">
@@ -485,6 +570,7 @@
 		List<Cartao> cartoes = usuario.getCartoes();
 		StringBuilder sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
+		String dadosCartao;
 		
 		if(cartoes.size() > 0){
 			try
@@ -496,6 +582,7 @@
 				{
 				sbRegistro.setLength(0);
 				sbLink.setLength(0);
+				dadosCartao = "`" + c.getBandeira() + "<BR>" + c.getTitular() + ", " + c.getNumero() + "<BR>Validade: " + c.getValidadeFormatado() + "`";
 				
 				sbRegistro.append(sbLink.toString());	
 				sbRegistro.append(c.getBandeira());
@@ -504,10 +591,8 @@
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Validade: " + c.getValidadeFormatado());
 				sbRegistro.append("<BR>");
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-				sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='CONFIRMAR'>");
-				sbRegistro.append("</form>");
+				sbRegistro.append("<button type='button' class='btn btn-success' onclick='adicionarCartao(`" + c.getId() + "`," + dadosCartao + "'>Selecionar</button>");
+				sbRegistro.append("<BR>");
 				
 				out.print(sbRegistro.toString());
 				}
@@ -724,7 +809,7 @@
 <a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
 <a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
 <form action='SalvarProduto' method='post' id='frmSalvarLivro'>
-	<input type="submit" style="float:right" ${empty usuario ? 'disabled' : ''} ${empty cartao ? 'disabled' : ''} ${empty enderecoEntrega ? 'disabled' : ''} class="btn btn-success" class="btn btn-primary" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
+	<input type="submit" style="float:right" ${empty usuario ? 'disabled' : ''} ${empty cartao ? 'disabled' : ''} ${empty enderecoEntrega ? 'disabled' : ''} class="btn btn-success" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
 </form>
 </body>
 </html>
