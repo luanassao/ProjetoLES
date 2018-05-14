@@ -19,6 +19,7 @@ import finalDominio.Cupom;
 import finalDominio.CupomTroca;
 import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
+import finalDominio.Livro;
 import finalDominio.Produto;
 import finalWeb.vh.IViewHelper;
 
@@ -76,7 +77,20 @@ public class PedidoViewHelper implements IViewHelper{
 			carrinho.setEmail(usuario.getEmail());
 			carrinho.setStatus("EM PROCESSAMENTO");
 			break;
-
+		case "CONSULTAR":
+			carrinho = new Carrinho();
+			break;
+		case "VISUALIZAR":
+			@SuppressWarnings("unchecked")
+			ArrayList<EntidadeDominio> pedidos = (ArrayList<EntidadeDominio>)session.getAttribute("pedidos");
+			int txtId = Integer.parseInt(request.getParameter("txtId"));
+			
+			for(EntidadeDominio c: pedidos){
+				if(c.getId() == txtId){
+					carrinho = (Carrinho)c;
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -120,7 +134,7 @@ public class PedidoViewHelper implements IViewHelper{
 			else
 				carrinho.setStatus("EM TROCA");
 		}
-		else if(operacao.equals("VISUALIZAR"))
+		else if(operacao.equals("VISUALIZARRR"))
 		{
 			String status = request.getParameter("ddlStatus");
 			String email = request.getParameter("txtEmail");
@@ -184,6 +198,11 @@ public class PedidoViewHelper implements IViewHelper{
 			
 			request.getSession().setAttribute("resultado", resultado);
 			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");  			
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("CONSULTAR")) {
+			request.getSession().setAttribute("pedidos", resultado.getEntidades());
+			d= request.getRequestDispatcher("FormConsultaPedidos.jsp"); 
 		}
 		
 		if(resultado.getMsg() == null && operacao.equals("ALTERAR")){

@@ -168,6 +168,10 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		if(endereco.getID_Cliente() != 0){
 			sb.append(" and ID_Cliente = '" + endereco.getID_Cliente() + "'");
 		}
+		if(endereco.getId() > 0) {
+			sb.append(" and ID_Endereco = '" + endereco.getId() + "'");
+		}
+		System.out.println(sb.toString());
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

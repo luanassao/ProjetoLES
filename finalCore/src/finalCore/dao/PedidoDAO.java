@@ -65,12 +65,19 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				pst.setInt(1, carrinho.getId());
 				pst.setInt(2, p.getLivro().getId());
 				pst.setInt(3, p.getQuantidade());
+				
 				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+	            id=0;
+	            if(rs.next())
+	            {
+	                id = rs.getInt(1);
+	            }
+	            p.setId(id);
 				connection.commit();
 			}
 			
 			for(Cartao c:carrinho.getCartoes()) {
-				System.out.println("Inserindo livro " + c.getId() + " no carrinho: " + carrinho.getId());
 				sql = new StringBuilder();
 				sql.append("INSERT INTO cartao_compra (ID_Cartao, ID_Pedido, Valor) ");
 				sql.append("VALUES (?,?,?)");
@@ -80,7 +87,15 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				pst.setInt(1, c.getId());
 				pst.setInt(2, carrinho.getId());
 				pst.setDouble(3, c.getCredito());
+				
 				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+	            id=0;
+	            if(rs.next())
+	            {
+	                id = rs.getInt(1);
+	            }
+	            c.setId(id);
 				connection.commit();
 			}
 			pst.close();
@@ -110,8 +125,8 @@ public class PedidoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE carrinho SET status = ? WHERE ID_Carrinho = ?");
-			
+			sql.append("UPDATE pedido SET status = ? WHERE ID_pedido = ?");
+			System.out.println(sql.toString());
 			pst = connection.prepareStatement(sql.toString());
 			pst.setString(1, carrinho.getStatus());
 			pst.setInt(2, carrinho.getId());
@@ -138,22 +153,82 @@ public class PedidoDAO extends AbstractJdbcDAO{
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-		/*PreparedStatement pst = null;
+		PreparedStatement pst = null;
 		Carrinho carrinho = (Carrinho) entidade;
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM carrinho WHERE 1=1\n");
+		sb.append("SELECT * FROM pedido ");
+		//sb.append("LEFT JOIN PRODUTO using(id_pedido)");
+		//sb.append("LEFT JOIN CARTAO_COMPRA using(id_pedido)");
+		sb.append("LEFT JOIN CUPOM_DESCONTO on(id_cupom = id_cupom_desconto)");
+		sb.append("LEFT JOIN ENDERECO using(id_endereco)");
+		//sb.append("LEFT JOIN livros using(id_livro)");
+		sb.append("WHERE 1=1");
 		if(carrinho.getEmail() != null && carrinho.getEmail().length() > 0)
 			sb.append(" AND email_cliente = '" + carrinho.getEmail() + "'");
 		if(carrinho.getID_Cliente() > 0)
 			sb.append(" AND ID_Cliente = '" + carrinho.getEmail() + "'");
 		if(carrinho.getStatus() != null && carrinho.getStatus().length() > 0)
 			sb.append(" AND status = '" + carrinho.getStatus() + "'");
-		try{
+		sb.append(" order by(id_pedido)");
+		
+		try {
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
-			System.out.println(pst);
 			ResultSet rs = pst.executeQuery();
-			List<EntidadeDominio> carrinhos = new ArrayList<>();
+			List<EntidadeDominio> pedidos = new ArrayList<>();
+			ProdutoDAO produtoDAO = new ProdutoDAO();
+			EnderecoDAO enderecoDAO = new EnderecoDAO();
+			while(rs.next()){
+				Carrinho c = new Carrinho();
+				Cartao cartao = new Cartao();
+				c.setId(rs.getInt("ID_Pedido"));
+				c.setIdEndereco(rs.getInt("id_endereco"));
+				c.setStatus(rs.getString("status"));
+				c.setFrete(rs.getDouble("valor_frete"));
+				c.setValorLivros(rs.getDouble("valor_livros"));
+				c.setValorTotal(rs.getDouble("valor_total"));
+				c.setEmail(rs.getString("email_cliente"));
+				c.setID_Cliente(rs.getInt("id_cliente"));
+				
+				//Criando um objeto de edereço para chamar a dao
+				Endereco endereco = new Endereco();
+				endereco.setId(c.getIdEndereco());
+				/*
+				 * Pegando o endereço utilizado
+				 * */
+				endereco = (Endereco)enderecoDAO.consultar(endereco).get(0);
+				c.setEnderecoEntrega(endereco);
+				
+				/*
+				 * Pegando todos os produtos do pedido
+				 * */
+				produtoDAO.consultar(c);
+				
+				/*
+				 * Pegar todos os cartões utilizados no pedido
+				 * */
+				CartaoDAO cartaoDAO = new CartaoDAO();
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT * FROM CARTAO_COMPRA ");
+				sql.append(" WHERE ID_Pedido = '" + c.getId() + "'");
+				PreparedStatement pstCartao = connection.prepareStatement(sql.toString());
+				ResultSet rsC = pstCartao.executeQuery();
+				while(rsC.next()){
+					cartao.setId(rsC.getInt("ID_Cartao"));
+					cartao = (Cartao)cartaoDAO.consultar(cartao).get(0);
+					cartao.setCredito(rsC.getDouble("valor"));
+					
+					c.getCartoes().add(cartao);
+				}
+				pedidos.add(c);
+			}
+			return pedidos;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		/* 
+		try{
 			while(rs.next()){
 				Carrinho c = new Carrinho();
 				c.setId(rs.getInt("ID_Carrinho"));

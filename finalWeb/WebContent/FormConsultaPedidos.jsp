@@ -7,16 +7,25 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<script>
+   $(document).ready(function(){
+	   $("#divNavBar").load("NavBar.jsp");
+   });
+</script>
 </head>
 <body>
+	<div id="divNavBar"></div>
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
-		//Carrinho pedidos = (Carrinho) session.getAttribute("pedidos");
+		@SuppressWarnings("unchecked")
+		ArrayList<EntidadeDominio> pedidos = (ArrayList<EntidadeDominio>) session.getAttribute("pedidos");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
 		if(usuario != null)
 			out.print(usuario.getNome());
@@ -64,7 +73,8 @@
 				</td>
 			</tr>
 		</table>
-		<br><input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" />
+		<br>
+		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR">Consultar pedidos</button>
 	</form>
 
 	
@@ -96,85 +106,78 @@
    </TR>
    
    <%
-   if (resultado != null) {
-		List<EntidadeDominio> entidades = resultado.getEntidades();
+   if (pedidos != null) {
 		StringBuilder sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
-		
-		if(entidades != null){
-			try{
-			for (int i = 0; i < entidades.size(); i++) {
-				Carrinho c = (Carrinho) entidades.get(i);
-				sbRegistro.setLength(0);
-				sbLink.setLength(0);
+		Carrinho c;
+		for(EntidadeDominio e : pedidos){
+			c = (Carrinho)e;
+			sbRegistro.setLength(0);
+			sbLink.setLength(0);
+			
+		//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
+			
+			sbRegistro.append("<TR ALIGN='CENTER'>");
+			
+			
+			sbLink.append("<a id = '");
+			sbLink.append(c.getId());
+			sbLink.append("' href=Pedido?");
+			sbLink.append("txtId=");
+			sbLink.append(c.getId());						
+			sbLink.append("&");
+			sbLink.append("operacao=");
+			sbLink.append("VISUALIZAR");
 				
-			//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
-				
-				sbRegistro.append("<TR ALIGN='CENTER'>");
-				
-				
-				sbLink.append("<a id = '");
-					sbLink.append(c.getId());
-					sbLink.append("' href=SalvarPedido?");
-					sbLink.append("txtId=");
-					sbLink.append(c.getId());						
-					sbLink.append("&");
-					sbLink.append("operacao=");
-					sbLink.append("VISUALIZAR");
-					
-				sbLink.append(">");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());	
-				sbRegistro.append(c.getId() == 0 ? ' ' : c.getId());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
+			sbLink.append(">");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());	
+			sbRegistro.append(c.getId() == 0 ? ' ' : c.getId());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
 
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getEmail());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getStatus());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getIdEndereco());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getFrete() > 0 ? c.getFrete() : "Pedido de troca");
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getValorLivros());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("<TD>");
-				sbRegistro.append(sbLink.toString());				
-				sbRegistro.append(c.getValorTotal());
-				sbRegistro.append("</a>");				
-				sbRegistro.append("</TD>");
-				
-				sbRegistro.append("</TR>");
-				
-				out.print(sbRegistro.toString());
-				
-			}
-			}catch(Exception e){
-				
-			}
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getEmail());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getStatus());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getIdEndereco());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getFrete() > 0 ? c.getFrete() : "Pedido de troca");
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getValorLivros());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("<TD>");
+			sbRegistro.append(sbLink.toString());				
+			sbRegistro.append(c.getValorTotal());
+			sbRegistro.append("</a>");				
+			sbRegistro.append("</TD>");
+			
+			sbRegistro.append("</TR>");
+			
+			out.print(sbRegistro.toString());
 		}
+		
 	}
    
    %>

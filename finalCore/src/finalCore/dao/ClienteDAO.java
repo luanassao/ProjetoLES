@@ -128,7 +128,6 @@ public class ClienteDAO extends AbstractJdbcDAO{
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM clientes LEFT JOIN (SELECT ID_Cliente as alterador, Nome as nome_alt, email as email_alt from Clientes) alteradores\r\n" + 
 				"using (alterador)WHERE 1=1\n");
-		System.out.println("Nome: " + cliente.getNome());
 		if(cliente.getNome() != null && cliente.getNome().length() > 0)
 			sb.append(" and nome = '" + cliente.getNome() + "'");
 		if(cliente.getId() != 0)
@@ -145,7 +144,6 @@ public class ClienteDAO extends AbstractJdbcDAO{
 			sb.append(" and email = '" + cliente.getEmail() + "'");
 		
 		sb.append(" order by id_cliente");
-		System.out.println(sb.toString());
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

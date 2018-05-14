@@ -9,7 +9,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="resources/estilo.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -26,8 +28,14 @@
 		document.getElementById("txtPreco" + id).value = quantidade*preco;
 	}
 </script>
+<script>
+   $(document).ready(function(){
+	   $("#divNavBar").load("NavBar.jsp");
+   });
+</script>
 </head>
 <body>
+	<div id="divNavBar"></div>
 
 	<%
 		Resultado resultado = (Resultado) session.getAttribute("resultado");
@@ -156,7 +164,7 @@
 		${empty carrinho ? '' : carrinho.getFrete()}
 		</TD>
 		<TD>
-		${empty carrinho ? '0' : carrinho.getCupom().getValor()}
+		${empty carrinho ? '0' : carrinho.getCupomDesconto().getValor()}
 		</TD>
 		<TD>
 		${empty carrinho ? '' : carrinho.getValorLivros() + carrinho.getFrete() - (empty cupom ? 0 : cupom.getValor())}
@@ -190,9 +198,9 @@
 	</TR>
 	<TR>
 		<TD>
-		Código: ${empty carrinho ? '' : carrinho.getCupom().getCodigo()}
+		Código: ${empty carrinho ? '' : carrinho.getCupomDesconto().getCodigo()}
 		<BR>
-		Valor do desconto: ${empty carrinho ? '' : carrinho.getCupom().getValor()}
+		Valor do desconto: ${empty carrinho ? '' : carrinho.getCupomDesconto().getValor()}
 		</TD>
 	</TR>
 </TABLE>
@@ -219,7 +227,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action='SalvarPedido' method='post' id='frmSalvarLivro'>
+        <form action='Pedido' method='post' id='frmSalvarLivro'>
         	Status atual do pedido: ${carrinho.getStatus()}
         	<BR>
           <select style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" id="ddlStatus" name="ddlStatus">
