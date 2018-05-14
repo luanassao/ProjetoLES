@@ -10,6 +10,7 @@ import auxiliar.Autor;
 import auxiliar.Categoria;
 import auxiliar.CategoriaAtivacao;
 import auxiliar.CategoriaInativacao;
+import auxiliar.CupomDesconto;
 import auxiliar.DadosCadLivro;
 import auxiliar.Editora;
 import auxiliar.Precificacao;
@@ -125,6 +126,21 @@ public class HelperDAO extends AbstractJdbcDAO{
 				catsInativ.add(catIna);
 			}
 			dado.setCategoriasInativacao(catsInativ);
+			
+			/*PEGANDO CUPONS DE DESCONTO*/
+			sb = new StringBuilder();
+			sb.append("SELECT * FROM cupom_desconto");
+			pst = connection.prepareStatement(sb.toString());
+			rs = pst.executeQuery();
+			ArrayList<CupomDesconto> cuponsDesconto = new ArrayList<>();
+			while(rs.next()) {
+				CupomDesconto cupomDesc = new CupomDesconto();
+				cupomDesc.setId(rs.getInt("ID_Cupom_Desconto"));
+				cupomDesc.setCodigo(rs.getString("Codigo"));
+				cupomDesc.setValor(rs.getDouble("valor"));
+				cuponsDesconto.add(cupomDesc);
+			}
+			dado.setCuponsDesconto(cuponsDesconto);
 			
 			dados.add(dado);
 			return dados;

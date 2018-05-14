@@ -11,7 +11,7 @@ import finalCore.IDAO;
 import finalCore.IFachada;
 import finalCore.IStrategy;
 import finalCore.aplicacao.Resultado;
-import finalCore.dao.CarrinhoDAO;
+import finalCore.dao.PedidoDAO;
 import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
 import finalCore.dao.CupomDAO;
@@ -71,7 +71,7 @@ public class Fachada implements IFachada{
 		ClienteDAO clienteDAO = new ClienteDAO();
 		EnderecoDAO enderecoDAO = new EnderecoDAO();
 		CartaoDAO cartaoDAO = new CartaoDAO();
-		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+		PedidoDAO pedidoDAO = new PedidoDAO();
 		CupomDAO cupomDAO = new CupomDAO();
 		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 		DadosGraficoDAO dadosGraficoDAO = new DadosGraficoDAO();
@@ -82,7 +82,7 @@ public class Fachada implements IFachada{
 		daos.put(Cliente.class.getName(), clienteDAO);
 		daos.put(Endereco.class.getName(), enderecoDAO);
 		daos.put(Cartao.class.getName(), cartaoDAO);
-		daos.put(Carrinho.class.getName(), carrinhoDAO);
+		daos.put(Carrinho.class.getName(), pedidoDAO);
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(CupomTroca.class.getName(), cupomTrocaDAO);
 		daos.put(DadosGrafico.class.getName(), dadosGraficoDAO);
@@ -262,12 +262,13 @@ public class Fachada implements IFachada{
 		 */
 		rns.put(Carrinho.class.getName(), rnsCustoFrete);
 		
-		/* Criando uma lista para conter as regras de negócio de livro
+		/* Criando uma lista para conter as regras de negócio de pedido
 		 * quando a operação for salvar
 		 */
-		List<IStrategy> rnsSalvarCarrinho = new ArrayList<IStrategy>();
+		List<IStrategy> rnsSalvarPedido = new ArrayList<IStrategy>();
 		/* Adicionando as regras a serem utilizadas na operação salvar do livro*/
-		rnsSalvarCarrinho.add(attPrecoCarrinho);
+		rnsSalvarPedido.add(attPrecoCarrinho);
+		rnsSalvarPedido.add(adcCustoFrete);
 		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação  do livro
@@ -276,7 +277,7 @@ public class Fachada implements IFachada{
 		/*
 		 * Adiciona a listra de regras na operação salvar no mapa do livro (lista criada na linha 70)
 		 */
-		rnsCarrinho.put("SALVAR", rnsSalvarCarrinho);
+		rnsCarrinho.put("SALVAR", rnsSalvarPedido);
 		
 		/* Criando uma lista para conter as regras de negócio de livro
 		 * quando a operação for alterar

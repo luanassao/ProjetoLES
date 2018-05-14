@@ -50,6 +50,7 @@ public class Servlet extends HttpServlet {
     	commands.put("CONSULTAR", new ConsultarCommand());
     	commands.put("ALTERAR", new AlterarCommand());
     	commands.put("ADICIONAR_AO_CARRINHO", new AlterarCommand());
+    	commands.put("REMOVER_DO_CARRINHO", new AlterarCommand());
     	commands.put("VISUALIZAR", new VisualizarCommand());
     	commands.put("EXCLUIR", new ExcluirCommand());
     	commands.put("LOGAR", new LogarCommand());
@@ -80,7 +81,7 @@ public class Servlet extends HttpServlet {
     	vhs.put("/finalWeb/SalvarCliente", new ClienteViewHelper());
     	vhs.put("/finalWeb/SalvarEndereco", new EnderecoViewHelper());
     	vhs.put("/finalWeb/SalvarCartao", new CartaoViewHelper());
-    	vhs.put("/finalWeb/SalvarPedido", new PedidoViewHelper());
+    	vhs.put("/finalWeb/Pedido", new PedidoViewHelper());
     	vhs.put("/finalWeb/SalvarProduto", new CompraViewHelper());
     	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
     	

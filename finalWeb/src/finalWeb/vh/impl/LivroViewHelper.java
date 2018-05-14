@@ -90,6 +90,20 @@ public class LivroViewHelper implements IViewHelper{
 			int estoque = livro.getEstoque() - Integer.parseInt(request.getParameter("txtQuantidade"));
 			livro.setEstoque(estoque);
 		}
+		else if(operacao.equals("REMOVER_DO_CARRINHO"))
+		{
+			HttpSession session = request.getSession();
+			@SuppressWarnings("unchecked")
+			ArrayList<EntidadeDominio> livros = (ArrayList<EntidadeDominio>)session.getAttribute("livros");
+			int txtId = Integer.parseInt(request.getParameter("txtId"));
+			for(EntidadeDominio l: livros){
+				if(l.getId() == txtId){
+					livro = (Livro)l;
+				}
+			}
+			int estoque = livro.getEstoque() + Integer.parseInt(request.getParameter("txtQuantidade"));
+			livro.setEstoque(estoque);
+		}
 		else if(!operacao.equals("VISUALIZAR") && !operacao.equals("CHECAR"))
 		{
 			String ano = request.getParameter("txtAno");
@@ -266,6 +280,24 @@ public class LivroViewHelper implements IViewHelper{
 				produto.setLivro(livro);
 				produto.setQuantidade(quantidade);
 				carrinho.AdicionarLivro(produto);
+			}
+			request.getSession().setAttribute("carrinho", carrinho);
+			d= request.getRequestDispatcher("FormCarrinho.jsp");
+		}
+		
+		if(resultado.getMsg() == null && operacao.equals("REMOVER_DO_CARRINHO")){
+			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
+			Livro livro = (Livro)resultado.getEntidades().get(0);
+			int i;
+			if(carrinho == null)
+				carrinho = new Carrinho();
+			for(i = 0; i < carrinho.getProdutos().size(); i++)
+			{
+				if(livro.getTitulo().equals(carrinho.getProdutos().get(i).getLivro().getTitulo()))
+				{
+					carrinho.getProdutos().remove(i);
+					break;
+				}
 			}
 			request.getSession().setAttribute("carrinho", carrinho);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");

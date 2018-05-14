@@ -1,6 +1,7 @@
 package finalWeb.vh.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,12 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import auxiliar.CupomDesconto;
+import auxiliar.DadosCadLivro;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
+import finalDominio.Cartao;
 import finalDominio.Cliente;
 import finalDominio.Cupom;
 import finalDominio.CupomTroca;
+import finalDominio.Endereco;
 import finalDominio.EntidadeDominio;
+import finalDominio.Produto;
 import finalWeb.vh.IViewHelper;
 
 public class PedidoViewHelper implements IViewHelper{
@@ -22,7 +28,58 @@ public class PedidoViewHelper implements IViewHelper{
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		String operacao = request.getParameter("operacao");
 		Carrinho carrinho = null;
+		HttpSession session = request.getSession();
 
+		switch (operacao) {
+		case "SALVAR":
+			carrinho = (Carrinho)session.getAttribute("carrinho");
+			String[] idsLivros = request.getParameter("txtIdLivros").split(" ");
+			for(String id : idsLivros) {
+				int idLivro = Integer.parseInt(id);
+				for(Produto p:carrinho.getProdutos()) {
+					if(idLivro == p.getLivro().getId()) {
+						p.setQuantidade(Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
+					}
+				}
+			}
+			Cliente usuario = (Cliente)session.getAttribute("usuario");
+			CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
+			
+			int idEndereco = Integer.parseInt(request.getParameter("hdIdEndereco"));
+			for(Endereco e:usuario.getEnderecos()) {
+				if(e.getId() == idEndereco)
+					carrinho.setEnderecoEntrega(e);
+			}
+			
+			String[] idsCartoes = request.getParameter("hdIdCartao").split(" ");
+			ArrayList<Cartao> cartoes = new ArrayList<>();
+			for(String idCartao:idsCartoes) {
+				for(Cartao c:usuario.getCartoes()) {
+					if(idCartao.equals(c.getId() + "")) {
+						c.setCredito(Double.parseDouble(request.getParameter("txtPagarCartao" + c.getId())));
+						cartoes.add(c);
+					}
+				}
+			}
+			carrinho.setCartoes(cartoes);
+			
+			String idCupom = request.getParameter("hdIdCupomDesconto");
+			DadosCadLivro dados = (DadosCadLivro)((Resultado) session.getAttribute("dados")).getEntidades().get(0);
+			for(CupomDesconto c:dados.getCuponsDesconto()) {
+				if(idCupom.equals(c.getId() + ""))
+					carrinho.setCupomDesconto(c);
+			}
+			
+			if(cupom == null)
+				cupom = new CupomDesconto();
+			carrinho.setID_Cliente(usuario.getId());
+			carrinho.setEmail(usuario.getEmail());
+			carrinho.setStatus("EM PROCESSAMENTO");
+			break;
+
+		default:
+			break;
+		}
 		if(operacao.equals("TROCAR")) {
 			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
 			CupomTroca cupom = new CupomTroca();
@@ -38,7 +95,7 @@ public class PedidoViewHelper implements IViewHelper{
 			carrinho.setEmail(cliente.getEmail());
 			carrinho.setID_Cliente(cliente.getId());
 			carrinho.setStatus("EM TROCA");
-			carrinho.setCupom(pedido.getCupom() == null ? new Cupom() : pedido.getCupom());
+			carrinho.setCupomDesconto(pedido.getCupomDesconto() == null ? new CupomDesconto() : pedido.getCupomDesconto());
 			carrinho.setEnderecoEntrega(pedido.getEnderecoEntrega());
 			carrinho.setIdPedido(pedido.getId());
 			carrinho.setCartao(pedido.getCartao());
@@ -63,7 +120,7 @@ public class PedidoViewHelper implements IViewHelper{
 			else
 				carrinho.setStatus("EM TROCA");
 		}
-		else if(!operacao.equals("VISUALIZAR"))
+		else if(operacao.equals("VISUALIZAR"))
 		{
 			String status = request.getParameter("ddlStatus");
 			String email = request.getParameter("txtEmail");
@@ -98,9 +155,8 @@ public class PedidoViewHelper implements IViewHelper{
 				carrinho.setEmail(email);
 			carrinho.setStatus(status);
 		}
-		else{
+		else if(operacao.equals("asd")){
 			
-			HttpSession session = request.getSession();
 			Resultado resultado = (Resultado) session.getAttribute("resultado");
 			int txtId = Integer.parseInt(request.getParameter("txtId"));
 			

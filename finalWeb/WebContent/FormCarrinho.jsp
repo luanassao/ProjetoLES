@@ -1,8 +1,17 @@
+<%@page import="auxiliar.CupomDesconto"%>
 <%@page import="java.io.IOException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page
-	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*"%>
+	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*, auxiliar.DadosCadLivro"%>
+<%
+		Resultado resultado = (Resultado) session.getAttribute("resultado");
+		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+		Cliente usuario = (Cliente) session.getAttribute("usuario");
+		Cupom cupom = (Cupom) session.getAttribute("cupom");
+		Livro livro = (Livro) session.getAttribute("livro");
+		Cartao cartao = (Cartao) session.getAttribute("cartao");
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,25 +25,69 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Carrinho de compra</title>
 <script>
+	$(document).ready(function(){
+		if(sessionStorage.body != undefined)
+		{
+			<%
+			try{
+			for (Produto p : carrinho.getProdutos()) {
+				out.print("document.getElementById('txtQtde" + p.getLivro().getId() + 
+						"').setAttribute('value',sessionStorage.qtdeLivro" + p.getLivro().getId() + ");");
+			}
+			}catch(Exception e){
+				
+			}
+			%>
+			document.getElementById("body").innerHTML = sessionStorage.body;
+		}
+	});
+	function salvarEstado(){
+		if (typeof(Storage) !== "undefined") {
+			sessionStorage.body = document.getElementById("body").innerHTML;
+	    	alert(sessionStorage.body);
+		} else {
+		    // Sorry! No Web Storage support..
+		    alert("web storage bugou");
+		}
+	}
+	function removerLivro(id) {
+		//txtIdLivros
+		<%
+		try{
+		for (Produto p : carrinho.getProdutos()) {
+			out.print("document.getElementById('txtQtde" + p.getLivro().getId() + "').setAttribute('value',document.getElementById('txtQtde" + p.getLivro().getId() + "').value);");
+			out.print("sessionStorage.qtdeLivro" + p.getLivro().getId() + "=document.getElementById('txtQtde" + 
+					p.getLivro().getId() + "').value;");
+		}
+		}catch(Exception e){
+			
+		}
+		%>
+		var tabela = document.getElementById("tableCartao").innerHTML;
+		document.getElementById("trLivro" + id).remove();
+		var livros = document.getElementById("txtIdLivros").value;
+		var removido = livros.replace((id), "");
+		document.getElementById("txtIdLivros").setAttribute('value',removido);
+	}
 	function atualizarEndereco(id, endereco) {
 		if(document.getElementById("hdIdEndereco").value == 0)
-		{
+		{//document.getElementById("hdFrete").setAttribute('value',valor);
 			if(id % 2 == 0)
 			{
 				var valor = document.getElementById("hdFrete").value * 1 + 20;
-				document.getElementById("hdFrete").value = valor;
+				document.getElementById("hdFrete").setAttribute('value',valor);
 				document.getElementById("divFrete").innerHTML = valor;
 				var precoTotal = document.getElementById("hdTotal").value * 1 + 20;
-				document.getElementById("hdTotal").value = precoTotal;
+				document.getElementById("hdTotal").setAttribute('value',precoTotal);
 				document.getElementById("divTotal").innerHTML = precoTotal;
 			}
 			else
 			{
 				var valor = document.getElementById("hdFrete").value * 1 + 30;
-				document.getElementById("hdFrete").value = valor;
+				document.getElementById("hdFrete").setAttribute('value',valor);
 				document.getElementById("divFrete").innerHTML = valor;
 				var precoTotal = document.getElementById("hdTotal").value * 1 + 30;
-				document.getElementById("hdTotal").value = precoTotal;
+				document.getElementById("hdTotal").setAttribute('value',precoTotal);
 				document.getElementById("divTotal").innerHTML = precoTotal;
 			}
 		}
@@ -66,7 +119,7 @@
 			}
 		}
 		document.getElementById("divEndereco").innerHTML = endereco;
-		document.getElementById("hdIdEndereco").value = id;
+		document.getElementById("hdIdEndereco").setAttribute('value',id);
 		document.getElementById("btnCancelarEndereco").click();
 	}
 	function calcularFrete() {
@@ -91,11 +144,50 @@
 		document.getElementById("divTotal").innerHTML = precoTotal;
 	}
 	function adicionarCartao(id, dados) {
+		var tabela = document.getElementById("tableCartao").innerHTML;
 		document.getElementById("hdIdCartao").value += id + " ";
-		document.getElementById("divCartao").innerHTML = dados;
-		
+		tabela += "<TR id='trCartao" + id + "'><TD>" + dados + "</TD><TD><input type='number' class='form form-control' " + 
+			"step='0.5' id='txtPagarCartao" + id + "' name='txtPagarCartao" + id + "' min='10'></TD><TD><button type='button' class='btn btn-primary' " +
+			"onclick='removerCartao(`" + id + "`)'>Remover</button></TD><TR>";
+		document.getElementById("tableCartao").innerHTML = tabela;
+		document.getElementById("btnSelecionarCartao" + id).disabled = true;
+	}
+	function removerCartao(id) {
+		var tabela = document.getElementById("tableCartao").innerHTML;
+		document.getElementById("trCartao" + id).remove();
+		var cartoes = document.getElementById("hdIdCartao").value;
+		var removido = cartoes.replace((id + " "), "");
+		document.getElementById("hdIdCartao").value = removido;
+		document.getElementById("btnSelecionarCartao" + id).disabled = false;
+	}
+	function consultarCupomDesconto() {
+		var codigo = document.getElementById("txtCodigoDesconto").value;
+		if(codigo == '0')
+		{
+			document.getElementById('tdCupomDesconto').innerHTML = '';
+			document.getElementById('hdIdCupomDesconto').value = '';
+		}
+		<%
+			DadosCadLivro dados = (DadosCadLivro)((Resultado) session.getAttribute("dados")).getEntidades().get(0);
+			StringBuilder sbCuponsDesconto = new StringBuilder();
+			for(CupomDesconto c : dados.getCuponsDesconto()){
+				sbCuponsDesconto.append("else if(codigo == '" + c.getCodigo() + "'){\n\t");
+				sbCuponsDesconto.append("document.getElementById('tdCupomDesconto').innerHTML='");
+				sbCuponsDesconto.append("Código: " + c.getCodigo() + "<BR>");
+				sbCuponsDesconto.append("Desconto: " + c.getValor() + "';");
+				sbCuponsDesconto.append("document.getElementById('hdIdCupomDesconto').setAttribute('value','" + c.getId() + "');");
+				sbCuponsDesconto.append("\n}");
+			}
+			out.print(sbCuponsDesconto.toString());
+		%>
+		else
+		{
+			document.getElementById('tdCupomDesconto').innerHTML = '';
+			document.getElementById('hdIdCupomDesconto').value = '';
+		}
 	}
 	function atualizar(id, preco, maximo) {
+		alert("atualizar");
 		var quantidade = document.getElementById("txtQtde" + id).value;
 		if(quantidade > maximo)
 		{
@@ -114,26 +206,16 @@
 </head>
 <body>
 	<div id="divNavBar"></div>
-
 	<%
-		Resultado resultado = (Resultado) session.getAttribute("resultado");
-		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
-		Cliente usuario = (Cliente) session.getAttribute("usuario");
-		Cupom cupom = (Cupom) session.getAttribute("cupom");
-		Livro livro = (Livro) session.getAttribute("livro");
-		Cartao cartao = (Cartao) session.getAttribute("cartao");
-		if(usuario != null)
-			out.print(usuario.getNome());
-	%>
-	<%
-	
+	if(usuario != null)
+		out.print(usuario.getNome());
 	if(resultado !=null && resultado.getMsg() != null){
 		out.print(resultado.getMsg());
 	}
 	
 	%>
 <BR>
-
+<form action='Pedido' method='post' id='frmSalvarLivro'>
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
@@ -146,6 +228,7 @@
       <TH>Preço unitário</TH>
       <TH>Quantidade</TH>
       <TH>SubTotal</TH>
+      <TH>#</TH>
    </TR>
    
    <%
@@ -164,7 +247,7 @@
 				//document.getElementById('txtNumero').value = document.getElementById('txtTeste').value*2;alert('teste')
 			//	<a href="nome-do-lugar-a-ser-levado">descrição</a>
 				
-				sbRegistro.append("<TR ALIGN='CENTER'>");
+				sbRegistro.append("<TR id='trLivro" + p.getLivro().getId() + "' ALIGN='CENTER'>");
 				
 				sbRegistro.append("<TD><img src='http://livresaber.sead.ufscar.br:8080/jspui/bitstream/123456789/1354/2/icone%20livro.jpg' style='width: 50px; height: 50px;' alt='First slide'></TD>");
 				sbRegistro.append("<TD>");
@@ -179,7 +262,7 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("\n<input type='number' class='btn btn-outline-dark' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'");
+				sbRegistro.append("\n<input type='number' class='btn btn-outline-dark' id='txtQtde" + p.getLivro().getId() + "' name='txtQtde" + p.getLivro().getId() + "'");
 				sbRegistro.append("value='" + p.getQuantidade() + "'");
 				sbRegistro.append("onchange='" + js + ";calcularFrete()'");
 				sbRegistro.append("max='" + p.getLivro().getEstoque() + "' min='0'/>");
@@ -191,6 +274,19 @@
 				sbRegistro.append(sbLink.toString());
 				sbRegistro.append("\n<input type='number' class='btn btn-outline-dark' id='txtPreco" + p.getLivro().getId() + "' name='txtPreco" + p.getLivro().getId() + "' readonly='readonly'");
 				sbRegistro.append("value='" + (p.getLivro().getValor() * p.getQuantidade()) + "'/>");
+				sbRegistro.append("</TD>");
+				
+				sbRegistro.append("<TD>");
+				sbRegistro.append("<a class='btn btn-danger' onclick='removerLivro(`" + p.getLivro().getId() + "`);salvarEstado()' href=SalvarLivro?");
+				sbRegistro.append("txtId=");
+				sbRegistro.append(p.getLivro().getId());						
+				sbRegistro.append("&");
+				sbRegistro.append("operacao=");
+				sbRegistro.append("REMOVER_DO_CARRINHO");
+				sbRegistro.append("&");
+				sbRegistro.append("txtQuantidade=");
+				sbRegistro.append(p.getQuantidade());
+				sbRegistro.append(">REMOVER</a>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("</TR>");
@@ -208,7 +304,7 @@
 <% 
 if (carrinho != null) {
 	StringBuilder sbRegistro = new StringBuilder();
-	sbRegistro.append("<input type='hidden' id='txtIdLivros' value='");
+	sbRegistro.append("<input type='hidden' id='txtIdLivros' name='txtIdLivros' value='");
 			
 	if(carrinho.getProdutos().size() > 0){
 		try
@@ -225,7 +321,7 @@ if (carrinho != null) {
 	out.print(sbRegistro.toString());
 }
 %>
-
+<div id="body">
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
 		<TH>
@@ -261,7 +357,7 @@ if (carrinho != null) {
 </TABLE>
 <BR>
 
-<TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
+<TABLE id="tableCartao" bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
 		<TH>
 		Cartão
@@ -269,18 +365,12 @@ if (carrinho != null) {
 		<TH>
 		Valor a pagar
 		</TH>
-	</TR>
-	<TR>
-		<TD>
-		<div id="divCartao">
-		</div>
-		<input type="hidden" id="hdIdCartao">
-		</TD>
-		<TD>
-		<input type="number" id="hdIdPagarCartao" min="10">
-		</TD>
+		<TH>
+		#
+		</TH>
 	</TR>
 </TABLE>
+<input type="hidden" id="hdIdCartao" name="hdIdCartao">
 <BR>
 
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
@@ -290,13 +380,12 @@ if (carrinho != null) {
 		</TH>
 	</TR>
 	<TR>
-		<TD>
-		Código: ${empty cupom ? '' : cupom.getCodigo()}
-		<BR>
-		Valor do desconto: ${empty cupom ? '' : cupom.getValor()}
+		<TD id="tdCupomDesconto">
+		
 		</TD>
 	</TR>
 </TABLE>
+<input type="hidden" id="hdIdCupomDesconto" name="hdIdCupomDesconto"/>
 <BR>
 
 <TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
@@ -307,8 +396,8 @@ if (carrinho != null) {
 	</TR>
 	<%
 	try{
-	if (carrinho.getCupons() != null) {
-		List<CupomTroca> cupons = carrinho.getCupons();
+	if (carrinho.getCuponsTroca() != null) {
+		List<CupomTroca> cupons = carrinho.getCuponsTroca();
 		StringBuilder sbRegistro = new StringBuilder();
 		StringBuilder sbLink = new StringBuilder();
 		
@@ -338,7 +427,7 @@ if (carrinho != null) {
 		}
 	}
 	}catch(Exception e){
-		out.print("ERRO!");
+		
 	}
 	%>
 </TABLE>
@@ -346,10 +435,31 @@ if (carrinho != null) {
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
-  Escolher endereço
+  Selecionar endereço
 </button>
 
-<!-- Modal -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
+  Selecionar cartão
+</button>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomTModal">
+  Selecionar cupom de troca
+</button>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
+  Inserir cupom
+</button>
+
+</div>
+<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
+<a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
+	<button type="submit" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="SALVAR">FINALIZAR</button>
+</form>
+
+<!-- Modal de Endreço -->
 <div class="modal fade" id="enderecoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="
     width: 100%;
@@ -549,12 +659,7 @@ if (carrinho != null) {
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
-  Selecionar cartão
-</button>
-
-<!-- Modal -->
+<!-- Modal de Cartão-->
 <div class="modal fade" id="cartaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -591,7 +696,7 @@ if (carrinho != null) {
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Validade: " + c.getValidadeFormatado());
 				sbRegistro.append("<BR>");
-				sbRegistro.append("<button type='button' class='btn btn-success' onclick='adicionarCartao(`" + c.getId() + "`," + dadosCartao + "'>Selecionar</button>");
+				sbRegistro.append("<button type='button' id='btnSelecionarCartao" + c.getId() + "' class='btn btn-success' onclick='adicionarCartao(`" + c.getId() + "`," + dadosCartao + ")'>Selecionar</button>");
 				sbRegistro.append("<BR>");
 				
 				out.print(sbRegistro.toString());
@@ -718,12 +823,7 @@ if (carrinho != null) {
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomTModal">
-  Selecionar cupom de troca
-</button>
-
-<!-- Modal -->
+<!-- Modal de cupom de troca -->
 <div class="modal fade" id="cupomTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -777,39 +877,25 @@ if (carrinho != null) {
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cupomModal">
-  Inserir cupom
-</button>
-
-<!-- Modal -->
+<!-- Modal cupom de desconto -->
 <div class="modal fade" id="cupomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cupom</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cupom de desconto</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <form action="SalvarProduto">
-      	<input type="text" id="txtCupom" name="txtCupom">
-      	<input class="btn btn-primary" type="submit" id="btnVerificar" name="operacao" value="VERIFICAR">
-      </form>
+      	<input type="text" id="txtCodigoDesconto" name="txtCodigoDesconto">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" onclick="consultarCupomDesconto()" class="btn btn-primary">Confirmar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
   </div>
 </div>
-
-<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
-<a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
-<form action='SalvarProduto' method='post' id='frmSalvarLivro'>
-	<input type="submit" style="float:right" ${empty usuario ? 'disabled' : ''} ${empty cartao ? 'disabled' : ''} ${empty enderecoEntrega ? 'disabled' : ''} class="btn btn-success" id="operacao" name="operacao" value="FINALIZAR" class="btn btn-default" />
-</form>
 </body>
 </html>

@@ -22,7 +22,7 @@
 			out.print(usuario.getNome());
 	%>
 
-	<form action="SalvarPedido" method="post">
+	<form action="Pedido" method="post">
 		<table class="table" bordercolor="blue" BORDER="5" >
 		<TR>
 		      <TH COLSPAN="4"><BR>

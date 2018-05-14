@@ -3,6 +3,7 @@ package finalCore.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,9 +17,9 @@ import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
 
-public class CarrinhoDAO extends AbstractJdbcDAO{
-	public CarrinhoDAO() {
-		super("carrinho", "id_carrinho");
+public class PedidoDAO extends AbstractJdbcDAO{
+	public PedidoDAO() {
+		super("pedido", "id_pedido");
 	}
 
 	@Override
@@ -26,123 +27,63 @@ public class CarrinhoDAO extends AbstractJdbcDAO{
 		openConnection();
 		PreparedStatement pst = null;
 		Carrinho carrinho = (Carrinho)entidade;
-		System.out.println("Quantia de cupons: " + carrinho.getCupons().size());
-		List<Carrinho> carrinhos = new ArrayList<>();
 		
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE carrinho set status = 'TROCADO' WHERE ID_Carrinho = ?");
+			sql.append("INSERT INTO pedido (id_cliente, email_cliente, id_endereco, valor_frete, valor_livros, valor_total, status, data_criacao, id_cupom) ");
+			sql.append("VALUES (?,?,?,?,?,?,?,sysdate(),?)");
 			
-			pst = connection.prepareStatement(sql.toString());
-			pst.setInt(1, carrinho.getIdPedido());
-			System.out.println(pst);
+			pst = connection.prepareStatement(sql.toString(), 
+                    Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1, carrinho.getID_Cliente());
+			pst.setString(2, carrinho.getEmail());
+			pst.setInt(3, carrinho.getEnderecoEntrega().getId());
+			pst.setDouble(4, carrinho.getFrete());
+			pst.setDouble(5, carrinho.getValorLivros());
+			pst.setDouble(6, carrinho.getValorTotal());
+			pst.setString(7, carrinho.getStatus());
+			pst.setInt(8, carrinho.getCupomDesconto().getId());
+			
 			pst.executeUpdate();
+			ResultSet rs = pst.getGeneratedKeys();
+            int id=0;
+            if(rs.next())
+            {
+                id = rs.getInt(1);
+            }
+            carrinho.setId(id);
 			connection.commit();
 			
-			sql = new StringBuilder();
-			sql.append("INSERT INTO carrinho(id_endereco, valor_frete, valor_livros, valor_total, id_cartao, data_criacao, ID_Cupom, id_cliente, email_cliente, status)");
-			sql.append("VALUES (?,?,?,?,?,sysdate(),?,?,?,?)");
+			for(Produto p:carrinho.getProdutos()) {
+				sql = new StringBuilder();
+				sql.append("INSERT INTO produto (ID_Pedido, ID_Livro, quantidade) ");
+				sql.append("VALUES (?,?,?)");
+				
+				pst = connection.prepareStatement(sql.toString(), 
+	                    Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, carrinho.getId());
+				pst.setInt(2, p.getLivro().getId());
+				pst.setInt(3, p.getQuantidade());
+				pst.executeUpdate();
+				connection.commit();
+			}
 			
-			pst = connection.prepareStatement(sql.toString());
-			pst.setInt(1, carrinho.getEnderecoEntrega().getId());
-			pst.setDouble(2, carrinho.getFrete());
-			pst.setDouble(3, carrinho.getValorLivros());
-			pst.setDouble(4, carrinho.getValorTotal());
-			pst.setInt(5, carrinho.getCartao().getId());
-			pst.setInt(6, carrinho.getCupom().getId());
-			pst.setInt(7, carrinho.getID_Cliente());
-			pst.setString(8, carrinho.getEmail());
-			pst.setString(9, carrinho.getStatus());
-			pst.executeUpdate();
-			connection.commit();
+			for(Cartao c:carrinho.getCartoes()) {
+				System.out.println("Inserindo livro " + c.getId() + " no carrinho: " + carrinho.getId());
+				sql = new StringBuilder();
+				sql.append("INSERT INTO cartao_compra (ID_Cartao, ID_Pedido, Valor) ");
+				sql.append("VALUES (?,?,?)");
+				
+				pst = connection.prepareStatement(sql.toString(), 
+	                    Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, c.getId());
+				pst.setInt(2, carrinho.getId());
+				pst.setDouble(3, c.getCredito());
+				pst.executeUpdate();
+				connection.commit();
+			}
 			pst.close();
-			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT ID_Carrinho FROM carrinho WHERE 1=1 order by 1");
-			try{
-				openConnection();
-				pst = connection.prepareStatement(sb.toString());
-				ResultSet rs = pst.executeQuery();
-				while(rs.next()){
-					if(rs.isLast())
-					{
-						Carrinho c = new Carrinho();
-						c.setId(rs.getInt("ID_Carrinho"));
-						carrinhos.add(c);
-					}
-				}
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			for(CupomTroca c : carrinho.getCupons())
-			{
-				if(c.getValor() > carrinho.getValorTotal())
-				{
-					CupomTrocaDAO cupomDAO = new CupomTrocaDAO();
-					CupomTroca cupom = new CupomTroca();
-					cupom.setID_Cliente(carrinho.getID_Cliente());
-					cupom.setValor(c.getValor()-carrinho.getValorTotal());
-					cupomDAO.salvar(cupom);
-				}
-				else
-					carrinho.setValorTotal(carrinho.getValorTotal()-c.getValor());
-				System.out.println("Inserindo produto no carrinho: " + carrinhos.get(0).getId());
-				try {
-					connection.setAutoCommit(false);
-					sql = new StringBuilder();
-					sql.append("INSERT INTO cupom_compra(ID_Carrinho, ID_Cupom)");
-					sql.append("VALUES (?,?)");
-					
-					pst = connection.prepareStatement(sql.toString());
-					pst.setInt(1, carrinhos.get(0).getId());
-					pst.setInt(2, c.getId());
-					pst.executeUpdate();
-					connection.commit();
-					pst.close();
-					
-					sql = new StringBuilder();
-					sql.append("UPDATE cupomtroca set status = ? WHERE ID_Cupom = ?");
-					
-					pst = connection.prepareStatement(sql.toString());
-					pst.setBoolean(1, false);
-					pst.setInt(2, c.getId());
-					System.out.println(pst);
-					pst.executeUpdate();
-					connection.commit();
-				}catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-			for(Produto p : carrinho.getProdutos())
-			{
-				System.out.println("Inserindo produto no carrinho: " + carrinhos.get(0).getId());
-				try {
-					connection.setAutoCommit(false);
-					sql = new StringBuilder();
-					sql.append("INSERT INTO Produto(ID_Carrinho, ID_Livro, quantidade)");
-					sql.append("VALUES (?,?,?)");
-					
-					pst = connection.prepareStatement(sql.toString());
-					pst.setInt(1, carrinhos.get(0).getId());
-					pst.setInt(2, p.getLivro().getId());
-					pst.setInt(3, p.getQuantidade());
-					pst.executeUpdate();
-					connection.commit();
-					pst.close();
-					
-					sql = new StringBuilder();
-					sql.append("UPDATE Livros set estoque = ? WHERE ID_Livro = ?");
-					
-					pst = connection.prepareStatement(sql.toString());
-					pst.setInt(1, (p.getLivro().getEstoque() - p.getQuantidade()));
-					pst.setInt(2, p.getLivro().getId());
-					System.out.println(pst);
-					pst.executeUpdate();
-					connection.commit();
-				}catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();

@@ -11,6 +11,7 @@ public class DadosCadLivro extends EntidadeDominio{
 	private ArrayList<Precificacao> Precificacoes = new ArrayList<>();
 	private ArrayList<CategoriaAtivacao> CategoriasAtivacao = new ArrayList<>();
 	private ArrayList<CategoriaInativacao> CategoriasInativacao = new ArrayList<>();
+	private ArrayList<CupomDesconto> CuponsDesconto = new ArrayList<>();
 	
 	public ArrayList<Autor> getAutores() {
 		return Autores;
@@ -47,5 +48,11 @@ public class DadosCadLivro extends EntidadeDominio{
 	}
 	public void setCategoriasInativacao(ArrayList<CategoriaInativacao> categoriasInativacao) {
 		CategoriasInativacao = categoriasInativacao;
+	}
+	public ArrayList<CupomDesconto> getCuponsDesconto() {
+		return CuponsDesconto;
+	}
+	public void setCuponsDesconto(ArrayList<CupomDesconto> cuponsDesconto) {
+		CuponsDesconto = cuponsDesconto;
 	}
 }

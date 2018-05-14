@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import auxiliar.CupomDesconto;
 import finalCore.aplicacao.Resultado;
 import finalDominio.Carrinho;
 import finalDominio.Cartao;
@@ -33,13 +34,13 @@ public class CompraViewHelper implements IViewHelper{
 			Endereco endereco = (Endereco)session.getAttribute("enderecoEntrega");
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
 			Cartao cartao = (Cartao)session.getAttribute("cartao");
-			Cupom cupom = (Cupom)session.getAttribute("cupom");
+			CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
 			
 			if(cupom == null)
-				cupom = new Cupom();
+				cupom = new CupomDesconto();
 			carrinho.setID_Cliente(cliente.getId());
 			carrinho.setEmail(cliente.getEmail());
-			carrinho.setCupom(cupom);
+			carrinho.setCupomDesconto(cupom);
 			carrinho.setCartao(cartao);
 			carrinho.setStatus("EM PROCESSAMENTO");
 			carrinho.setEnderecoEntrega(endereco);
@@ -48,10 +49,10 @@ public class CompraViewHelper implements IViewHelper{
 		else if(operacao.equals("ATUALIZAR")) {
 			HttpSession session = request.getSession();
 			Carrinho carrinho = (Carrinho)session.getAttribute("carrinho");
-			Cupom cupom = (Cupom)session.getAttribute("cupom");
+			CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
 			if(cupom == null)
-				cupom = new Cupom();
-			carrinho.setCupom(cupom);
+				cupom = new CupomDesconto();
+			carrinho.setCupomDesconto(cupom);
 			int idLivro = Integer.parseInt(request.getParameter("txtIdLivro"));
 			int quantidade = Integer.parseInt(request.getParameter("txtQtde"));
 			for(Produto p : carrinho.getProdutos())
@@ -162,7 +163,7 @@ public class CompraViewHelper implements IViewHelper{
 			Cliente cliente = (Cliente)request.getSession().getAttribute("usuario");
 			int indice = Integer.parseInt(request.getParameter("txtIndice"));
 			cliente.getCupons().get(indice).setStatus(false);
-			carrinho.getCupons().add((CupomTroca)resultado.getEntidades().get(0));
+			carrinho.getCuponsTroca().add((CupomTroca)resultado.getEntidades().get(0));
 			request.getSession().setAttribute("carrinho", carrinho);
 			request.getSession().setAttribute("usuario", cliente);
 			d= request.getRequestDispatcher("FormCarrinho.jsp");

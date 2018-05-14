@@ -3,16 +3,18 @@ package finalDominio;
 import java.util.ArrayList;
 import java.util.List;
 
+import auxiliar.CupomDesconto;
+
 public class Carrinho extends EntidadeDominio{
 	private ArrayList<Produto> produtos = new ArrayList<>();
-	private List<CupomTroca> cupons = new ArrayList<>();
+	private List<CupomTroca> cuponsTroca = new ArrayList<>();
+	private ArrayList<Cartao> cartoes = new ArrayList<>();
 	private Endereco enderecoEntrega;
 	private Cartao cartao;
 	private int ID_Cliente, idEndereco, idPedido;
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status, email;
-	private Cupom cupom;
-	private CupomTroca cupomTroca;
+	private CupomDesconto cupomDesconto = new CupomDesconto();
 	
 	public void AdicionarLivro(Produto produto)
 	{
@@ -99,14 +101,6 @@ public class Carrinho extends EntidadeDominio{
 		this.idPedido = idPedido;
 	}
 
-	public Cupom getCupom() {
-		return cupom;
-	}
-
-	public void setCupom(Cupom cupom) {
-		this.cupom = cupom;
-	}
-
 	public Cartao getCartao() {
 		return cartao;
 	}
@@ -123,19 +117,27 @@ public class Carrinho extends EntidadeDominio{
 		this.email = email;
 	}
 
-	public CupomTroca getCupomTroca() {
-		return cupomTroca;
+	public List<CupomTroca> getCuponsTroca() {
+		return cuponsTroca;
 	}
 
-	public void setCupomTroca(CupomTroca cupomTroca) {
-		this.cupomTroca = cupomTroca;
+	public void setCuponsTroca(List<CupomTroca> cuponsTroca) {
+		this.cuponsTroca = cuponsTroca;
 	}
 
-	public ArrayList<CupomTroca> getCupons() {
-		return (ArrayList<CupomTroca>) cupons;
+	public ArrayList<Cartao> getCartoes() {
+		return cartoes;
 	}
 
-	public void setCupons(ArrayList<CupomTroca> cupons) {
-		this.cupons = cupons;
+	public void setCartoes(ArrayList<Cartao> cartoes) {
+		this.cartoes = cartoes;
+	}
+
+	public CupomDesconto getCupomDesconto() {
+		return cupomDesconto;
+	}
+
+	public void setCupomDesconto(CupomDesconto cupomDesconto) {
+		this.cupomDesconto = cupomDesconto;
 	}
 }

@@ -25,6 +25,7 @@ public class AdicionadorCustoFrete implements IStrategy{
 			}
 			
 			carrinho.setFrete(preco);
+			carrinho.setValorTotal(carrinho.getValorTotal() + carrinho.getFrete());
 		}else{
 			return "Deve ser registrado um Produto!";
 		}

@@ -6,6 +6,7 @@ public class Cartao extends EntidadeDominio {
 	
 	private String titular, numero, codigo, bandeira, alterador;
 	private int ID_Cliente;
+	private Double credito = 0.0;
 	private Boolean preferencial, status;
 	private Calendar validade;
 	
@@ -69,5 +70,11 @@ public class Cartao extends EntidadeDominio {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public Double getCredito() {
+		return credito;
+	}
+	public void setCredito(Double credito) {
+		this.credito = credito;
 	}
 }
