@@ -31,17 +31,8 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 			connection.setAutoCommit(false);
 			pst.setInt(1, cupom.getID_Cliente());
 			pst.setDouble(2, cupom.getValor());
-			
 			pst.executeUpdate();
-			connection.commit();
-			
-			sql = new StringBuilder();
-			sql.append("UPDATE Carrinho set status = 'TROCADO' WHERE ID_Carrinho = ?");
-			
-			pst = connection.prepareStatement(sql.toString());
-			pst.setInt(1, cupom.getID_Carrinho());
 			System.out.println(pst);
-			pst.executeUpdate();
 			connection.commit();
 		}catch(SQLException ex) {
 			connection.rollback();

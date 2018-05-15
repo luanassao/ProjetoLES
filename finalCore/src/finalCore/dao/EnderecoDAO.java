@@ -114,7 +114,6 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 				
 				pst = connection.prepareStatement(sql.toString());
 				pst.setInt(1, endereco.getID_Cliente());
-				System.out.println(pst);
 				pst.executeUpdate();			
 				connection.commit();
 			}
@@ -137,7 +136,6 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 				pst.setString(12, endereco.getAlterador());
 				pst.setString(13, endereco.getNomeEndereco());
 				pst.setInt(14, endereco.getId());
-				System.out.println(pst);
 				pst.executeUpdate();			
 				connection.commit();
 			}
@@ -171,7 +169,6 @@ public class EnderecoDAO extends AbstractJdbcDAO{
 		if(endereco.getId() > 0) {
 			sb.append(" and ID_Endereco = '" + endereco.getId() + "'");
 		}
-		System.out.println(sb.toString());
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

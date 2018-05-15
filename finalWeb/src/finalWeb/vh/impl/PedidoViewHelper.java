@@ -30,6 +30,7 @@ public class PedidoViewHelper implements IViewHelper{
 		String operacao = request.getParameter("operacao");
 		Carrinho carrinho = null;
 		HttpSession session = request.getSession();
+		Cliente usuario = (Cliente)session.getAttribute("usuario");
 
 		switch (operacao) {
 		case "SALVAR":
@@ -39,11 +40,11 @@ public class PedidoViewHelper implements IViewHelper{
 				int idLivro = Integer.parseInt(id);
 				for(Produto p:carrinho.getProdutos()) {
 					if(idLivro == p.getLivro().getId()) {
+						p.setQuantidadeAnt(p.getQuantidade() - Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
 						p.setQuantidade(Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
 					}
 				}
 			}
-			Cliente usuario = (Cliente)session.getAttribute("usuario");
 			CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
 			
 			int idEndereco = Integer.parseInt(request.getParameter("hdIdEndereco"));
@@ -79,6 +80,26 @@ public class PedidoViewHelper implements IViewHelper{
 			break;
 		case "CONSULTAR":
 			carrinho = new Carrinho();
+			if(!usuario.getAdministrador()) {
+				carrinho.setID_Cliente(usuario.getId());
+				carrinho.setStatus(request.getParameter("ddlStatus"));
+			}
+			else {
+				try {
+					carrinho.setId(Integer.parseInt(request.getParameter("txtIdPedido")));
+				}catch (Exception e) {
+					// Nenhum id informado
+					carrinho.setId(0);
+				}
+				try {
+					carrinho.setID_Cliente(Integer.parseInt(request.getParameter("txtIdCliente")));
+				}catch (Exception e) {
+					// Nenhum id informado
+					carrinho.setID_Cliente(0);
+				}
+				carrinho.setEmail(request.getParameter("txtEmail"));
+				carrinho.setStatus(request.getParameter("ddlStatus"));
+			}
 			break;
 		case "VISUALIZAR":
 			@SuppressWarnings("unchecked")
@@ -90,6 +111,18 @@ public class PedidoViewHelper implements IViewHelper{
 					carrinho = (Carrinho)c;
 				}
 			}
+			break;
+		case "ALTERAR":
+			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
+			carrinho = new Carrinho();
+
+			carrinho = pedido;
+			if(usuario.getAdministrador()) {
+				String status = request.getParameter("ddlStatus");
+				carrinho.setStatus(status);
+			}
+			else
+				carrinho.setStatus("EM TROCA");
 			break;
 		default:
 			break;
@@ -120,7 +153,7 @@ public class PedidoViewHelper implements IViewHelper{
 					carrinho.getProdutos().add(pedido.getProdutos().get(i));
 			}
 		}
-		else if(operacao.equals("ALTERAR"))
+		else if(operacao.equals("ALTERARR"))
 		{
 			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
 			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
@@ -188,9 +221,7 @@ public class PedidoViewHelper implements IViewHelper{
 			throws IOException, ServletException {
 		RequestDispatcher d=null;
 		request.getSession().setAttribute("resultado", null);
-		
 		String operacao = request.getParameter("operacao");
-		System.out.println(resultado.getMsg());
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
 				resultado.setMsg("Carrinho cadastrado com sucesso!");

@@ -15,7 +15,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Comprar livro</title>
+<title>Pedido</title>
 <script>
 	function atualizar(id, preco, maximo) {
 		var quantidade = document.getElementById("txtQtde" + id).value;
@@ -58,7 +58,7 @@
 	%>
 <BR>
 
-<form action="SalvarPedido" method="post">
+<form action="Pedido" method="post">
 <TABLE class="table table-sm" bordercolor="blue" BORDER="5"    WIDTH="50%"   CELLPADDING="4" CELLSPACING="3">
    <TR>
       <TH COLSPAN="17"><BR>
@@ -132,9 +132,11 @@
 	}
    %>
 </TABLE>
-<input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="SOLICITAR TROCA" />
-<input type="submit" style="${usuario.getAdministrador() !=  true && carrinho.getStatus() == 'ENTREGUE' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="ALTERAR" />
-<input type="submit" style="${usuario.getAdministrador() ==  true && carrinho.getStatus() == 'EM TROCA' ? '' : 'display:none'}" class="btn btn-primary" id="operacao" name="operacao" value="TROCAR" />
+<%
+	if(!usuario.getAdministrador() && carrinho.getStatus().equals("ENTREGUE")){
+		out.print("<button type='submit' class='btn btn-primary' id='operacao' name='operacao' value='ALTERAR'>Solicitar Troca</button>");
+	}
+%>
 </form>
 <BR>
 
@@ -167,7 +169,7 @@
 		${empty carrinho ? '0' : carrinho.getCupomDesconto().getValor()}
 		</TD>
 		<TD>
-		${empty carrinho ? '' : carrinho.getValorLivros() + carrinho.getFrete() - (empty cupom ? 0 : cupom.getValor())}
+		${empty carrinho ? '' : carrinho.getValorLivros() + carrinho.getFrete() - (empty carrinho.getCupomDesconto() ? 0 : carrinho.getCupomDesconto().getValor())}
 		</TD>
 	</TR>
 </TABLE>
@@ -179,14 +181,28 @@
 		Cartão
 		</TH>
 	</TR>
-	<TR>
-		<TD>
-		${empty carrinho ? '' : carrinho.getCartao().getBandeira()}
-		<BR>
-		${empty carrinho ? '' : carrinho.getCartao().getTitular()} - ${empty carrinho ? '' : carrinho.getCartao().getNumero()} -
-		${empty carrinho ? '' : carrinho.getCartao().getValidadeFormatado()}
-		</TD>
-	</TR>
+	<% 
+		StringBuilder sbRegistro = new StringBuilder();
+		if(carrinho != null && carrinho.getCartoes() != null && carrinho.getCartoes().size() > 0)
+		{
+			for(Cartao c:carrinho.getCartoes()){
+				sbRegistro.setLength(0);
+				sbRegistro.append("<TR><TD>");
+				sbRegistro.append(c.getBandeira());
+				sbRegistro.append("<BR>");
+				sbRegistro.append(c.getTitular() + " - ");
+				sbRegistro.append(c.getNumero());
+				sbRegistro.append("<BR>");
+				sbRegistro.append(c.getValidadeFormatado());
+				sbRegistro.append("</TD></TR>");
+				
+				out.print(sbRegistro.toString());
+			}
+		}
+		else{
+			
+		}
+	%>
 </TABLE>
 <BR>
 
@@ -235,6 +251,8 @@
 			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>REPROVADO</option>
 			<option ${carrinho.getStatus() == 'APROVADO' ? '' : 'style="display:none"' }>EM TRANSPORTE</option>
 			<option ${carrinho.getStatus() == 'EM TRANSPORTE' ? '' : 'style="display:none"' }>ENTREGUE</option>
+			<option ${carrinho.getStatus() == 'EM TROCA' ? '' : 'style="display:none"' }>TROCA APROVADA</option>
+			<option ${carrinho.getStatus() == 'TROCA APROVADA' ? '' : 'style="display:none"' }>TROCADO</option>
 		  </select>
 		  <input type="submit" style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="ALTERAR" />
 	    </form>

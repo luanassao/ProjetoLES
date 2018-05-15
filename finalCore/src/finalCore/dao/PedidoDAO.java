@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import auxiliar.CupomDesconto;
 import finalDominio.Carrinho;
 import finalDominio.Cartao;
 import finalDominio.Cupom;
@@ -22,6 +23,7 @@ public class PedidoDAO extends AbstractJdbcDAO{
 		super("pedido", "id_pedido");
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void salvar(EntidadeDominio entidade) throws SQLException {
 		openConnection();
@@ -75,6 +77,17 @@ public class PedidoDAO extends AbstractJdbcDAO{
 	            }
 	            p.setId(id);
 				connection.commit();
+				
+				sql = new StringBuilder();
+				sql.append("UPDATE LIVROS SET estoque = estoque + ? WHERE ID_Livro=? ");
+				
+				pst = connection.prepareStatement(sql.toString(), 
+	                    Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, p.getQuantidadeAnt());
+				pst.setInt(2, p.getLivro().getId());
+				System.out.println(pst);
+				pst.executeUpdate();
+				connection.commit();
 			}
 			
 			for(Cartao c:carrinho.getCartoes()) {
@@ -120,19 +133,25 @@ public class PedidoDAO extends AbstractJdbcDAO{
 	public void alterar(EntidadeDominio entidade) throws SQLException {
 		openConnection();
 		PreparedStatement pst = null;
-		Carrinho carrinho = (Carrinho)entidade;
-		
+		Carrinho pedido = (Carrinho)entidade;
+		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
+		CupomTroca cupomTroca;
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE pedido SET status = ? WHERE ID_pedido = ?");
-			System.out.println(sql.toString());
 			pst = connection.prepareStatement(sql.toString());
-			pst.setString(1, carrinho.getStatus());
-			pst.setInt(2, carrinho.getId());
-			System.out.println(pst);
+			pst.setString(1, pedido.getStatus());
+			pst.setInt(2, pedido.getId());
 			pst.executeUpdate();
 			connection.commit();
+			
+			if(pedido.getStatus().equals("TROCADO")) {
+				cupomTroca = new CupomTroca();
+				cupomTroca.setValor(pedido.getValorTotal());
+				cupomTroca.setID_Cliente(pedido.getID_Cliente());
+				cupomTrocaDAO.salvar(cupomTroca);
+			}
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -163,10 +182,12 @@ public class PedidoDAO extends AbstractJdbcDAO{
 		sb.append("LEFT JOIN ENDERECO using(id_endereco)");
 		//sb.append("LEFT JOIN livros using(id_livro)");
 		sb.append("WHERE 1=1");
+		if(carrinho.getId() > 0)
+			sb.append(" AND ID_Pedido = '" + carrinho.getId() + "'");
 		if(carrinho.getEmail() != null && carrinho.getEmail().length() > 0)
 			sb.append(" AND email_cliente = '" + carrinho.getEmail() + "'");
 		if(carrinho.getID_Cliente() > 0)
-			sb.append(" AND ID_Cliente = '" + carrinho.getEmail() + "'");
+			sb.append(" AND Pedido.ID_Cliente = '" + carrinho.getID_Cliente() + "'");
 		if(carrinho.getStatus() != null && carrinho.getStatus().length() > 0)
 			sb.append(" AND status = '" + carrinho.getStatus() + "'");
 		sb.append(" order by(id_pedido)");
@@ -178,6 +199,7 @@ public class PedidoDAO extends AbstractJdbcDAO{
 			List<EntidadeDominio> pedidos = new ArrayList<>();
 			ProdutoDAO produtoDAO = new ProdutoDAO();
 			EnderecoDAO enderecoDAO = new EnderecoDAO();
+			CupomDescontoDAO cupomDescDAO = new CupomDescontoDAO();
 			while(rs.next()){
 				Carrinho c = new Carrinho();
 				Cartao cartao = new Cartao();
@@ -189,6 +211,15 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				c.setValorTotal(rs.getDouble("valor_total"));
 				c.setEmail(rs.getString("email_cliente"));
 				c.setID_Cliente(rs.getInt("id_cliente"));
+				
+				//Criando um objeto de cupom de desconto para chamar a dao
+				CupomDesconto cupomDesc = new CupomDesconto();
+				cupomDesc.setId(rs.getInt("id_cupom"));
+				/*
+				 * Pegando o cupom de desconto utilizado (se utilizado)
+				 * */
+				cupomDesc = (CupomDesconto)cupomDescDAO.consultar(cupomDesc).get(0);
+				c.setCupomDesconto(cupomDesc);
 				
 				//Criando um objeto de edereço para chamar a dao
 				Endereco endereco = new Endereco();

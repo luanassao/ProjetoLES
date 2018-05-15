@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page
 	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <html>
 <html>
 <head>
@@ -40,10 +40,10 @@
    		</TR>
 			<tr>
 				<td>
-				Codigo do pedido: <input type="text" id="txtId" name="txtId" /> 
+				Codigo do pedido: <input type="number" id="txtIdPedido" name="txtIdPedido" /> 
 				</td>
 				<td>
-				Codigo do cliente:<input type="text" id="txtIdCliente" name="txtIdCliente" />
+				Codigo do cliente:<input type="number" id="txtIdCliente" name="txtIdCliente" />
 				</td>
 				<td>
 				Email do Cliente <input type="text" id="txtEmail" name="txtEmail"/>
@@ -59,17 +59,6 @@
 					<option value="EM TRANSPORTE">EM TRANSPORTE</option>
 					<option value="ENTREGUE">ENTREGUE</option>
 				</select>
-				</td>
-			</tr>
-			<tr style="display:none">
-				<td>
-				Ano <input type="text" id="txtAno" name="txtAno"/>
-				</td>
-				<td>
-				Editora <input type="text" id="txtEditora" name="txtEditora">
-				</td>
-				<td>
-				ISBN <input type="text" id="txtISBN" name="txtISBN">
 				</td>
 			</tr>
 		</table>

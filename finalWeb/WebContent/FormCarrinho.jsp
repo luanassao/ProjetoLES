@@ -394,42 +394,6 @@ if (carrinho != null) {
 		Cupom de troca
 		</TH>
 	</TR>
-	<%
-	try{
-	if (carrinho.getCuponsTroca() != null) {
-		List<CupomTroca> cupons = carrinho.getCuponsTroca();
-		StringBuilder sbRegistro = new StringBuilder();
-		StringBuilder sbLink = new StringBuilder();
-		
-		if(cupons.size() > 0){
-			try
-			{
-			for (CupomTroca c : cupons) {
-				sbRegistro.setLength(0);
-				sbLink.setLength(0);
-				
-				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<TR>");
-				sbRegistro.append("<TD>");
-				sbRegistro.append("Valor do cupom: ");
-				sbRegistro.append(c.getValor());
-				sbRegistro.append("<BR>");
-				sbRegistro.append("Status: ");
-				sbRegistro.append(c.getStatus());
-				sbRegistro.append("</TD>");
-				sbRegistro.append("</TR>");
-				
-				out.print(sbRegistro.toString());
-			}
-			}catch(Exception e){
-				
-			}
-		}
-	}
-	}catch(Exception e){
-		
-	}
-	%>
 </TABLE>
 <BR>
 
@@ -522,131 +486,100 @@ if (carrinho != null) {
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Endereços</h5>
+		        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Endereço de entrega</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body">
 		      <form action="SalvarEndereco" method="post" id="frmSalvarEndereco">
-			<table class="table table-bordered">
-				<tr><TH COLSPAN="2">Cadastro de endereço</TH></tr>
-				<tr style="${empty usuario ? 'display:none' : ''}">
-					<td>
-						ID do cliente
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtIdCliente" name="txtIdCliente" value="${empty usuario ? '' : usuario.getId()}" readonly="readonly"/>
-						<input type="hidden" name="ddlTipoEndereco" value="Entrega">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Tipo da residencia
-					</td>
-					<td>
-						<select id="ddlTipoResidencia" name="ddlTipoResidencia">
-							<option>Casa</option>
-							<option>Apartamento</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Tipo do logradouro
-					</td>
-					<td>
-						<select id="ddlTipoLogradouro" name="ddlTipoLogradouro">
-							<option>Avenida</option>
-							<option>Rua</option>
-							<option>Travessa</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Logradouro
-					</td>
-					<td>
-						<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Preferencial
-					</td>
-					<td>
-						Ativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="true">
-					    Inativo    <input type="radio" id="rdPreferencial" name="rdPreferencial" value="false" checked>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Número
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtNumero" name="txtNumero" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Bairro
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtBairro" name="txtBairro" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						CEP
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtCep" name="txtCep" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Estado
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtEstado" name="txtEstado"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Cidade
-					</td>
-					<td>
-						<input type="text"class="form-control" id="txtCidade" name="txtCidade" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						País
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtPais" name="txtPais"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Observação
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Responsavel
-					</td>
-					<td>
-						<input type="text" class="form-control"  id="txtResponsavel" name="txtResponsavel" value="${empty usuario ? '' : ''}"/>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR NOVO" class="btn btn-default" />
-		</form>
+				<table class="table table-bordered">
+						<tr><TH COLSPAN="2">Cadastro de Endereço</TH></tr>
+						<tr>
+							<td COLSPAN="2">
+								Nome do endereço
+								<input type="text" class="form-control" id="txtNomeEndereco" name="txtNomeEndereco" placeholder="ex:Minha casa" required="required"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Tipo do endereço
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoEndereco" name="ddlTipoEndereco">
+									<option>Entrega</option>
+								</select>
+							</td>
+							<td>
+								Tipo da residencia
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoResidencia" name="ddlTipoResidencia">
+									<option >Casa</option>
+									<option >Apartamento</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Tipo do logradouro
+								<br>
+								<select class="btn btn-outline-dark" id="ddlTipoLogradouro" name="ddlTipoLogradouro">
+									<option>Avenida</option>
+									<option>Rua</option>
+									<option>Travessa</option>
+								</select>
+							</td>
+							<td>
+								Logradouro
+								<br>
+								<input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro" required="required"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Número
+								<br>
+								<input type="text"class="form-control" id="txtNumero" name="txtNumero" required="required"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Bairro
+								<br>
+								<input type="text"class="form-control" id="txtBairro" name="txtBairro" required="required"/>
+							</td>
+							<td>
+								CEP
+								<br>
+								<input type="text"class="form-control" id="txtCep" name="txtCep" required="required"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Estado
+								<br>
+								<input type="text"class="form-control" id="txtEstado" name="txtEstado" required="required"/>
+							</td>
+							<td>
+								Cidade
+								<br>
+								<input type="text"class="form-control" id="txtCidade" name="txtCidade" required="required"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								País
+								<br>
+								<input type="text" class="form-control"  id="txtPais" name="txtPais" required="required"/>
+							</td>
+							<td>
+								Observação
+								<br>
+								<input type="text" class="form-control"  id="txtObservacao" name="txtObservacao"/>
+							</td>
+						</tr>
+					</table>
+					<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="SALVAR">SALVAR</button>
+			</form>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -14,7 +14,7 @@ import finalCore.aplicacao.Resultado;
 import finalCore.dao.PedidoDAO;
 import finalCore.dao.CartaoDAO;
 import finalCore.dao.ClienteDAO;
-import finalCore.dao.CupomDAO;
+import finalCore.dao.CupomDescontoDAO;
 import finalCore.dao.CupomTrocaDAO;
 import finalCore.dao.DadosGraficoDAO;
 import finalCore.dao.EnderecoDAO;
@@ -72,7 +72,7 @@ public class Fachada implements IFachada{
 		EnderecoDAO enderecoDAO = new EnderecoDAO();
 		CartaoDAO cartaoDAO = new CartaoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
-		CupomDAO cupomDAO = new CupomDAO();
+		CupomDescontoDAO cupomDAO = new CupomDescontoDAO();
 		CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 		DadosGraficoDAO dadosGraficoDAO = new DadosGraficoDAO();
 		HelperDAO HelperDAO = new HelperDAO();

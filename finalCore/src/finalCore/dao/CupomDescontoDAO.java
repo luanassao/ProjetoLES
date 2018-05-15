@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import auxiliar.CupomDesconto;
 import finalDominio.Cupom;
 import finalDominio.EntidadeDominio;
 
-public class CupomDAO extends AbstractJdbcDAO {
+public class CupomDescontoDAO extends AbstractJdbcDAO {
 
-	public CupomDAO() {
+	public CupomDescontoDAO() {
 		super("cupons", "id_cupom");
 	}
 	
@@ -52,13 +53,16 @@ public class CupomDAO extends AbstractJdbcDAO {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		PreparedStatement pst = null;
-		Cupom cupom = (Cupom) entidade;
+		CupomDesconto cupom = (CupomDesconto) entidade;
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT * from cupons");
+		sql.append("SELECT * from CUPOM_DESCONTO");
 		sql.append(" WHERE 1=1 ");
 		if (cupom.getCodigo() != null && cupom.getCodigo().length() > 0) {
 			sql.append(" AND Codigo = '" + cupom.getCodigo() + "'" );
+		}
+		if(cupom.getId() > 0) {
+			sql.append(" AND ID_Cupom_Desconto = '" + cupom.getId() + "'");
 		}
 
 		
@@ -71,8 +75,8 @@ public class CupomDAO extends AbstractJdbcDAO {
 			
 			
 			while (rs.next()) {
-				Cupom c = new Cupom();
-				c.setId(rs.getInt("ID_Cupom"));
+				CupomDesconto c = new CupomDesconto();
+				c.setId(rs.getInt("ID_Cupom_Desconto"));
 				c.setCodigo(rs.getString("Codigo"));
 				c.setValor(rs.getDouble("valor"));
 				
