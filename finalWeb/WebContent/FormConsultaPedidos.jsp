@@ -27,8 +27,6 @@
 		@SuppressWarnings("unchecked")
 		ArrayList<EntidadeDominio> pedidos = (ArrayList<EntidadeDominio>) session.getAttribute("pedidos");
 		Cliente usuario = (Cliente) session.getAttribute("usuario");
-		if(usuario != null)
-			out.print(usuario.getNome());
 	%>
 
 	<form action="Pedido" method="post">
@@ -171,6 +169,5 @@
    
    %>
 </TABLE>
-<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormClienteEnd.jsp">Cadastrar livro</a>
 </body>
 </html>

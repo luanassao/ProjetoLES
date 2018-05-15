@@ -186,6 +186,22 @@
 			document.getElementById('hdIdCupomDesconto').value = '';
 		}
 	}
+	function adicionarCupomTroca(id, valor) {
+		var tabela = document.getElementById("tableCupomTroca").innerHTML;
+		document.getElementById("hdIdCupomTroca").value += id + " ";
+		tabela += "<TR id='trCupomTroca" + id + "'><TD>Valor do cupom: " + valor + "</TD><TD><button type='button' class='btn btn-primary' " +
+			"onclick='removerCupomTroca(`" + id + "`)'>Remover</button></TD><TR>";
+		document.getElementById("tableCupomTroca").innerHTML = tabela;
+		document.getElementById("btnSelecionarCupomTroca" + id).disabled = true;
+	}
+	function removerCupomTroca(id) {
+		var tabela = document.getElementById("tableCupomTroca").innerHTML;
+		document.getElementById("trCupomTroca" + id).remove();
+		var cartoes = document.getElementById("hdIdCupomTroca").value;
+		var removido = cartoes.replace((id + " "), "");
+		document.getElementById("hdIdCupomTroca").value = removido;
+		document.getElementById("btnSelecionarCupomTroca" + id).disabled = false;
+	}
 	function atualizar(id, preco, maximo) {
 		alert("atualizar");
 		var quantidade = document.getElementById("txtQtde" + id).value;
@@ -356,7 +372,7 @@ if (carrinho != null) {
 	</TR>
 </TABLE>
 <BR>
-
+<input type='checkbox' name='cbGarantirCompra' value='true'>Corrigir o preço no ultimo cartão (Garante o pagamento da compra com o ultimo cartão)
 <TABLE id="tableCartao" bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
 		<TH>
@@ -388,13 +404,17 @@ if (carrinho != null) {
 <input type="hidden" id="hdIdCupomDesconto" name="hdIdCupomDesconto"/>
 <BR>
 
-<TABLE bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
+<TABLE id="tableCupomTroca" bordercolor="blue" BORDER="5" WIDTH="40%" CELLPADDING="4" CELLSPACING="3">
 	<TR>
 		<TH>
 		Cupom de troca
 		</TH>
+		<TH>
+		#
+		</TH>
 	</TR>
 </TABLE>
+<input type="hidden" id="hdIdCupomTroca" name="hdIdCupomTroca">
 <BR>
 
 <!-- Button trigger modal -->
@@ -787,11 +807,10 @@ if (carrinho != null) {
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Status: ");
 				sbRegistro.append(c.getStatus() == true ? "Utilizavel" : "Já utilizado");
-				sbRegistro.append("<form action='SalvarProduto' method='post' id='frmSalvarLivro'>");
-				sbRegistro.append("<input type='hidden' name='txtIndice' value='" + i + "'>");
-				if(c.getStatus())
-					sbRegistro.append("<input class='btn btn-success' type='submit' id='operacao' name='operacao' value='SELECIONAR CUPOM'>");
-				sbRegistro.append("</form>");
+				sbRegistro.append("<BR>");
+				sbRegistro.append("<button type='button' class='btn btn-success' id='btnSelecionarCupomTroca" + c.getId() + "'");
+				sbRegistro.append("onclick='adicionarCupomTroca(`" + c.getId() + "`,`" + c.getValor() + "`)'>SELECIONAR</button>");
+				sbRegistro.append("<BR>");
 				
 				out.print(sbRegistro.toString());
 				i++;

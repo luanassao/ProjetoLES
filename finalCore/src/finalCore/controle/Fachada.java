@@ -31,6 +31,7 @@ import finalCore.impl.negocio.ValidadorDadosObrigatoriosEndereco;
 import finalCore.impl.negocio.ValidadorDadosObrigatoriosLivro;
 import finalCore.impl.negocio.ValidadorEndCobranca;
 import finalCore.impl.negocio.ValidadorLivroEstoque;
+import finalCore.impl.negocio.ValidadorPagamentoPedido;
 import finalCore.impl.negocio.ValidadorUsuario;
 import finalCore.impl.negocio.ValidadorValorLivro;
 import finalDominio.Carrinho;
@@ -102,9 +103,11 @@ public class Fachada implements IFachada{
 		ValidadorCartaoPreferencial vrCartaoPreferencial = new ValidadorCartaoPreferencial();
 		/**/
 		ValidadorUsuario vrUsuario = new ValidadorUsuario();
+		/*REGRAS DE PEDIDOS*/
 		AdicionadorCustoFrete adcCustoFrete = new AdicionadorCustoFrete();
 		ValidadorLivroEstoque vrLivroEstoque = new ValidadorLivroEstoque();
 		AtualizadorPrecoCarrinho attPrecoCarrinho = new AtualizadorPrecoCarrinho();
+		ValidadorPagamentoPedido vrPagamentoPedido = new ValidadorPagamentoPedido();
 		
 		/* Criando uma lista para conter as regras de negócio de livro
 		 * quando a operação for salvar
@@ -267,8 +270,10 @@ public class Fachada implements IFachada{
 		 */
 		List<IStrategy> rnsSalvarPedido = new ArrayList<IStrategy>();
 		/* Adicionando as regras a serem utilizadas na operação salvar do livro*/
+		rnsSalvarPedido.add(vrLivroEstoque);
 		rnsSalvarPedido.add(attPrecoCarrinho);
 		rnsSalvarPedido.add(adcCustoFrete);
+		rnsSalvarPedido.add(vrPagamentoPedido);
 		
 		/* Cria o mapa que poderá conter todas as listas de regras de negócio específica 
 		 * por operação  do livro

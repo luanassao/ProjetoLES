@@ -45,9 +45,6 @@
 		Cupom cupom = (Cupom) session.getAttribute("cupom");
 		Livro livro = (Livro) session.getAttribute("livro");
 		Cartao cartao = (Cartao) session.getAttribute("cartao");
-		if(usuario != null)
-			out.print(usuario.getNome());
-		out.print("<a href='http://localhost:8080/finalWeb/Index.jsp'>Início</a>");
 	%>
 	<BR>
 	<%
@@ -92,7 +89,7 @@
 				
 				if(!usuario.getAdministrador() && carrinho.getStatus().equals("ENTREGUE")) {
 					sbRegistro.append("<TD>");
-					sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'");
+					sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'>");
 					sbRegistro.append("</TD>");
 				}
 				
@@ -180,6 +177,9 @@
 		<TH>
 		Cartão
 		</TH>
+		<TH>
+		Pagamento
+		</TH>
 	</TR>
 	<% 
 		StringBuilder sbRegistro = new StringBuilder();
@@ -194,6 +194,8 @@
 				sbRegistro.append(c.getNumero());
 				sbRegistro.append("<BR>");
 				sbRegistro.append(c.getValidadeFormatado());
+				sbRegistro.append("</TD><TD>");
+				sbRegistro.append(c.getCredito());
 				sbRegistro.append("</TD></TR>");
 				
 				out.print(sbRegistro.toString());
@@ -245,6 +247,11 @@
       <div class="modal-body">
         <form action='Pedido' method='post' id='frmSalvarLivro'>
         	Status atual do pedido: ${carrinho.getStatus()}
+        	<BR>
+        	<div ${carrinho.getStatus() == 'TROCA APROVADA' ? '' : 'style="display:none"'}>
+	        	<input type='checkbox' name='cbReporEstoque' value='true'>
+	        	Repor os livros no estoque
+        	</div>
         	<BR>
           <select style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" id="ddlStatus" name="ddlStatus">
 			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>APROVADO</option>

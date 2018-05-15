@@ -15,6 +15,7 @@ public class Carrinho extends EntidadeDominio{
 	private double frete = 0.0, valorLivros = 0.0, valorTotal = 0.0;
 	private String formaPagamento, status, email;
 	private CupomDesconto cupomDesconto = new CupomDesconto();
+	private Boolean flgReporEstoque, flgCorretorPreco;
 	
 	public void AdicionarLivro(Produto produto)
 	{
@@ -139,5 +140,21 @@ public class Carrinho extends EntidadeDominio{
 
 	public void setCupomDesconto(CupomDesconto cupomDesconto) {
 		this.cupomDesconto = cupomDesconto;
+	}
+
+	public Boolean getFlgReporEstoque() {
+		return flgReporEstoque;
+	}
+
+	public void setFlgReporEstoque(Boolean flgReporEstoque) {
+		this.flgReporEstoque = flgReporEstoque;
+	}
+
+	public Boolean getFlgCorretorPreco() {
+		return flgCorretorPreco;
+	}
+
+	public void setFlgCorretorPreco(Boolean flgCorretorPreco) {
+		this.flgCorretorPreco = flgCorretorPreco;
 	}
 }

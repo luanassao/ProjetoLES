@@ -31,11 +31,11 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 		PreparedStatement pst = null;
 		//Cliente cliente = (Cliente) entidade;
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT ID_Carrinho, ID_LIVRO, quantidade, autor, categoria, titulo, valor_livros, data_criacao\r\n" + 
+		sb.append("SELECT ID_Pedido, ID_LIVRO, quantidade, autor, categoria, titulo, valor_livros, data_criacao\r\n" + 
 				"FROM PRODUTO\r\n" + 
 				"join livros using(id_livro)\r\n" + 
-				"join carrinho using(id_carrinho)\r\n" + 
-				"group by ID_LIVRO, ID_Carrinho\r\n" + 
+				"join pedido using(id_pedido)\r\n" + 
+				"group by ID_LIVRO, ID_pedido\r\n" + 
 				"order by 1, 2");
 		try{
 			openConnection();
@@ -44,7 +44,7 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 			List<EntidadeDominio> dados = new ArrayList<>();
 			while(rs.next()){
 				DadosGrafico dado = new DadosGrafico();
-				dado.setId_Carrinho(rs.getInt("ID_Carrinho"));
+				dado.setId_Carrinho(rs.getInt("ID_Pedido"));
 				dado.setId_Livro(rs.getInt("ID_Livro"));
 				dado.setQuantidade(rs.getInt("quantidade"));
 				dado.setAutor(rs.getString("autor"));

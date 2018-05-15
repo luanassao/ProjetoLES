@@ -18,7 +18,10 @@ public class AtualizadorPrecoCarrinho implements IStrategy{
 				preco += p.getLivro().getValor() * p.getQuantidade();
 			}
 			carrinho.setValorLivros(preco);
-			carrinho.setValorTotal(carrinho.getValorTotal() + carrinho.getValorLivros() - carrinho.getCupomDesconto().getValor());
+			double total = carrinho.getValorTotal() + carrinho.getValorLivros();
+			if(carrinho.getCupomDesconto() != null && carrinho.getCupomDesconto().getId() > 0)
+				total -= carrinho.getCupomDesconto().getValor();
+			carrinho.setValorTotal(total);
 		}else{
 			return "Deve ser registrado um Produto!";
 		}

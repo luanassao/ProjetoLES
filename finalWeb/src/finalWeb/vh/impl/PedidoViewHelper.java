@@ -58,18 +58,43 @@ public class PedidoViewHelper implements IViewHelper{
 			for(String idCartao:idsCartoes) {
 				for(Cartao c:usuario.getCartoes()) {
 					if(idCartao.equals(c.getId() + "")) {
-						c.setCredito(Double.parseDouble(request.getParameter("txtPagarCartao" + c.getId())));
+						try {
+							c.setCredito(Double.parseDouble(request.getParameter("txtPagarCartao" + c.getId())));
+						}catch (Exception e) {
+							c.setCredito(10.0);
+						}
 						cartoes.add(c);
 					}
 				}
 			}
 			carrinho.setCartoes(cartoes);
 			
+			String[] idsCuponsTroca = request.getParameter("hdIdCupomTroca").split(" ");
+			ArrayList<CupomTroca> cuponsTroca = new ArrayList<>();
+			for(String idCUpomTroca:idsCuponsTroca) {
+				for(CupomTroca c:usuario.getCupons()) {
+					if(idCUpomTroca.equals(c.getId() + "")) {
+						cuponsTroca.add(c);
+					}
+				}
+			}
+			carrinho.setCuponsTroca(cuponsTroca);
+			
 			String idCupom = request.getParameter("hdIdCupomDesconto");
 			DadosCadLivro dados = (DadosCadLivro)((Resultado) session.getAttribute("dados")).getEntidades().get(0);
 			for(CupomDesconto c:dados.getCuponsDesconto()) {
-				if(idCupom.equals(c.getId() + ""))
+				if(idCupom.equals(c.getId() + "")) {
 					carrinho.setCupomDesconto(c);
+				}
+			}
+			
+			String garantirCompra = request.getParameter("cbGarantirCompra");
+			try {
+				if(garantirCompra.equals("true")) {
+					carrinho.setFlgCorretorPreco(true);
+				}
+			}catch (Exception e) {
+				carrinho.setFlgCorretorPreco(false);
 			}
 			
 			if(cupom == null)
@@ -119,6 +144,15 @@ public class PedidoViewHelper implements IViewHelper{
 			carrinho = pedido;
 			if(usuario.getAdministrador()) {
 				String status = request.getParameter("ddlStatus");
+				try {
+					String repor = request.getParameter("cbReporEstoque");
+					if(status.equals("TROCADO") && repor.equals("true")) {
+						carrinho.setFlgReporEstoque(true);
+					}
+				}catch (Exception e) {
+					carrinho.setFlgReporEstoque(false);
+				}
+					
 				carrinho.setStatus(status);
 			}
 			else
@@ -126,92 +160,6 @@ public class PedidoViewHelper implements IViewHelper{
 			break;
 		default:
 			break;
-		}
-		if(operacao.equals("TROCAR")) {
-			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
-			CupomTroca cupom = new CupomTroca();
-			cupom.setID_Carrinho(pedido.getId());
-			cupom.setValor(pedido.getValorLivros());
-			cupom.setID_Cliente(pedido.getID_Cliente());
-			return cupom;
-		}
-		else if(operacao.equals("SOLICITAR TROCA")) {
-			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
-			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
-			carrinho = new Carrinho();
-			carrinho.setEmail(cliente.getEmail());
-			carrinho.setID_Cliente(cliente.getId());
-			carrinho.setStatus("EM TROCA");
-			carrinho.setCupomDesconto(pedido.getCupomDesconto() == null ? new CupomDesconto() : pedido.getCupomDesconto());
-			carrinho.setEnderecoEntrega(pedido.getEnderecoEntrega());
-			carrinho.setIdPedido(pedido.getId());
-			carrinho.setCartao(pedido.getCartao());
-			System.out.println("Solicitando troca!");
-			for(int i = 0; i < pedido.getProdutos().size(); i++) {
-				System.out.println(request.getParameter("cbTroca" + pedido.getProdutos().get(i).getId()));
-				if(request.getParameter("cbTroca" + pedido.getProdutos().get(i).getId()) != null)
-					carrinho.getProdutos().add(pedido.getProdutos().get(i));
-			}
-		}
-		else if(operacao.equals("ALTERARR"))
-		{
-			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
-			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
-			carrinho = new Carrinho();
-
-			carrinho = pedido;
-			if(cliente.getAdministrador()) {
-				String status = request.getParameter("ddlStatus");
-				carrinho.setStatus(status);
-			}
-			else
-				carrinho.setStatus("EM TROCA");
-		}
-		else if(operacao.equals("VISUALIZARRR"))
-		{
-			String status = request.getParameter("ddlStatus");
-			String email = request.getParameter("txtEmail");
-			Cliente cliente = (Cliente) request.getSession().getAttribute("usuario");
-			
-			carrinho = new Carrinho();
-			
-			try {
-				int id = Integer.parseInt(request.getParameter("txtId"));
-				carrinho.setId(id);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			try {
-				int idC = Integer.parseInt(request.getParameter("txtIdCliente"));
-				carrinho.setID_Cliente(idC);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			try {
-				int idEndereco = Integer.parseInt(request.getParameter("txtIdEndereco"));
-				carrinho.setIdEndereco(idEndereco);
-			}catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			if(!cliente.getAdministrador())
-				carrinho.setEmail(cliente.getEmail());
-			else
-				carrinho.setEmail(email);
-			carrinho.setStatus(status);
-		}
-		else if(operacao.equals("asd")){
-			
-			Resultado resultado = (Resultado) session.getAttribute("resultado");
-			int txtId = Integer.parseInt(request.getParameter("txtId"));
-			
-			for(EntidadeDominio c: resultado.getEntidades()){
-				if(c.getId() == txtId){
-					carrinho = (Carrinho)c;
-				}
-			}
 		}
 		return carrinho;
 	}

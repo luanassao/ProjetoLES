@@ -32,7 +32,6 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 			pst.setInt(1, cupom.getID_Cliente());
 			pst.setDouble(2, cupom.getValor());
 			pst.executeUpdate();
-			System.out.println(pst);
 			connection.commit();
 		}catch(SQLException ex) {
 			connection.rollback();
@@ -49,7 +48,6 @@ public class CupomTrocaDAO  extends AbstractJdbcDAO {
 		openConnection();
 		PreparedStatement pst = null;
 		CupomTroca cupom = (CupomTroca)entidade;
-		System.out.println("operação de alterar");
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();

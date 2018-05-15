@@ -61,7 +61,7 @@ public class CupomDescontoDAO extends AbstractJdbcDAO {
 		if (cupom.getCodigo() != null && cupom.getCodigo().length() > 0) {
 			sql.append(" AND Codigo = '" + cupom.getCodigo() + "'" );
 		}
-		if(cupom.getId() > 0) {
+		if(cupom.getId() >= 0) {
 			sql.append(" AND ID_Cupom_Desconto = '" + cupom.getId() + "'");
 		}
 

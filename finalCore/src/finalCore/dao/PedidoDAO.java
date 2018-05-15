@@ -46,7 +46,7 @@ public class PedidoDAO extends AbstractJdbcDAO{
 			pst.setDouble(6, carrinho.getValorTotal());
 			pst.setString(7, carrinho.getStatus());
 			pst.setInt(8, carrinho.getCupomDesconto().getId());
-			
+			System.out.println(pst);
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();
             int id=0;
@@ -85,7 +85,6 @@ public class PedidoDAO extends AbstractJdbcDAO{
 	                    Statement.RETURN_GENERATED_KEYS);
 				pst.setInt(1, p.getQuantidadeAnt());
 				pst.setInt(2, p.getLivro().getId());
-				System.out.println(pst);
 				pst.executeUpdate();
 				connection.commit();
 			}
@@ -111,6 +110,34 @@ public class PedidoDAO extends AbstractJdbcDAO{
 	            c.setId(id);
 				connection.commit();
 			}
+			
+			Double totalCupons = 0.0;
+			CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
+			System.out.println("Quantidade de cupons: " + carrinho.getCuponsTroca().size());
+			for(CupomTroca cupomTroca:carrinho.getCuponsTroca()) {
+				sql = new StringBuilder();
+				sql.append("INSERT INTO CUPOMTROCA_COMPRA (ID_Cupomtroca, ID_Pedido) ");
+				sql.append("VALUES (?,?)");
+				
+				pst = connection.prepareStatement(sql.toString(), 
+	                    Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, cupomTroca.getId());
+				pst.setInt(2, carrinho.getId());
+				
+				pst.executeUpdate();
+				connection.commit();
+				
+				cupomTrocaDAO.alterar(cupomTroca);
+				totalCupons += cupomTroca.getValor();
+			}
+			if((carrinho.getValorTotal() - carrinho.getCupomDesconto().getValor()) < totalCupons) {
+				System.out.println("troco: " + (totalCupons - (carrinho.getValorTotal() - carrinho.getCupomDesconto().getValor())));
+				CupomTroca cupomTroca = new CupomTroca();
+				cupomTroca.setID_Cliente(carrinho.getID_Cliente());
+				cupomTroca.setValor(totalCupons - (carrinho.getValorTotal() - carrinho.getCupomDesconto().getValor()));
+				cupomTrocaDAO.salvar(cupomTroca);
+			}
+			
 			pst.close();
 		} catch (SQLException e) {
 			try {
@@ -151,6 +178,20 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				cupomTroca.setValor(pedido.getValorTotal());
 				cupomTroca.setID_Cliente(pedido.getID_Cliente());
 				cupomTrocaDAO.salvar(cupomTroca);
+			}
+			
+			if(pedido.getFlgReporEstoque()) {
+				for(Produto p:pedido.getProdutos()) {
+					sql = new StringBuilder();
+					sql.append("UPDATE LIVROS SET estoque = estoque + ? WHERE ID_Livro=? ");
+					
+					pst = connection.prepareStatement(sql.toString(), 
+		                    Statement.RETURN_GENERATED_KEYS);
+					pst.setInt(1, p.getQuantidade());
+					pst.setInt(2, p.getLivro().getId());
+					pst.executeUpdate();
+					connection.commit();
+				}
 			}
 		} catch (SQLException e) {
 			try {

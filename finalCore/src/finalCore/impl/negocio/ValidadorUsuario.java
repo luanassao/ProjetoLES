@@ -84,9 +84,6 @@ public class ValidadorUsuario implements IStrategy{
 					{
 						cupo = (CupomTroca)cup;
 						if(cliente.getId() == cupo.getID_Cliente()) {
-							System.out.println("ID: " + cupo.getId() +
-									" ID_Cliente: " + cupo.getID_Cliente() +
-									" Valor: " + cupo.getValor());
 							cuponsCliente.add(cupo);
 						}
 					}

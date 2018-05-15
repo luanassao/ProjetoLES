@@ -32,9 +32,7 @@ public class ValidadorLivroEstoque implements IStrategy{
 					{
 						if(p.getQuantidade() > livro.getEstoque())
 						{
-							p.setQuantidade(livro.getEstoque());
-							p.setMensagem("Só há " + livro.getEstoque() + " livros disponíveis!");
-							break;
+							return "Só há " + livro.getEstoque() + " unidades do livro " + livro.getId() + " disponíveis!";
 						}
 					}
 					
