@@ -57,4 +57,9 @@
     <url-pattern>/DadosLivro</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+    <servlet-name>Servlet</servlet-name>
+    <url-pattern>/GraficoAnalise</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

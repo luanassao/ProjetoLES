@@ -259,8 +259,12 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				/*
 				 * Pegando o cupom de desconto utilizado (se utilizado)
 				 * */
-				cupomDesc = (CupomDesconto)cupomDescDAO.consultar(cupomDesc).get(0);
-				c.setCupomDesconto(cupomDesc);
+				try {
+					cupomDesc = (CupomDesconto)cupomDescDAO.consultar(cupomDesc).get(0);
+					c.setCupomDesconto(cupomDesc);
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
 				
 				//Criando um objeto de edereço para chamar a dao
 				Endereco endereco = new Endereco();

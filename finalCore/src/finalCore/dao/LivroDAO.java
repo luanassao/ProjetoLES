@@ -233,7 +233,8 @@ public class LivroDAO extends AbstractJdbcDAO{
 		}catch (NullPointerException e) {
 			// Status nulo, listar por todos os status
 		}
-		sb.append(" order by 1");
+		sb.append(" order by id_livro");
+		
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

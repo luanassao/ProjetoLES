@@ -84,11 +84,10 @@
 		</tr>
 		<tr style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}">
 			<td>
-				<form action="SalvarProduto" method="post" id="frmGrafico">
+				<form action="GraficoAnalise" method="post" id="frmGrafico">
 				<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" class="btn btn-default">
 				Graficos de análise
 				</button>
-				<input type="hidden" name="tipo" value="geral">
 				</form>
 			</td>
 		</tr>

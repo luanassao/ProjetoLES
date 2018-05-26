@@ -40,7 +40,7 @@ public class DadosViewHelper implements IViewHelper{
 		request.getSession().setAttribute("livro", null);
 		String operacao = request.getParameter("target");
 		request.getSession().setAttribute("dados", resultado);
-		RequestDispatcher d= request.getRequestDispatcher(operacao);
+		RequestDispatcher d = request.getRequestDispatcher(operacao);
 		d.forward(request,response);
 	}
 

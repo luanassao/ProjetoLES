@@ -23,6 +23,7 @@ import finalWeb.command.impl.SelecionarEnderecoCommand;
 import finalWeb.command.impl.VisualizarCommand;
 import finalWeb.vh.IViewHelper;
 import finalWeb.vh.impl.PedidoViewHelper;
+import finalWeb.vh.impl.AnaliseViewHelper;
 import finalWeb.vh.impl.CartaoViewHelper;
 import finalWeb.vh.impl.ClienteViewHelper;
 import finalWeb.vh.impl.EnderecoViewHelper;
@@ -84,6 +85,7 @@ public class Servlet extends HttpServlet {
     	vhs.put("/finalWeb/Pedido", new PedidoViewHelper());
     	vhs.put("/finalWeb/SalvarProduto", new CompraViewHelper());
     	vhs.put("/finalWeb/Logar", new ClienteViewHelper());
+    	vhs.put("/finalWeb/GraficoAnalise", new AnaliseViewHelper());
     	
     	
     }
