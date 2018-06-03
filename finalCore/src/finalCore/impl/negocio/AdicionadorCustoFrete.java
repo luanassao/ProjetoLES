@@ -11,6 +11,10 @@ public class AdicionadorCustoFrete implements IStrategy{
 	public String processar(EntidadeDominio entidade) {
 		if(entidade instanceof Carrinho){
 			Carrinho carrinho = (Carrinho)entidade;
+			if(carrinho.getId() > 0) {
+				carrinho.setFrete(0.0);
+				return null;
+			}
 			double preco = 0.0;
 			
 			for(Produto p : carrinho.getProdutos())

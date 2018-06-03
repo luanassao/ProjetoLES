@@ -33,6 +33,15 @@ public class PedidoDAO extends AbstractJdbcDAO{
 		try {
 			connection.setAutoCommit(false);
 			StringBuilder sql = new StringBuilder();
+			if(carrinho.getId() > 0) {
+				ProdutoDAO produtoDAO = new ProdutoDAO();
+				for(Produto p:carrinho.getProdutos()) {
+					System.out.println("Alterar produto " + p.getId() + " tirar " + p.getQuantidade() + " unidades!");
+					produtoDAO.alterar(p);
+				}
+			}
+			
+			sql = new StringBuilder();
 			sql.append("INSERT INTO pedido (id_cliente, email_cliente, id_endereco, valor_frete, valor_livros, valor_total, status, data_criacao, id_cupom) ");
 			sql.append("VALUES (?,?,?,?,?,?,?,sysdate(),?)");
 			
@@ -137,8 +146,6 @@ public class PedidoDAO extends AbstractJdbcDAO{
 				cupomTroca.setValor(totalCupons - (carrinho.getValorTotal() - carrinho.getCupomDesconto().getValor()));
 				cupomTrocaDAO.salvar(cupomTroca);
 			}
-			
-			pst.close();
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -150,8 +157,8 @@ public class PedidoDAO extends AbstractJdbcDAO{
 			try {
 				pst.close();
 				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Erro no finally salvar do pedidoDAO");
 			}
 		}
 	}
@@ -175,12 +182,12 @@ public class PedidoDAO extends AbstractJdbcDAO{
 			
 			if(pedido.getStatus().equals("TROCADO")) {
 				cupomTroca = new CupomTroca();
-				cupomTroca.setValor(pedido.getValorTotal());
+				cupomTroca.setValor(pedido.getValorLivros());
 				cupomTroca.setID_Cliente(pedido.getID_Cliente());
 				cupomTrocaDAO.salvar(cupomTroca);
 			}
 			
-			if(pedido.getFlgReporEstoque()) {
+			if(pedido.getFlgReporEstoque() != null && pedido.getFlgReporEstoque()) {
 				for(Produto p:pedido.getProdutos()) {
 					sql = new StringBuilder();
 					sql.append("UPDATE LIVROS SET estoque = estoque + ? WHERE ID_Livro=? ");
@@ -232,7 +239,7 @@ public class PedidoDAO extends AbstractJdbcDAO{
 		if(carrinho.getStatus() != null && carrinho.getStatus().length() > 0)
 			sb.append(" AND status = '" + carrinho.getStatus() + "'");
 		sb.append(" order by(id_pedido)");
-		
+		System.out.println(sb.toString());
 		try {
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());

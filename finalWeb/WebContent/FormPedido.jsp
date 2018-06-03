@@ -17,15 +17,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Pedido</title>
 <script>
-	function atualizar(id, preco, maximo) {
-		var quantidade = document.getElementById("txtQtde" + id).value;
-		if(quantidade > maximo)
-		{
-			document.getElementById("txtQtde" + id).value = maximo;
-			quantidade = maximo;
-		}
-		document.getElementById("txtQtdeH" + id).value = quantidade;
-		document.getElementById("txtPreco" + id).value = quantidade*preco;
+	function atualizar() {
+		var troca = document.getElementsByName('cbTroca');
+		var flgTrocaTotal = true;
+		var flgNenhumSelecionado = true;
+	    for (var i = 0; i < troca.length; i++){
+	    	if(!troca[i].checked)
+	    		flgTrocaTotal = false;
+	    	else
+	    		flgNenhumSelecionado = false;
+	    }
+	    if(flgTrocaTotal)
+	    	document.getElementById('operacao').setAttribute('value', 'ALTERAR');
+	    else
+	    	document.getElementById('operacao').setAttribute('value', 'SALVAR');
+	    if(flgNenhumSelecionado)
+	    	document.getElementById('operacao').disabled = true;
+	    else
+	    	document.getElementById('operacao').disabled = false;
+	}
+	function mudarValue(id){
+		/*if(!document.getElementById('cbTroca' + id).checked)
+			document.getElementById('cbTroca' + id).setAttribute('value', '');
+		else
+			document.getElementById('cbTroca' + id).setAttribute('value', id);*/
 	}
 </script>
 <script>
@@ -89,7 +104,9 @@
 				
 				if(!usuario.getAdministrador() && carrinho.getStatus().equals("ENTREGUE")) {
 					sbRegistro.append("<TD>");
-					sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'>");
+					//sbRegistro.append("<input type='checkbox' name='cbTroca" + p.getId() + "' value='teste" + p.getId() + "'>");
+					sbRegistro.append("<input type='checkbox' name='cbTroca' id='cbTroca" + p.getId() + "' value='" + p.getId() + "' onchange='");
+					sbRegistro.append("mudarValue(`" + p.getId() + "`);atualizar()'>");
 					sbRegistro.append("</TD>");
 				}
 				
@@ -106,9 +123,9 @@
 				
 				sbRegistro.append("<TD>");
 				sbRegistro.append(sbLink.toString());
-				sbRegistro.append("<label id='txtQtde" + p.getLivro().getId() + "' name='txtQtde'>");
+				sbRegistro.append("<input type='number' name='txtQtde" + p.getId() + "' id='txtQtde' value='");
 				sbRegistro.append(p.getQuantidade());
-				sbRegistro.append("</label>");
+				sbRegistro.append("'/>");
 				sbRegistro.append("</TD>");
 				
 				sbRegistro.append("<TD>");
@@ -117,7 +134,7 @@
 				sbRegistro.append("value='" + (p.getLivro().getValor() * p.getQuantidade()) + "'");
 				sbRegistro.append("</TD>");
 				
-				sbRegistro.append("</TR>");
+				sbRegistro.append("</TR>\n");
 				
 				out.print(sbRegistro.toString());
 				

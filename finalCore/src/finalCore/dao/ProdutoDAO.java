@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import finalDominio.Carrinho;
+import finalDominio.Cliente;
 import finalDominio.EntidadeDominio;
 import finalDominio.Livro;
 import finalDominio.Produto;
@@ -26,8 +27,27 @@ public class ProdutoDAO extends AbstractJdbcDAO{
 
 	@Override
 	public void alterar(EntidadeDominio entidade) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		PreparedStatement pst = null;
+		Produto produto = (Produto)entidade;
+		try {
+			connection.setAutoCommit(false);
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE produto SET quantidade = quantidade - ? WHERE ID_Produto = ?");
+			
+			pst = connection.prepareStatement(sql.toString());
+			pst.setInt(1, produto.getQuantidade());
+			pst.setInt(2, produto.getId());
+			pst.executeUpdate();			
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();			
+		}
 	}
 
 	@Override
@@ -54,9 +74,11 @@ public class ProdutoDAO extends AbstractJdbcDAO{
 			pst = connection.prepareStatement(sb.toString());
 			ResultSet rs = pst.executeQuery();
 			List<EntidadeDominio> produtos = new ArrayList<>();
+			Livro l;
+			Produto p;
 			while(rs.next()){
-				Livro l = new Livro();
-				Produto p = new Produto();
+				l = new Livro();
+				p = new Produto();
 				p.setID_Pedido(rs.getInt("ID_Pedido"));
 				p.setId(rs.getInt("ID_Produto"));
 				p.setQuantidade(rs.getInt("quantidade"));

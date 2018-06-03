@@ -12,6 +12,8 @@ public class ValidadorPagamentoPedido implements IStrategy{
 	public String processar(EntidadeDominio entidade) {
 		if(entidade instanceof Carrinho){
 			Carrinho pedido = (Carrinho)entidade;
+			if(pedido.getId() > 0)
+				return null;
 			Double pagamentoCartao = 0.0, pagamentoCupom = 0.0;
 			Double pagamentoTotal = 0.0;
 			

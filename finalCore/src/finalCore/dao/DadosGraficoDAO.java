@@ -31,6 +31,11 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		// TODO Auto-generated method stub
 		List<EntidadeDominio> dadosGraficoAnalise = new ArrayList<>();
+		
+		/*
+		 * Query para pegar dados de analise por categoria
+		 * */
+		
 		PreparedStatement pst = null;
 		DadosGrafico dadosGrafico = (DadosGrafico)entidade;
 		StringBuilder sb = new StringBuilder();
@@ -40,9 +45,23 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 		sb.append(" join livro_possui_categoria using(id_livro)");
 		sb.append(" join categoria using(id_categoria)");
 		sb.append(" join clientes using(id_cliente)");
+		sb.append(" WHERE 1=1");
+		if(dadosGrafico.getDtInicial() != null && dadosGrafico.getDtInicialFormatado().trim() != "")
+			sb.append(" AND data_criacao >= '" + dadosGrafico.getDtInicialFormatado() + "'");
+		if(dadosGrafico.getDtFinal() != null && dadosGrafico.getDtFinalFormatado().trim() != "")
+			sb.append(" AND data_criacao <= '" + dadosGrafico.getDtFinalFormatado() + "'");
+		if(dadosGrafico.getCategorias().size() > 0) {
+			sb.append(" and (");
+			for(String cat:dadosGrafico.getCategorias()) {
+				sb.append(" nome_categoria = '" + cat + "'");
+				if(!dadosGrafico.getCategorias().get(dadosGrafico.getCategorias().size()-1).equals(cat))
+					sb.append(" or ");
+			}
+			sb.append(")");
+		}
 		sb.append(" group by data_compra, Nome_Categoria");
 		sb.append(" order by data_compra, Nome_Categoria");
-
+		System.out.println(sb.toString());
 		try{
 			openConnection();
 			pst = connection.prepareStatement(sb.toString());
@@ -62,14 +81,24 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 			e.printStackTrace();
 		}
 		
+		/*
+		 * Query para pegar dados de analise por genero
+		 * */
+		
 		pst = null;
 		sb = new StringBuilder();
 		sb.append("SELECT DATE_FORMAT(data_criacao, '%Y-%m-01') as data_compra, sum(quantidade) as quantidade, genero");
 		sb.append(" FROM PRODUTO");
 		sb.append(" join pedido using(id_pedido)");
 		sb.append(" join clientes using(id_cliente)");
+		sb.append(" WHERE 1=1");
+		if(dadosGrafico.getDtInicial() != null && dadosGrafico.getDtInicialFormatado().trim() != "")
+			sb.append(" AND data_criacao >= '" + dadosGrafico.getDtInicialFormatado() + "'");
+		if(dadosGrafico.getDtFinal() != null && dadosGrafico.getDtFinalFormatado().trim() != "")
+			sb.append(" AND data_criacao <= '" + dadosGrafico.getDtFinalFormatado() + "'");
 		sb.append(" group by data_compra, genero");
 		sb.append(" order by data_compra, genero");
+		System.out.println(sb.toString());
 		
 		try{
 			openConnection();

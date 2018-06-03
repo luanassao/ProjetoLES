@@ -199,6 +199,9 @@ public class LivroDAO extends AbstractJdbcDAO{
 		sb.append("LEFT JOIN categoria_inativacao on(ID_CategoriaAtivInativ = ID_Cat_Inativacao)");
 		sb.append("WHERE 1=1\n");
 		
+		if(livro.getId() > 0) {
+			sb.append(" and id_livro = " + livro.getId());
+		}
 		if(livro.getTitulo() != null && livro.getTitulo().length() > 0){
 			sb.append(" and titulo like '%" + livro.getTitulo() + "%'");
 		}

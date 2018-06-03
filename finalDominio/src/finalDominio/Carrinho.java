@@ -17,6 +17,13 @@ public class Carrinho extends EntidadeDominio{
 	private CupomDesconto cupomDesconto = new CupomDesconto();
 	private Boolean flgReporEstoque, flgCorretorPreco;
 	
+	public void zerarVariaveis() {
+		this.frete = 0.0;
+		this.valorLivros = 0.0;
+		this.valorTotal = 0.0;
+		
+	}
+	
 	public void AdicionarLivro(Produto produto)
 	{
 		produtos.add(produto);

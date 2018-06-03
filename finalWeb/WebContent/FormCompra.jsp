@@ -51,7 +51,6 @@
 					<%
 						Resultado dado = (Resultado) session.getAttribute("dados");
 						List<EntidadeDominio> entidades = dado.getEntidades();
-					
 						DadosCadLivro dados = (DadosCadLivro)entidades.get(0);
 						StringBuilder sbRegistro;
 						sbRegistro = new StringBuilder();

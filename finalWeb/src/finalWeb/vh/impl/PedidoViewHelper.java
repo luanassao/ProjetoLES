@@ -35,73 +35,104 @@ public class PedidoViewHelper implements IViewHelper{
 		switch (operacao) {
 		case "SALVAR":
 			carrinho = (Carrinho)session.getAttribute("carrinho");
-			String[] idsLivros = request.getParameter("txtIdLivros").split(" ");
-			for(String id : idsLivros) {
-				int idLivro = Integer.parseInt(id);
-				for(Produto p:carrinho.getProdutos()) {
-					if(idLivro == p.getLivro().getId()) {
-						p.setQuantidadeAnt(p.getQuantidade() - Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
-						p.setQuantidade(Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
-					}
-				}
-			}
-			CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
-			
-			int idEndereco = Integer.parseInt(request.getParameter("hdIdEndereco"));
-			for(Endereco e:usuario.getEnderecos()) {
-				if(e.getId() == idEndereco)
-					carrinho.setEnderecoEntrega(e);
-			}
-			
-			String[] idsCartoes = request.getParameter("hdIdCartao").split(" ");
-			ArrayList<Cartao> cartoes = new ArrayList<>();
-			for(String idCartao:idsCartoes) {
-				for(Cartao c:usuario.getCartoes()) {
-					if(idCartao.equals(c.getId() + "")) {
-						try {
-							c.setCredito(Double.parseDouble(request.getParameter("txtPagarCartao" + c.getId())));
-						}catch (Exception e) {
-							c.setCredito(10.0);
+			if(carrinho.getId() > 0) {
+				ArrayList<Produto> produtosTroca = new ArrayList<>();
+				String[] idProdutos = request.getParameterValues("cbTroca");
+				int idProduto, quantidade;
+				try {
+					for(String s:idProdutos) {
+						idProduto = Integer.parseInt(s);
+						for(Produto p:carrinho.getProdutos()) {
+							if(idProduto == p.getId()) {
+								quantidade = Integer.parseInt(request.getParameter("txtQtde" + p.getId()));
+								p.setQuantidade(quantidade);
+								produtosTroca.add(p);
+							}
 						}
-						cartoes.add(c);
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				carrinho.setProdutos(produtosTroca);
+				Double valorTroca = 0.0;
+				for(Produto p:carrinho.getProdutos()) {
+					System.out.println("Trocar: " + p.getId() + " Quantidade: " + p.getQuantidade());
+					valorTroca += p.getLivro().getValor() * p.getQuantidade();
+				}
+				carrinho.setValorLivros(valorTroca);
+				carrinho.setValorTotal(valorTroca);
+				carrinho.setFrete(0.0);
+				carrinho.setStatus("EM TROCA");
+			}
+			else {
+				String[] idsLivros = request.getParameter("txtIdLivros").split(" ");
+				for(String id : idsLivros) {
+					int idLivro = Integer.parseInt(id);
+					for(Produto p:carrinho.getProdutos()) {
+						if(idLivro == p.getLivro().getId()) {
+							p.setQuantidadeAnt(p.getQuantidade() - Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
+							p.setQuantidade(Integer.parseInt(request.getParameter("txtQtde" + idLivro)));
+						}
 					}
 				}
-			}
-			carrinho.setCartoes(cartoes);
-			
-			String[] idsCuponsTroca = request.getParameter("hdIdCupomTroca").split(" ");
-			ArrayList<CupomTroca> cuponsTroca = new ArrayList<>();
-			for(String idCUpomTroca:idsCuponsTroca) {
-				for(CupomTroca c:usuario.getCupons()) {
-					if(idCUpomTroca.equals(c.getId() + "")) {
-						cuponsTroca.add(c);
+				CupomDesconto cupom = (CupomDesconto)session.getAttribute("cupom");
+				
+				int idEndereco = Integer.parseInt(request.getParameter("hdIdEndereco"));
+				for(Endereco e:usuario.getEnderecos()) {
+					if(e.getId() == idEndereco)
+						carrinho.setEnderecoEntrega(e);
+				}
+				
+				String[] idsCartoes = request.getParameter("hdIdCartao").split(" ");
+				ArrayList<Cartao> cartoes = new ArrayList<>();
+				for(String idCartao:idsCartoes) {
+					for(Cartao c:usuario.getCartoes()) {
+						if(idCartao.equals(c.getId() + "")) {
+							try {
+								c.setCredito(Double.parseDouble(request.getParameter("txtPagarCartao" + c.getId())));
+							}catch (Exception e) {
+								c.setCredito(10.0);
+							}
+							cartoes.add(c);
+						}
 					}
 				}
-			}
-			carrinho.setCuponsTroca(cuponsTroca);
-			
-			String idCupom = request.getParameter("hdIdCupomDesconto");
-			DadosCadLivro dados = (DadosCadLivro)((Resultado) session.getAttribute("dados")).getEntidades().get(0);
-			for(CupomDesconto c:dados.getCuponsDesconto()) {
-				if(idCupom.equals(c.getId() + "")) {
-					carrinho.setCupomDesconto(c);
+				carrinho.setCartoes(cartoes);
+				
+				String[] idsCuponsTroca = request.getParameter("hdIdCupomTroca").split(" ");
+				ArrayList<CupomTroca> cuponsTroca = new ArrayList<>();
+				for(String idCUpomTroca:idsCuponsTroca) {
+					for(CupomTroca c:usuario.getCupons()) {
+						if(idCUpomTroca.equals(c.getId() + "")) {
+							cuponsTroca.add(c);
+						}
+					}
 				}
-			}
-			
-			String garantirCompra = request.getParameter("cbGarantirCompra");
-			try {
-				if(garantirCompra.equals("true")) {
-					carrinho.setFlgCorretorPreco(true);
+				carrinho.setCuponsTroca(cuponsTroca);
+				
+				String idCupom = request.getParameter("hdIdCupomDesconto");
+				DadosCadLivro dados = (DadosCadLivro)((Resultado) session.getAttribute("dados")).getEntidades().get(0);
+				for(CupomDesconto c:dados.getCuponsDesconto()) {
+					if(idCupom.equals(c.getId() + "")) {
+						carrinho.setCupomDesconto(c);
+					}
 				}
-			}catch (Exception e) {
-				carrinho.setFlgCorretorPreco(false);
+				
+				String garantirCompra = request.getParameter("cbGarantirCompra");
+				try {
+					if(garantirCompra.equals("true")) {
+						carrinho.setFlgCorretorPreco(true);
+					}
+				}catch (Exception e) {
+					carrinho.setFlgCorretorPreco(false);
+				}
+				
+				if(cupom == null)
+					cupom = new CupomDesconto();
+				carrinho.setID_Cliente(usuario.getId());
+				carrinho.setEmail(usuario.getEmail());
+				carrinho.setStatus("EM PROCESSAMENTO");
 			}
-			
-			if(cupom == null)
-				cupom = new CupomDesconto();
-			carrinho.setID_Cliente(usuario.getId());
-			carrinho.setEmail(usuario.getEmail());
-			carrinho.setStatus("EM PROCESSAMENTO");
 			break;
 		case "CONSULTAR":
 			carrinho = new Carrinho();
@@ -140,7 +171,6 @@ public class PedidoViewHelper implements IViewHelper{
 		case "ALTERAR":
 			Carrinho pedido = (Carrinho) request.getSession().getAttribute("carrinho");
 			carrinho = new Carrinho();
-
 			carrinho = pedido;
 			if(usuario.getAdministrador()) {
 				String status = request.getParameter("ddlStatus");
@@ -173,8 +203,8 @@ public class PedidoViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null){
 			if(operacao.equals("SALVAR")){
 				resultado.setMsg("Carrinho cadastrado com sucesso!");
+				request.getSession().setAttribute("carrinho", new Carrinho());
 			}
-			
 			request.getSession().setAttribute("resultado", resultado);
 			d= request.getRequestDispatcher("FormConsultaPedidos.jsp");  			
 		}

@@ -19,7 +19,7 @@ public class DadosAnaliseGenero {
 	public String getDtCompraFormatado() {
 		String data = "";
 		try {
-			data += (dtCompra.get(Calendar.MONTH) < 10 ? "0" + dtCompra.get(Calendar.MONTH) : dtCompra.get(Calendar.MONTH));
+			data += (dtCompra.get(Calendar.MONTH) + 1 < 10 ? "0" + (dtCompra.get(Calendar.MONTH) + 1) : (dtCompra.get(Calendar.MONTH)) + 1);
 			data += "/" + dtCompra.get(Calendar.YEAR);
 		}catch (Exception e) {
 			// TODO: handle exception
