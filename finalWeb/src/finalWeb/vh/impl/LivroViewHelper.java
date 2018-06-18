@@ -87,7 +87,12 @@ public class LivroViewHelper implements IViewHelper{
 		{
 			HttpSession session = request.getSession();
 			livro = (Livro)session.getAttribute("livro");
-			int estoque = livro.getEstoque() - Integer.parseInt(request.getParameter("txtQuantidade"));
+			int estoque = 0;
+			try {
+				estoque = livro.getEstoque() - Integer.parseInt(request.getParameter("txtQuantidade"));
+			}catch (Exception e) {
+				estoque = livro.getEstoque() - 1;
+			}
 			livro.setEstoque(estoque);
 		}
 		else if(operacao.equals("REMOVER_DO_CARRINHO"))
@@ -262,7 +267,13 @@ public class LivroViewHelper implements IViewHelper{
 		if(resultado.getMsg() == null && operacao.equals("ADICIONAR_AO_CARRINHO")){
 			Carrinho carrinho = (Carrinho)request.getSession().getAttribute("carrinho");
 			Livro livro = (Livro)resultado.getEntidades().get(0);
-			int quantidade = Integer.parseInt(request.getParameter("txtQuantidade"));
+			int quantidade = 0;
+			try {
+				quantidade = Integer.parseInt(request.getParameter("txtQuantidade"));
+			}catch (Exception e) {
+				quantidade = 1;
+				System.out.println("nada informado");
+			}
 			int i;
 			if(carrinho == null)
 				carrinho = new Carrinho();

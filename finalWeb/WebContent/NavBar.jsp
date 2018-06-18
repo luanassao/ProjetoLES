@@ -62,7 +62,7 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" data-toggle="modal" href="" data-target="#ModalInativar">Inativar meu cadastro</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="FormLogin.jsp">Deslogar</a>
+          <a id="ddlDeslogar" class="dropdown-item" href="FormLogin.jsp">Deslogar</a>
         </div>
       </li>
     </ul>

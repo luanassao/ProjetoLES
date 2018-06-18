@@ -151,7 +151,7 @@
           		Livro livro = (Livro) l;
           		
 		  	  	StringBuilder sbLink = new StringBuilder();
-		  	  	sbLink.append("<a href=SalvarLivro?");
+		  	  	sbLink.append("<a name='livro" + livro.getId() +  "' href=SalvarLivro?");
 				sbLink.append("txtId=");
 				sbLink.append(livro.getId());						
 				sbLink.append("&");

@@ -68,7 +68,7 @@
     <li class="aba" id="abaCliente">
      <a onclick="Cliente()" href="#abaCliente">${empty cliente ? "Cadastrar cliente" : "Alterar cliente"}</a>
      <a onclick="Endereco()" href="#abaEndereco">Cadastrar Endereço</a>
-     <a onclick="Cartao()" href="#abaCartao">Cadastrar Cartao</a>
+     <a onclick="Cartao()" name="hrCadCartao" href="#abaCartao">Cadastrar Cartao</a>
      <a onclick="ConsultarEndereco()" href="SalvarEndereco?operacao=CONSULTAR">Cosultar endereços</a>
      <a onclick="ConsultarCartao()" href="SalvarCartao?operacao=CONSULTAR">Cosultar cartoes</a>
 <section class="conteudo" style="${aba == 'abaCliente' ? '' : (aba == null ? '' : 'display:none')}" id="sectionCliente">
@@ -660,7 +660,7 @@
 					</td>
 				</tr>
 			</table>
-			<input type="submit" class="btn btn-primary" id="operacao" name="operacao" value="${empty cartao ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
+			<input type="submit" class="btn btn-primary" id="operacaoC" name="operacao" value="${empty cartao ? 'SALVAR' : 'ALTERAR'}" class="btn btn-default" />
 		</form>
 </section></li>
 <!-- Aqui, criação da segunda aba -->

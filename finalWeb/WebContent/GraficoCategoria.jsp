@@ -51,6 +51,7 @@
 <script>
    $(document).ready(function(){
 	   $("#divNavBar").load("NavBar.jsp");
+	   $("#divGenero").load("GraficoGenero.jsp");
    });
 </script>
 </head>
@@ -74,7 +75,6 @@
 			Gerar gráfico
 		</button>
 		&nbsp&nbsp&nbsp
-		<a class="btn btn-primary" href="GraficoGenero.jsp">Gráfico por genero</a>
 		<!-- Modal -->
 	<div class="modal fade" id="NomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
@@ -125,5 +125,7 @@
 	</div>
   	</form>
     <div id="chart_div" style="width: 1300px; height: 500px;"></div>
+    <br><hr><br>
+    <div id="divGenero"></div>
   </body>
 </html>

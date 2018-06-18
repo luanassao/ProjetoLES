@@ -242,7 +242,7 @@
 <BR>
 
 <!-- Button trigger modal -->
-<button type="button" style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}" class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal">
+<button id="btnDetalhes" type="button" style="${usuario.getAdministrador() ==  true ? '' : 'display:none'}" class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal">
   Detalhes
 </button>
 
@@ -271,12 +271,44 @@
         	</div>
         	<BR>
           <select style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" id="ddlStatus" name="ddlStatus">
-			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>APROVADO</option>
-			<option ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>REPROVADO</option>
-			<option ${carrinho.getStatus() == 'APROVADO' ? '' : 'style="display:none"' }>EM TRANSPORTE</option>
-			<option ${carrinho.getStatus() == 'EM TRANSPORTE' ? '' : 'style="display:none"' }>ENTREGUE</option>
-			<option ${carrinho.getStatus() == 'EM TROCA' ? '' : 'style="display:none"' }>TROCA APROVADA</option>
-			<option ${carrinho.getStatus() == 'TROCA APROVADA' ? '' : 'style="display:none"' }>TROCADO</option>
+          	<% 
+				sbRegistro = new StringBuilder();
+				if(carrinho != null)
+				{
+					String status = carrinho.getStatus();
+					if(status.equals("EM PROCESSAMENTO")){
+						sbRegistro.append("<option id='APROVADO'>APROVADO</option>");
+						sbRegistro.append("<option id='REPROVADO'>REPROVADO</option>");
+					}
+					else if(status.equals("APROVADO")){
+						sbRegistro.append("<option id='EMTRANSPORTE'>EM TRANSPORTE</option>");
+					}
+					else if(status.equals("REPROVADO")){
+						sbRegistro.append("<option id='APROVADO'>APROVADO</option>");
+					}
+					else if(status.equals("EM TRANSPORTE")){
+						sbRegistro.append("<option id='ENTREGUE'>ENTREGUE</option>");
+					}
+					else if(status.equals("EM TROCA")){
+						sbRegistro.append("<option id='TROCAAPROVADA'>TROCA APROVADA</option>");
+						sbRegistro.append("<option id='TROCAREPROVADA'>TROCA REPROVADA</option>");
+					}
+					else if(status.equals("TROCA APROVADA")){
+						sbRegistro.append("<option id='TROCADO'>TROCADO</option>");
+					}
+					out.print(sbRegistro.toString());
+				}
+				else{
+			/*<option id="APROVADO" ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>APROVADO</option>
+			<option id="REPROVADO" ${carrinho.getStatus() == 'EM PROCESSAMENTO' ? '' : 'style="display:none"' }>REPROVADO</option>
+			<option id="EMTRANSPORTE" ${carrinho.getStatus() == 'APROVADO' ? '' : 'style="display:none"' }>EM TRANSPORTE</option>
+			<option id="ENTREGUE" ${carrinho.getStatus() == 'EM TRANSPORTE' ? '' : 'style="display:none"' }>ENTREGUE</option>
+			<option id="TROCAAPROVADA" ${carrinho.getStatus() == 'EM TROCA' ? '' : 'style="display:none"' }>TROCA APROVADA</option>
+			<option id="TROCADO" ${carrinho.getStatus() == 'TROCA APROVADA' ? '' : 'style="display:none"' }>TROCADO</option>
+			*/
+				}
+			%>
+			
 		  </select>
 		  <input type="submit" style="${carrinho.getStatus() == 'ENTREGUE' ? 'display:none' : '' }" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="ALTERAR" />
 	    </form>

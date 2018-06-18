@@ -41,31 +41,12 @@
       //series: {5: {type: 'line'}, 6: {type: 'line'}}
     };
 
-    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.ComboChart(document.getElementById('chartG_div'));
     chart.draw(data, options);
   }
     </script>
-<script>
-   $(document).ready(function(){
-	   $("#divNavBar").load("NavBar.jsp");
-   });
-</script>
 </head>
 <body>
-	<div id="divNavBar"></div>
-	<form action="GraficoAnalise" method="post" id="frmGrafico">
-  	<div class="row">
-	  	<div class="col-lg-3">Data inicial<br><input type="month" class="form-control" id="txtDtInicio" placeholder="Data de inicio"></div>
-	  	<div class="col-lg-1"></div>
-	  	<div class="col-lg-3">Data final<br><input type="month" class="form-control" id="txtDtFim" placeholder="Data de fim"></div>
-  	</div>
-  	<br>
-  		<button type="submit" class="btn btn-primary" id="operacao" name="operacao" value="CONSULTAR" class="btn btn-default">
-			Gerar gráfico
-		</button>
-		&nbsp&nbsp&nbsp
-  		<a class="btn btn-primary" href="GraficoCategoria.jsp">Gráfico por categoria</a>
-  		</form>
-    <div id="chart_div" style="width: 1300px; height: 500px;"></div>
+    <div id="chartG_div" style="width: 1300px; height: 500px;"></div>
   </body>
 </html>

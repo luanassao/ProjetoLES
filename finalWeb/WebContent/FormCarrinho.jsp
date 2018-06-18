@@ -418,12 +418,12 @@ if (carrinho != null) {
 <BR>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
+<button name="btnEndereco" type="button" class="btn btn-primary" data-toggle="modal" data-target="#enderecoModal">
   Selecionar endereço
 </button>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
+<button name="btnCartao" type="button" class="btn btn-primary" data-toggle="modal" data-target="#cartaoModal">
   Selecionar cartão
 </button>
 
@@ -438,7 +438,7 @@ if (carrinho != null) {
 </button>
 
 </div>
-<a class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
+<a name="hrAMP" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormCompra.jsp">Adicionar mais produtos</a>
 <a style="${empty usuario ? '' : 'display:none'}" class="btn btn-primary" href="http://localhost:8080/finalWeb/FormLogin.jsp">Fazer Login</a>
 	<button type="submit" style="float:right" class="btn btn-success" id="operacao" name="operacao" value="SALVAR">FINALIZAR</button>
 </form>
@@ -480,7 +480,7 @@ if (carrinho != null) {
 					sbRegistro.append("<BR>");
 					sbRegistro.append(e.getCep());
 					sbRegistro.append("<BR>\n");
-					sbRegistro.append("<button type='button' class='btn btn-success' onclick='" + js + "'>Selecionar</button>");
+					sbRegistro.append("<button id='btnEnd" + e.getId() + "' name='btnEnd" + e.getId() + "' type='button' class='btn btn-success' onclick='" + js + "'>Selecionar</button>");
 					sbRegistro.append("<br>\n\t");
 					
 					out.print(sbRegistro.toString());
@@ -492,6 +492,7 @@ if (carrinho != null) {
 			}
 		}
 	   %>
+	   
       </div>
       <div class="modal-footer">
         <button type="button" id="btnCancelarEndereco" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -649,7 +650,7 @@ if (carrinho != null) {
 				sbRegistro.append("<BR>");
 				sbRegistro.append("Validade: " + c.getValidadeFormatado());
 				sbRegistro.append("<BR>");
-				sbRegistro.append("<button type='button' id='btnSelecionarCartao" + c.getId() + "' class='btn btn-success' onclick='adicionarCartao(`" + c.getId() + "`," + dadosCartao + ")'>Selecionar</button>");
+				sbRegistro.append("<button id='btnCar" + c.getId() + "' type='button' id='btnSelecionarCartao" + c.getId() + "' class='btn btn-success' onclick='adicionarCartao(`" + c.getId() + "`," + dadosCartao + ")'>Selecionar</button>");
 				sbRegistro.append("<BR>");
 				
 				out.print(sbRegistro.toString());
