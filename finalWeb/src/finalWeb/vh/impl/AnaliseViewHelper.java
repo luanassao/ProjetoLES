@@ -53,6 +53,7 @@ public class AnaliseViewHelper implements IViewHelper{
 	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		System.out.println("");
 		DadosGrafico dadosGrafico = (DadosGrafico)resultado.getEntidades().get(0);
 		GeradorDadosGrafico geradorDadosGrafico = new GeradorDadosGrafico();
 		String jsonDadosGraficoCat = geradorDadosGrafico.gerarDadosGraficoCategoria(dadosGrafico);
