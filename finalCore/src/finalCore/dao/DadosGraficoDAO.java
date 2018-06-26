@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import auxiliar.Categoria;
 import auxiliar.DadosAnaliseCategoria;
 import auxiliar.DadosAnaliseGenero;
 import finalDominio.DadosGrafico;
@@ -80,6 +81,14 @@ public class DadosGraficoDAO  extends AbstractJdbcDAO{
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		//Colocar todas as categorias existentes no objeto de análise para garantir a consistencia
+		CategoriaDAO categoriaDAO = new CategoriaDAO();
+		List<EntidadeDominio> cats = categoriaDAO.consultar(new Categoria());
+		ArrayList<String> categorias = new ArrayList<>();
+		for(EntidadeDominio e:cats) {
+			categorias.add(((Categoria)e).getNome());
+		}
+		dadosGrafico.setTodasCategorias(categorias);
 		
 		/*
 		 * Query para pegar dados de analise por genero

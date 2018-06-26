@@ -10,6 +10,7 @@ public class DadosGrafico extends EntidadeDominio{
 	private ArrayList<DadosAnaliseCategoria> dadosAnaliseCategoria = new ArrayList<>();
 	private ArrayList<DadosAnaliseGenero> dadosAnaliseGenero = new ArrayList<>();
 	private ArrayList<String> categorias = new ArrayList<>();
+	private ArrayList<String> todasCategorias = new ArrayList<>();
 	private Calendar dtInicial, dtFinal;
 	
 	public ArrayList<DadosAnaliseCategoria> getDadosAnaliseCategoria() {
@@ -49,5 +50,11 @@ public class DadosGrafico extends EntidadeDominio{
 	}
 	public void setCategorias(ArrayList<String> categorias) {
 		this.categorias = categorias;
+	}
+	public ArrayList<String> getTodasCategorias() {
+		return todasCategorias;
+	}
+	public void setTodasCategorias(ArrayList<String> todasCategorias) {
+		this.todasCategorias = todasCategorias;
 	}
 }

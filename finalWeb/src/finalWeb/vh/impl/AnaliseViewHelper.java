@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import finalCore.aplicacao.Resultado;
+import finalCore.util.GeradorDadosGrafico;
 import finalDominio.DadosGrafico;
 import finalDominio.EntidadeDominio;
 import finalWeb.vh.IViewHelper;
@@ -53,7 +54,11 @@ public class AnaliseViewHelper implements IViewHelper{
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		DadosGrafico dadosGrafico = (DadosGrafico)resultado.getEntidades().get(0);
-		request.getSession().setAttribute("dadosGrafico", dadosGrafico);
+		GeradorDadosGrafico geradorDadosGrafico = new GeradorDadosGrafico();
+		String jsonDadosGraficoCat = geradorDadosGrafico.gerarDadosGraficoCategoria(dadosGrafico);
+		String jsonDadosGraficoGen = geradorDadosGrafico.gerarDadosGraficoGenero(dadosGrafico);
+		request.getSession().setAttribute("dadosGraficoCat", jsonDadosGraficoCat);
+		request.getSession().setAttribute("dadosGraficoGen", jsonDadosGraficoGen);
 		RequestDispatcher d = request.getRequestDispatcher("GraficoCategoria.jsp");
 		d.forward(request, response);
 	}

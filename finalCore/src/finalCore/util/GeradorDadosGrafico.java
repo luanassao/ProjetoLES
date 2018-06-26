@@ -1,29 +1,13 @@
 package finalCore.util;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-import auxiliar.Categoria;
 import auxiliar.DadosAnaliseCategoria;
 import auxiliar.DadosAnaliseGenero;
-import finalCore.dao.CategoriaDAO;
 import finalDominio.DadosGrafico;
-import finalDominio.EntidadeDominio;
 
 public class GeradorDadosGrafico {
 	public String gerarDadosGraficoCategoria(DadosGrafico dadosGrafico) {
-		CategoriaDAO categoriaDAO = new CategoriaDAO();
-		ArrayList<String> categorias = new ArrayList<>();
-		try {
-			List<EntidadeDominio> consultaCat = categoriaDAO.consultar(new Categoria());
-			for(EntidadeDominio e : consultaCat) {
-				categorias.add(((Categoria)e).getNome());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		/*
 		 * Iniciando a criação do JSON
 		 * Inserindo linha de menu
@@ -31,8 +15,8 @@ public class GeradorDadosGrafico {
 		StringBuilder sbDados = new StringBuilder();
 		sbDados.append("['Data'");
 		if(dadosGrafico.getCategorias().size() > 0)
-			categorias = dadosGrafico.getCategorias();
-		for(String c:categorias) {
+			dadosGrafico.setTodasCategorias(dadosGrafico.getCategorias());
+		for(String c:dadosGrafico.getTodasCategorias()) {
 			sbDados.append(", '" + c + "'");
 		}
 		sbDados.append("],\n");
@@ -49,11 +33,11 @@ public class GeradorDadosGrafico {
 				sbDados.append("['" + dados.getDtCompraFormatado() + "'");
 			}
 			do {
-				if(dados.getCategoria().equals(categorias.get(indiceCategoria)) && dados.getDtCompra().equals(dtAtual)) {
+				if(dados.getCategoria().equals(dadosGrafico.getTodasCategorias().get(indiceCategoria)) && dados.getDtCompra().equals(dtAtual)) {
 					sbDados.append(", ");
 					sbDados.append(dados.getQuantidade());
 					flgDadoCorreto = false;
-					if(indiceCategoria == categorias.size() - 1) {
+					if(indiceCategoria == dadosGrafico.getTodasCategorias().size() - 1) {
 						indiceCategoria = 0;
 						sbDados.append("],\n");
 					}
@@ -61,7 +45,7 @@ public class GeradorDadosGrafico {
 						indiceCategoria++;
 				}
 				else {
-					if(indiceCategoria == categorias.size() - 1) {
+					if(indiceCategoria == dadosGrafico.getTodasCategorias().size() - 1) {
 						indiceCategoria = 0;
 						flgDadoCorreto = false;
 						sbDados.append("],\n");

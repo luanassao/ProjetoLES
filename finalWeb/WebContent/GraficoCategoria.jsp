@@ -3,11 +3,6 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page
 	import="finalCore.aplicacao.Resultado, finalDominio.*, java.util.*, auxiliar.*"%>
-<%
-	DadosGrafico dadosGrafico = (DadosGrafico)session.getAttribute("dadosGrafico");
-	GeradorDadosGrafico geradorDadosGrafico = new GeradorDadosGrafico();
-	String arrayDados = geradorDadosGrafico.gerarDadosGraficoCategoria(dadosGrafico);
-%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -30,9 +25,7 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-         <%
-         	out.print(arrayDados);
-         %>
+         ${dadosGraficoCat}
       ]);
 
     var options = {
